@@ -120,7 +120,7 @@ return conis
 end
 function Bot(msg)  
 local idbot = false  
-if tonumber(msg.sender_id.user_id) == tonumber(bot_id) then  
+if tonumber(msg.sender.user_id) == tonumber(bot_id) then  
 idbot = true    
 end  
 return idbot  
@@ -144,8 +144,8 @@ end
 return idSub
 end
 function programmer(msg) 
-if msg and msg.chat_id and msg.sender_id.user_id then
-if redis:sismember(bot_id..":Status:programmer",msg.sender_id.user_id) or devB(msg.sender_id.user_id) then    
+if msg and msg.chat_id and msg.sender.user_id then
+if redis:sismember(bot_id..":Status:programmer",msg.sender.user_id) or devB(msg.sender.user_id) then    
 return true  
 else  
 return false  
@@ -153,8 +153,8 @@ end
 end
 end
 function developer(msg) 
-if msg and msg.chat_id and msg.sender_id.user_id then
-if redis:sismember(bot_id..":Status:developer",msg.sender_id.user_id) or programmer(msg) then    
+if msg and msg.chat_id and msg.sender.user_id then
+if redis:sismember(bot_id..":Status:developer",msg.sender.user_id) or programmer(msg) then    
 return true  
 else  
 return false  
@@ -162,8 +162,8 @@ end
 end
 end
 function Creator(msg) 
-if msg and msg.chat_id and msg.sender_id.user_id then
-if redis:sismember(bot_id..":"..msg.chat_id..":Status:Creator", msg.sender_id.user_id) or developer(msg) then    
+if msg and msg.chat_id and msg.sender.user_id then
+if redis:sismember(bot_id..":"..msg.chat_id..":Status:Creator", msg.sender.user_id) or developer(msg) then    
 return true  
 else  
 return false  
@@ -171,8 +171,8 @@ end
 end
 end
 function BasicConstructor(msg) 
-if msg and msg.chat_id and msg.sender_id.user_id then
-if redis:sismember(bot_id..":"..msg.chat_id..":Status:BasicConstructor", msg.sender_id.user_id) or Creator(msg) then    
+if msg and msg.chat_id and msg.sender.user_id then
+if redis:sismember(bot_id..":"..msg.chat_id..":Status:BasicConstructor", msg.sender.user_id) or Creator(msg) then    
 return true  
 else  
 return false  
@@ -180,8 +180,8 @@ end
 end
 end
 function Constructor(msg) 
-if msg and msg.chat_id and msg.sender_id.user_id then
-if redis:sismember(bot_id..":"..msg.chat_id..":Status:Constructor", msg.sender_id.user_id) or BasicConstructor(msg) then    
+if msg and msg.chat_id and msg.sender.user_id then
+if redis:sismember(bot_id..":"..msg.chat_id..":Status:Constructor", msg.sender.user_id) or BasicConstructor(msg) then    
 return true  
 else  
 return false  
@@ -189,8 +189,8 @@ end
 end
 end
 function Owner(msg) 
-if msg and msg.chat_id and msg.sender_id.user_id then
-if redis:sismember(bot_id..":"..msg.chat_id..":Status:Owner", msg.sender_id.user_id) or Constructor(msg) then    
+if msg and msg.chat_id and msg.sender.user_id then
+if redis:sismember(bot_id..":"..msg.chat_id..":Status:Owner", msg.sender.user_id) or Constructor(msg) then    
 return true  
 else  
 return false  
@@ -198,8 +198,8 @@ end
 end
 end
 function Administrator(msg)
-if msg and msg.chat_id and msg.sender_id.user_id then
-if redis:sismember(bot_id..":"..msg.chat_id..":Status:Administrator", msg.sender_id.user_id) or Owner(msg) then    
+if msg and msg.chat_id and msg.sender.user_id then
+if redis:sismember(bot_id..":"..msg.chat_id..":Status:Administrator", msg.sender.user_id) or Owner(msg) then    
 return true  
 else  
 return false  
@@ -207,8 +207,8 @@ end
 end
 end
 function Vips(msg) 
-if msg and msg.chat_id and msg.sender_id.user_id then
-if redis:sismember(bot_id..":"..msg.chat_id..":Status:Vips", msg.sender_id.user_id) or Administrator(msg) or Bot(msg) then    
+if msg and msg.chat_id and msg.sender.user_id then
+if redis:sismember(bot_id..":"..msg.chat_id..":Status:Vips", msg.sender.user_id) or Administrator(msg) or Bot(msg) then    
 return true  
 else  
 return false  
@@ -4193,7 +4193,7 @@ else
 text = nil
 end
 ----------------------------------------------------------------------------------------------------
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 if redis:get(bot_id..":set:"..msg.chat_id..":send") then
 TrS = redis:get(bot_id..":set:"..msg.chat_id..":send")
 list = redis:smembers(bot_id..":Groups")   
@@ -4284,7 +4284,7 @@ end
 ----------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------
 if bot.getChatId(msg.chat_id).type == "basicgroup" then
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 ----------------------------------------------------------------------------------------------------
 if redis:get(bot_id..":set:"..msg.chat_id..":UpfJson") then
 if msg.content.document then
@@ -4467,12 +4467,12 @@ end
 ----------------------------------------------------------------------------------------------------
 if text == "/start" and not programmer(msg) then
 if redis:get(bot_id..":Notice") then
-if not redis:sismember(bot_id..":user_id",msg.sender_id.user_id) then
+if not redis:sismember(bot_id..":user_id",msg.sender.user_id) then
 scarduser_id = redis:scard(bot_id..":user_id") +1
-bot.sendText(sudoid,0,Reply_Status(msg.sender_id.user_id,"*⌁ :︙قام بدخول الى البوت عدد اعضاء البوت الان ( "..scarduser_id.." ) .*").i,"md",true)
+bot.sendText(sudoid,0,Reply_Status(msg.sender.user_id,"*⌁ :︙قام بدخول الى البوت عدد اعضاء البوت الان ( "..scarduser_id.." ) .*").i,"md",true)
 end
 end
-redis:sadd(bot_id..":user_id",msg.sender_id.user_id)  
+redis:sadd(bot_id..":user_id",msg.sender.user_id)  
 local UserInfo = bot.getUser(sudoid)
 if UserInfo.username and UserInfo.username ~= "" then
 t = '['..UserInfo.first_name..'](t.me/'..UserInfo.username..')'
@@ -4502,22 +4502,22 @@ if not programmer(msg) then
 if msg.content.text then
 if text ~= "/start" then
 if redis:get(bot_id..":Twas") then 
-if not redis:sismember(bot_id.."banTo",msg.sender_id.user_id) then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,'*⌁ :︙تم ارسال رسالتك الى المطور .*').yu,"md",true)  
+if not redis:sismember(bot_id.."banTo",msg.sender.user_id) then
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,'*⌁ :︙تم ارسال رسالتك الى المطور .*').yu,"md",true)  
 local FedMsg = bot.sendForwarded(sudoid, 0, msg.chat_id, msg.id)
 if FedMsg and FedMsg.content and FedMsg.content.luatele == "messageSticker" then
-bot.sendText(IdSudo,0,Reply_Status(msg.sender_id.user_id,'*⌁ :︙قام بارسال الملصق .*').i,"md",true)  
+bot.sendText(IdSudo,0,Reply_Status(msg.sender.user_id,'*⌁ :︙قام بارسال الملصق .*').i,"md",true)  
 return false
 end
 else
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,'*⌁ :︙انت محظور من البوت .*').yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,'*⌁ :︙انت محظور من البوت .*').yu,"md",true)  
 end
 end
 end
 end
 end
 end
-if devB(msg.sender_id.user_id) and msg.reply_to_message_id ~= 0  then    
+if devB(msg.sender.user_id) and msg.reply_to_message_id ~= 0  then    
 local Message_Get = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
 if Message_Get.forward_info then
 if Message_Get.forward_info.origin.sender_user_id then          
@@ -4565,24 +4565,24 @@ end
 end
 ----------------------------------------------------------------------------------------------------
 if msg.content.luatele == "messageChatDeleteMember" then 
-if msg.sender_id.user_id ~= bot_id then
+if msg.sender.user_id ~= bot_id then
 Num_Msg_Max = 4
-local UserInfo = bot.getUser(msg.sender_id.user_id)
+local UserInfo = bot.getUser(msg.sender.user_id)
 local names = UserInfo.first_name
 local monsha = redis:smembers(bot_id..":"..msg.chat_id..":Status:Creator") 
-if redis:ttl(bot_id.."mkal:setex:" .. msg.chat_id .. ":" .. msg.sender_id.user_id) < 0 then
-redis:del(bot_id.."delmembars"..msg.chat_id..msg.sender_id.user_id)
+if redis:ttl(bot_id.."mkal:setex:" .. msg.chat_id .. ":" .. msg.sender.user_id) < 0 then
+redis:del(bot_id.."delmembars"..msg.chat_id..msg.sender.user_id)
 end
-local ttsaa = (redis:get(bot_id.."delmembars"..msg.chat_id..msg.sender_id.user_id) or 0)
+local ttsaa = (redis:get(bot_id.."delmembars"..msg.chat_id..msg.sender.user_id) or 0)
 if tonumber(ttsaa) >= tonumber(3) then 
 local type = redis:hget(bot_id.."Storm:Spam:Group:User"..msg.chat_id,"Spam:User") 
-local removeMembars = https.request("https://api.telegram.org/bot" .. Token .. "/promoteChatMember?chat_id=" .. msg.chat_id .. "&user_id=" ..msg.sender_id.user_id.."&can_change_info=false&can_manage_chat=false&can_manage_voice_chats=false&can_delete_messages=false&can_invite_users=false&can_restrict_members=false&can_pin_messages=false&can_promote_members=false")
+local removeMembars = https.request("https://api.telegram.org/bot" .. Token .. "/promoteChatMember?chat_id=" .. msg.chat_id .. "&user_id=" ..msg.sender.user_id.."&can_change_info=false&can_manage_chat=false&can_manage_voice_chats=false&can_delete_messages=false&can_invite_users=false&can_restrict_members=false&can_pin_messages=false&can_promote_members=false")
 local Json_Info = JSON.decode(removeMembars)
-redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor", msg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor", msg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Owner", msg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator", msg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips", msg.sender_id.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor", msg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor", msg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Owner", msg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator", msg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips", msg.sender.user_id)
 if Json_Info.ok == false and Json_Info.error_code == 400 and Json_Info.description == "Bad Request: CHAT_ADMIN_REQUIRED" then
 if #monsha ~= 0 then 
 local ListMembers = '\n*⌁ : تاك للمالكين  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ *\n'
@@ -4595,7 +4595,7 @@ ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
 end
 local tecxt = ListMembers.."\n⌁ :  نداء للمالك [ > Click < ](tg://user?id="..v..")"..
-"\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender_id.user_id..")"..
+"\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender.user_id..")"..
 "\n⌁ : قام بازالة اعضاء من المجموعه \n⌁ : لا يمكنني تنزيله من المشرفين"
 bot.sendText(msg.chat_id,msg.id,tecxt,"md")
 end
@@ -4612,7 +4612,7 @@ ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
 end
 local tecxt = ListMembers.."\n⌁ :  نداء للمالك [ > Click < ](tg://user?id="..v..")"..
-"\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender_id.user_id..")"..
+"\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender.user_id..")"..
 "\n⌁ : قام بطرد اعضاء من المجموعه , ليست لدي صلاحيه اضافه مشرفين لتنزيله"
 bot.sendText(msg.chat_id,msg.id,tecxt,"md")
 end
@@ -4629,37 +4629,37 @@ ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
 end
 local tecxt = ListMembers.."\n⌁ :  نداء للمالك [ > Click < ](tg://user?id="..v..")"..
-"\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender_id.user_id..")"..
+"\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender.user_id..")"..
 "\n⌁ : قام بطرد اكثر من 3 اعضاء وتم تنزيله من المشرفين "
 bot.sendText(msg.chat_id,msg.id,tecxt,"md")
 end
 end
-redis:del(bot_id.."delmembars"..msg.chat_id..msg.sender_id.user_id)
+redis:del(bot_id.."delmembars"..msg.chat_id..msg.sender.user_id)
 end
-redis:setex(bot_id.."mkal:setex:" .. msg.chat_id .. ":" .. msg.sender_id.user_id, 3600, true) 
-redis:incrby(bot_id.."delmembars"..msg.chat_id..msg.sender_id.user_id, 1)  
+redis:setex(bot_id.."mkal:setex:" .. msg.chat_id .. ":" .. msg.sender.user_id, 3600, true) 
+redis:incrby(bot_id.."delmembars"..msg.chat_id..msg.sender.user_id, 1)  
 end
 end 
 
 if text and text:match('طرد @(.*)') or text and text:match('حظر @(.*)') or text and text:match('طرد (%d+)') or text and text:match('حظر (%d+)') then 
-if msg.sender_id.user_id ~= bot_id then
+if msg.sender.user_id ~= bot_id then
 Num_Msg_Max = 4
-local UserInfo = bot.getUser(msg.sender_id.user_id)
+local UserInfo = bot.getUser(msg.sender.user_id)
 local names = UserInfo.first_name 
 local monsha = redis:smembers(bot_id..":"..msg.chat_id..":Status:Creator")  
-if redis:ttl(bot_id.."qmkal:setex:" .. msg.chat_id .. ":" .. msg.sender_id.user_id) < 0 then
-redis:del(bot_id.."qdelmembars"..msg.chat_id..msg.sender_id.user_id)
+if redis:ttl(bot_id.."qmkal:setex:" .. msg.chat_id .. ":" .. msg.sender.user_id) < 0 then
+redis:del(bot_id.."qdelmembars"..msg.chat_id..msg.sender.user_id)
 end
-local ttsaa = (redis:get(bot_id.."qdelmembars"..msg.chat_id..msg.sender_id.user_id) or 0)
+local ttsaa = (redis:get(bot_id.."qdelmembars"..msg.chat_id..msg.sender.user_id) or 0)
 if tonumber(ttsaa) >= tonumber(4) then 
 print('spammmmm')
-local removeMembars = https.request("https://api.telegram.org/bot" .. Token .. "/promoteChatMember?chat_id=" .. msg.chat_id .. "&user_id=" ..msg.sender_id.user_id.."&can_change_info=false&can_manage_chat=false&can_manage_voice_chats=false&can_delete_messages=false&can_invite_users=false&can_restrict_members=false&can_pin_messages=false&can_promote_members=false")
+local removeMembars = https.request("https://api.telegram.org/bot" .. Token .. "/promoteChatMember?chat_id=" .. msg.chat_id .. "&user_id=" ..msg.sender.user_id.."&can_change_info=false&can_manage_chat=false&can_manage_voice_chats=false&can_delete_messages=false&can_invite_users=false&can_restrict_members=false&can_pin_messages=false&can_promote_members=false")
 local Json_Info = JSON.decode(removeMembars)
-redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor", msg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor", msg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Owner", msg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator", msg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips", msg.sender_id.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor", msg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor", msg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Owner", msg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator", msg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips", msg.sender.user_id)
 if Json_Info.ok == false and Json_Info.error_code == 400 and Json_Info.description == "Bad Request: CHAT_ADMIN_REQUIRED" then
 if #monsha ~= 0 then 
 local ListMembers = '\n*⌁ : تاك للمالكين  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ *\n'
@@ -4671,7 +4671,7 @@ else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
 end
-local tecxt = ListMembers.."\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender_id.user_id..")"..
+local tecxt = ListMembers.."\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender.user_id..")"..
 "\n⌁ : قام بالتكرار في ازاله الاعضاء \n⌁ : لا يمكنني تنزيله من المشرفين"
 bot.sendText(msg.chat_id,msg.id,tecxt,"md")
 end
@@ -4687,7 +4687,7 @@ else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
 end
-local tecxt = ListMembers.."\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender_id.user_id..")"..
+local tecxt = ListMembers.."\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender.user_id..")"..
 "\n⌁ : هناك عمليه تخريب وطرد الاعضاء , ليست لدي صلاحيه اضافه مشرفين لتنزيله"
 bot.sendText(msg.chat_id,msg.id,tecxt,"md")
 end
@@ -4703,15 +4703,15 @@ else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
 end
-local tecxt = ListMembers.."\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender_id.user_id..")"..
+local tecxt = ListMembers.."\n⌁ : المشرف ["..names.." ](tg://user?id="..msg.sender.user_id..")"..
 "\n⌁ : هناك عمليه تخريب وطرد الاعضاء , ليست لدي صلاحيه اضافه مشرفين لتنزيله"
 bot.sendText(msg.chat_id,msg.id,tecxt,"md")
 end
 end
-redis:del(bot_id.."qdelmembars"..msg.chat_id..msg.sender_id.user_id)
+redis:del(bot_id.."qdelmembars"..msg.chat_id..msg.sender.user_id)
 end
-redis:setex(bot_id.."qmkal:setex:" .. msg.chat_id .. ":" .. msg.sender_id.user_id, 3600, true) 
-redis:incrby(bot_id.."qdelmembars"..msg.chat_id..msg.sender_id.user_id, 1)  
+redis:setex(bot_id.."qmkal:setex:" .. msg.chat_id .. ":" .. msg.sender.user_id, 3600, true) 
+redis:incrby(bot_id.."qdelmembars"..msg.chat_id..msg.sender.user_id, 1)  
 end
 end 
 
@@ -4723,44 +4723,44 @@ if msg.forward_info then
 if redis:get(bot_id..":"..msg.chat_id..":settings:forward_info") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:forward_info") == "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:forward_info") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:forward_info") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : ممنوع ترسل توجيهات*").heloo,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : ممنوع ترسل توجيهات*").heloo,"md",true)  
 end
 end
 if msg.content.luatele == "messageContact"  then
 if redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) == "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 if msg.content.luatele == "messageChatAddMembers" then
 Info_User = bot.getUser(msg.content.member_user_ids[1]) 
-redis:set(bot_id..":"..msg.chat_id..":"..msg.content.member_user_ids[1]..":AddedMe",msg.sender_id.user_id)
-redis:incr(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Addedmem")
+redis:set(bot_id..":"..msg.chat_id..":"..msg.content.member_user_ids[1]..":AddedMe",msg.sender.user_id)
+redis:incr(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Addedmem")
 if Info_User.type.luatele == "userTypeBot" or Info_User.type.luatele == "userTypeRegular" then
 if redis:get(bot_id..":"..msg.chat_id..":settings:AddMempar") then 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.setChatMemberStatus(msg.chat_id,msg.content.member_user_ids[1],'restricted',{1,0,0,0,0,0,0,0,0})
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.content.member_user_ids[1]) 
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 bot.setChatMemberStatus(msg.chat_id,msg.content.member_user_ids[1],'banned',0)
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end
@@ -4768,18 +4768,18 @@ end
 if redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) then
 if Info_User.type.luatele == "userTypeBot" then
 redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.content.member_user_ids[1]) 
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.setChatMemberStatus(msg.chat_id,msg.content.member_user_ids[1],'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 bot.setChatMemberStatus(msg.chat_id,msg.content.member_user_ids[1],'banned',0)
 end
 end
 end
 end
 if msg.forward_info then
-if nfRankrestriction(msg,msg.chat_id,restrictionGet_Rank(msg.sender_id.user_id,msg.chat_id),"forwardinfo") then
+if nfRankrestriction(msg,msg.chat_id,restrictionGet_Rank(msg.sender.user_id,msg.chat_id),"forwardinfo") then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end
 end
@@ -4799,12 +4799,12 @@ text and text:match(".[Cc][Oo][Mm]") or
 text and text:match(".[Tt][Kk]") or 
 text and text:match(".[Mm][Ll]") or 
 text and text:match(".[Oo][Rr][Gg]") then 
-if nfRankrestriction(msg,msg.chat_id,restrictionGet_Rank(msg.sender_id.user_id,msg.chat_id),"Links") then
+if nfRankrestriction(msg,msg.chat_id,restrictionGet_Rank(msg.sender.user_id,msg.chat_id),"Links") then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end
 end
 if msg.content.luatele then
-if nfRankrestriction(msg,msg.chat_id,restrictionGet_Rank(msg.sender_id.user_id,msg.chat_id),msg.content.luatele) then
+if nfRankrestriction(msg,msg.chat_id,restrictionGet_Rank(msg.sender.user_id,msg.chat_id),msg.content.luatele) then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end
 end
@@ -4813,22 +4813,22 @@ if redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"Spam:User") then
 if msg.content.luatele ~= "messageChatAddMembers"  then 
 local floods = redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"Spam:User") or "nil"
 local Num_Msg_Max = redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"floodtime") or 5
-local post_count = tonumber(redis:get(bot_id.."Spam:Cont"..msg.sender_id.user_id..":"..msg.chat_id) or 0)
+local post_count = tonumber(redis:get(bot_id.."Spam:Cont"..msg.sender.user_id..":"..msg.chat_id) or 0)
 if post_count >= tonumber(redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"floodtime") or 5) then 
 if redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"Spam:User") == "kick" then 
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : قام بالتكرار في المجموعه وتم حظره*").yu,"md",true)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : قام بالتكرار في المجموعه وتم حظره*").yu,"md",true)
 elseif redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"Spam:User") == "del" then 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"Spam:User") == "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : قام بالتكرار في المجموعه وتم تقييده*").yu,"md",true)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : قام بالتكرار في المجموعه وتم تقييده*").yu,"md",true)
 elseif redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"Spam:User") == "ktm" then
-redis:sadd(bot_id.."SilentGroup:Group"..msg.chat_id,msg.sender_id.user_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : قام بالتكرار في المجموعه وتم كتمه*").yu,"md",true)  
+redis:sadd(bot_id.."SilentGroup:Group"..msg.chat_id,msg.sender.user_id) 
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : قام بالتكرار في المجموعه وتم كتمه*").yu,"md",true)  
 end
 end
-redis:setex(bot_id.."Spam:Cont"..msg.sender_id.user_id..":"..msg.chat_id, tonumber(5), post_count+1) 
+redis:setex(bot_id.."Spam:Cont"..msg.sender.user_id..":"..msg.chat_id, tonumber(5), post_count+1) 
 Num_Msg_Max = 5
 if redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"floodtime") then
 Num_Msg_Max = redis:hget(bot_id.."Spam:Group:User"..msg.chat_id,"floodtime") 
@@ -4843,14 +4843,14 @@ if string.len(text) > (sens) or ctrl_ > (sens) or real_ > (sens) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:Spam") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Spam") == "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Spam") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Spam") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 end
@@ -4858,14 +4858,14 @@ if msg.content.luatele then
 if redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) == "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:"..msg.content.luatele) == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 if redis:get(bot_id..":"..msg.chat_id..":settings:messagePinMessage") then
@@ -4879,14 +4879,14 @@ if redis:get(bot_id..":"..msg.chat_id..":settings:WordsEnglish") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsEnglish") == "ked" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsEnglish") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsEnglish") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end 
 end
 if (text and text:match("ی") or text and text:match('چ') or text and text:match('گ') or text and text:match('ک') or text and text:match('پ') or text and text:match('ژ') or text and text:match('ٔ') or text and text:match('۴') or text and text:match('۵') or text and text:match('۶') )then
@@ -4894,14 +4894,14 @@ if redis:get(bot_id..":"..msg.chat_id..":settings:WordsPersian") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsPersian") == "ked" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsPersian") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsPersian") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end 
 end
 if msg.content.text then
@@ -4912,14 +4912,14 @@ if redis:get(bot_id..":"..msg.chat_id..":settings:WordsFshar") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsFshar") == "ked" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsFshar") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:WordsFshar") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end 
 end
@@ -4928,97 +4928,97 @@ if redis:get(bot_id..":"..msg.chat_id..":settings:message") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:message") == "ked" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:message") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:message") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 if msg.via_bot_user_id ~= 0 then
 if redis:get(bot_id..":"..msg.chat_id..":settings:via_bot_user_id") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:via_bot_user_id") == "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:via_bot_user_id") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:via_bot_user_id") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 if msg.reply_markup and msg.reply_markup.luatele == "replyMarkupInlineKeyboard" then
 if redis:get(bot_id..":"..msg.chat_id..":settings:Keyboard") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Keyboard") == "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Keyboard") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Keyboard") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 if msg.content.entities and msg..content.entities[0] and msg.content.entities[0].type.luatele == "textEntityTypeUrl" then
 if redis:get(bot_id..":"..msg.chat_id..":settings:Markdaun") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Markdaun") == "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Markdaun") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Markdaun") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 if text and text:match("/[%a%d_]+") then 
 if redis:get(bot_id..":"..msg.chat_id..":settings:Cmd")== "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Cmd")== "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Cmd")== "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Cmd")== "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 if text and text:match("@[%a%d_]+") then 
 if redis:get(bot_id..":"..msg.chat_id..":settings:Username")== "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Username")== "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Username")== "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Username")== "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 if text and text:match("#[%a%d_]+") then 
 if redis:get(bot_id..":"..msg.chat_id..":settings:Hashtak")== "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Hashtak")== "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Hashtak")== "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Hashtak")== "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 if text and text:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or 
@@ -5040,14 +5040,14 @@ text and text:match(".[Oo][Rr][Gg]") then
 if redis:get(bot_id..":"..msg.chat_id..":settings:Links")== "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Links")== "ked" then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Links") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Links")== "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
 end
 ----------------------------------------------------------------------------------------------------
@@ -5056,8 +5056,8 @@ end
 
 ----------------------------------------------------------------------------------------------------
 if Owner(msg) then
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":mn:set") then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":mn:set")
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":mn:set") then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":mn:set")
 if text or msg.content.sticker or msg.content.animation or msg.content.photo then
 if msg.content.text then   
 if redis:sismember(bot_id.."mn:content:Text"..msg.chat_id,text) then
@@ -5093,9 +5093,9 @@ return false
 end
 end
 ----------------------------------------------------------------------------------------------------
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:set") == "true1" then
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:set") == "true1" then
 if text or msg.content.video_note or msg.content.document or msg.content.audio or msg.content.video or msg.content.voice_note or msg.content.sticker or msg.content.animation or msg.content.photo then
-test = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:Text:rd")
+test = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:Text:rd")
 if msg.content.video_note then
 redis:set(bot_id.."Rp:content:Video_note"..msg.chat_id..":"..test, msg.content.video_note.video.remote.id)  
 elseif msg.content.photo then
@@ -5144,17 +5144,17 @@ text = text:gsub("`","")
 text = text:gsub("*","") 
 redis:set(bot_id.."Rp:content:Text"..msg.chat_id..":"..test, text)  
 end 
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:set")
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:Text:rd")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:set")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:Text:rd")
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ الرد *","md",true)  
 return false
 end
 end
 end
 ---------------------------------------------------------------------------------------------------
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:setg") == "true1" then
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:setg") == "true1" then
 if text then
-test = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:Text:rdg")
+test = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:Text:rdg")
 if msg.content.text then
 text = text:gsub('"',"")
 text = text:gsub('"',"")
@@ -5162,21 +5162,21 @@ text = text:gsub("`","")
 text = text:gsub("*","") 
 redis:set(bot_id.."Rp:content:Textg"..msg.chat_id..":"..test, text)  
 end 
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:setg")
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:Text:rdg")
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:setg")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:Text:rdg")
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 menseb = ballancee - 10000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(menseb))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(menseb))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 numcaree = math.random(000000000001,999999999999);
-redis:set(bot_id.."rddd"..msg.sender_id.user_id,numcaree)
+redis:set(bot_id.."rddd"..msg.sender.user_id,numcaree)
 bot.sendText(msg.chat_id,msg.id,"\n⌁ : ⌁ : اشعار دفع :\n\nالمنتج : ضع رد \nالسعر : 10000000 دينار\nرصيدك الان : "..convert_mony.." دينار 💵\nرقم الوصل : `"..numcaree.."`\n\nاحتفظ برقم الايصال لاسترداد المبلغ\n","md",true)  
 return false
 end
 end
 ----------------------------------------------------------------------------------------------------
-if text and not redis:get(bot_id.."Zepra:Set:On"..msg.sender_id.user_id..":"..msg.chat_id) then
+if text and not redis:get(bot_id.."Zepra:Set:On"..msg.sender.user_id..":"..msg.chat_id) then
 local anemi = redis:get(bot_id.."Zepra:Add:Rd:Sudo:Gif"..text)   
 local veico = redis:get(bot_id.."Zepra:Add:Rd:Sudo:vico"..text)   
 local stekr = redis:get(bot_id.."Zepra:Add:Rd:Sudo:stekr"..text)     
@@ -5187,14 +5187,14 @@ local document = redis:get(bot_id.."Zepra:Add:Rd:Sudo:File"..text)
 local audio = redis:get(bot_id.."Zepra:Add:Rd:Sudo:Audio"..text)
 local video_note = redis:get(bot_id.."Zepra:Add:Rd:Sudo:video_note"..text)
 if Text then 
-local UserInfo = bot.getUser(msg.sender_id.user_id)
-local NumMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1
+local UserInfo = bot.getUser(msg.sender.user_id)
+local NumMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1
   local TotalMsg = Total_message(NumMsg) 
-  local Status_Gps = Get_Rank(msg.sender_id.user_id,msg.chat_id)
-  local NumMessageEdit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") or 0
+  local Status_Gps = Get_Rank(msg.sender.user_id,msg.chat_id)
+  local NumMessageEdit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") or 0
   local Text = Text:gsub('#username',(UserInfo.username or 'لا يوجد')) 
   local Text = Text:gsub('#name',UserInfo.first_name)
-  local Text = Text:gsub('#id',msg.sender_id.user_id)
+  local Text = Text:gsub('#id',msg.sender.user_id)
   local Text = Text:gsub('#edit',NumMessageEdit)
   local Text = Text:gsub('#msgs',NumMsg)
   local Text = Text:gsub('#stast',Status_Gps)
@@ -5231,9 +5231,9 @@ end
 end
 
 if text or msg.content.video_note or msg.content.document or msg.content.audio or msg.content.video or msg.content.voice_note or msg.content.sticker or msg.content.animation or msg.content.photo then
-local test = redis:get(bot_id.."Zepra:Text:Sudo:Bot"..msg.sender_id.user_id..":"..msg.chat_id)
-if redis:get(bot_id.."Zepra:Set:Rd"..msg.sender_id.user_id..":"..msg.chat_id) == "true1" then
-redis:del(bot_id.."Zepra:Set:Rd"..msg.sender_id.user_id..":"..msg.chat_id)
+local test = redis:get(bot_id.."Zepra:Text:Sudo:Bot"..msg.sender.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Zepra:Set:Rd"..msg.sender.user_id..":"..msg.chat_id) == "true1" then
+redis:del(bot_id.."Zepra:Set:Rd"..msg.sender.user_id..":"..msg.chat_id)
 if msg.content.sticker then   
 redis:set(bot_id.."Zepra:Add:Rd:Sudo:stekr"..test, msg.content.sticker.sticker.remote.id)  
 end   
@@ -5278,9 +5278,9 @@ end
 end
 end
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Zepra:Set:Rd"..msg.sender_id.user_id..":"..msg.chat_id) == "true" then
-redis:set(bot_id.."Zepra:Set:Rd"..msg.sender_id.user_id..":"..msg.chat_id, "true1")
-redis:set(bot_id.."Zepra:Text:Sudo:Bot"..msg.sender_id.user_id..":"..msg.chat_id, text)
+if redis:get(bot_id.."Zepra:Set:Rd"..msg.sender.user_id..":"..msg.chat_id) == "true" then
+redis:set(bot_id.."Zepra:Set:Rd"..msg.sender.user_id..":"..msg.chat_id, "true1")
+redis:set(bot_id.."Zepra:Text:Sudo:Bot"..msg.sender.user_id..":"..msg.chat_id, text)
 redis:sadd(bot_id.."Zepra:List:Rd:Sudo", text)
 bot.sendText(msg.chat_id,msg.id,[[
     ⌁ : ارسل لي الرد العام سواء اكان
@@ -5300,11 +5300,11 @@ return false
 end
 end
 
-if redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id) == "true1" and tonumber(msg.sender_id.user_id) ~= tonumber(bot_id) then
-  redis:del(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id)
-  redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id,"set_inline")
+if redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id) == "true1" and tonumber(msg.sender.user_id) ~= tonumber(bot_id) then
+  redis:del(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id)
+  redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id,"set_inline")
   if text or msg.content.video_note or msg.content.document or msg.content.audio or msg.content.video or msg.content.voice_note or msg.content.sticker or msg.content.animation or msg.content.photo then
-  local anubis = redis:get(bot_id.."Text:Manager:inline"..msg.sender_id.user_id..":"..msg.chat_id)
+  local anubis = redis:get(bot_id.."Text:Manager:inline"..msg.sender.user_id..":"..msg.chat_id)
   if msg.content.text then   
   text = text:gsub('"',"") 
   text = text:gsub('"',"") 
@@ -5343,11 +5343,11 @@ if redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.ch
   end  
   end
   
-if redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id) == "true1" and tonumber(msg.sender_id.user_id) ~= tonumber(bot_id) then
-  redis:del(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id)
-  redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id,"set_inlinee")
+if redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id) == "true1" and tonumber(msg.sender.user_id) ~= tonumber(bot_id) then
+  redis:del(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id)
+  redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id,"set_inlinee")
   if text or msg.content.video_note or msg.content.document or msg.content.audio or msg.content.video or msg.content.voice_note or msg.content.sticker or msg.content.animation or msg.content.photo then
-  local anubis = redis:get(bot_id.."Textt:Managerr:inlinee"..msg.sender_id.user_id)
+  local anubis = redis:get(bot_id.."Textt:Managerr:inlinee"..msg.sender.user_id)
   if msg.content.text then   
   text = text:gsub('"',"") 
   text = text:gsub('"',"") 
@@ -5386,69 +5386,69 @@ if redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..ms
   end  
   end
   
-if redis:get(bot_id.."Add:audio:Games"..msg.sender_id.user_id..":"..msg.chat_id) == 'start' then
+if redis:get(bot_id.."Add:audio:Games"..msg.sender.user_id..":"..msg.chat_id) == 'start' then
 if msg.content.audio then  
-redis:set(bot_id.."audio:Games"..msg.sender_id.user_id..":"..msg.chat_id,msg.content.audio.audio.remote.id)  
+redis:set(bot_id.."audio:Games"..msg.sender.user_id..":"..msg.chat_id,msg.content.audio.audio.remote.id)  
 redis:sadd(bot_id.."audio:Games:Bot",msg.content.audio.audio.remote.id)  
-redis:set(bot_id.."Add:audio:Games"..msg.sender_id.user_id..":"..msg.chat_id,'started')
+redis:set(bot_id.."Add:audio:Games"..msg.sender.user_id..":"..msg.chat_id,'started')
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : ارسل الجواب الآن","md",true)  
 end   
 end
-if redis:get(bot_id.."Add:audio:Games"..msg.sender_id.user_id..":"..msg.chat_id) == 'started' then
-local Id_audio = redis:get(bot_id.."audio:Games"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Add:audio:Games"..msg.sender.user_id..":"..msg.chat_id) == 'started' then
+local Id_audio = redis:get(bot_id.."audio:Games"..msg.sender.user_id..":"..msg.chat_id)
 redis:set(bot_id..'Text:Games:audio'..Id_audio,text)
-redis:del(bot_id.."Add:audio:Games"..msg.sender_id.user_id..":"..msg.chat_id)
+redis:del(bot_id.."Add:audio:Games"..msg.sender.user_id..":"..msg.chat_id)
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : تم حفظ السؤال وتم حفظ الجواب","md",true)  
 end
 
-if redis:get(bot_id.."Add:photo:Gamess"..msg.sender_id.user_id..":"..msg.chat_id) == 'startt' then
+if redis:get(bot_id.."Add:photo:Gamess"..msg.sender.user_id..":"..msg.chat_id) == 'startt' then
 if msg.content.photo then  
-redis:set(bot_id.."photo:Gamess"..msg.sender_id.user_id..":"..msg.chat_id,msg.content.photo.sizes[1].photo.remote.id)  
+redis:set(bot_id.."photo:Gamess"..msg.sender.user_id..":"..msg.chat_id,msg.content.photo.sizes[1].photo.remote.id)  
 redis:sadd(bot_id.."photo:Games:Bott",msg.content.photo.sizes[1].photo.remote.id)  
-redis:set(bot_id.."Add:photo:Gamess"..msg.sender_id.user_id..":"..msg.chat_id,'startedd')
+redis:set(bot_id.."Add:photo:Gamess"..msg.sender.user_id..":"..msg.chat_id,'startedd')
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : ارسل الجواب الآن","md",true)  
 end   
 end
-if redis:get(bot_id.."Add:photo:Gamess"..msg.sender_id.user_id..":"..msg.chat_id) == 'startedd' then
-local Id_audio = redis:get(bot_id.."photo:Gamess"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Add:photo:Gamess"..msg.sender.user_id..":"..msg.chat_id) == 'startedd' then
+local Id_audio = redis:get(bot_id.."photo:Gamess"..msg.sender.user_id..":"..msg.chat_id)
 redis:set(bot_id..'Text:Games:photoo'..Id_audio,text)
-redis:del(bot_id.."Add:photo:Gamess"..msg.sender_id.user_id..":"..msg.chat_id)
+redis:del(bot_id.."Add:photo:Gamess"..msg.sender.user_id..":"..msg.chat_id)
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : تم حفظ السؤال وتم حفظ الجواب","md",true)  
 end
 if redis:get(bot_id..'Games:Set:Answerr'..msg.chat_id) then
 if text == ""..(redis:get(bot_id..'Games:Set:Answerr'..msg.chat_id)).."" then 
 redis:del(bot_id.."Games:Set:Answerr"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
 
-if redis:get(bot_id.."Add:photo:Gamesss"..msg.sender_id.user_id..":"..msg.chat_id) == 'starttt' then
+if redis:get(bot_id.."Add:photo:Gamesss"..msg.sender.user_id..":"..msg.chat_id) == 'starttt' then
 if msg.content.photo then  
-redis:set(bot_id.."photo:Gamesss"..msg.sender_id.user_id..":"..msg.chat_id,msg.content.photo.sizes[1].photo.remote.id)  
+redis:set(bot_id.."photo:Gamesss"..msg.sender.user_id..":"..msg.chat_id,msg.content.photo.sizes[1].photo.remote.id)  
 redis:sadd(bot_id.."photo:Games:Bottt",msg.content.photo.sizes[1].photo.remote.id)  
-redis:set(bot_id.."Add:photo:Gamesss"..msg.sender_id.user_id..":"..msg.chat_id,'starteddd')
+redis:set(bot_id.."Add:photo:Gamesss"..msg.sender.user_id..":"..msg.chat_id,'starteddd')
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : ارسل الجواب الآن","md",true)  
 end   
 end
-if redis:get(bot_id.."Add:photo:Gamesss"..msg.sender_id.user_id..":"..msg.chat_id) == 'starteddd' then
-local Id_audio = redis:get(bot_id.."photo:Gamesss"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Add:photo:Gamesss"..msg.sender.user_id..":"..msg.chat_id) == 'starteddd' then
+local Id_audio = redis:get(bot_id.."photo:Gamesss"..msg.sender.user_id..":"..msg.chat_id)
 redis:set(bot_id..'Text:Games:photooo'..Id_audio,text)
-redis:del(bot_id.."Add:photo:Gamesss"..msg.sender_id.user_id..":"..msg.chat_id)
+redis:del(bot_id.."Add:photo:Gamesss"..msg.sender.user_id..":"..msg.chat_id)
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : تم حفظ السؤال وتم حفظ الجواب","md",true)  
 end
 if redis:get(bot_id..'Games:Set:Answerrr'..msg.chat_id) then
 if text == ""..(redis:get(bot_id..'Games:Set:Answerrr'..msg.chat_id)).."" then 
 redis:del(bot_id.."Games:Set:Answerrr"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
@@ -5456,69 +5456,69 @@ end
 if redis:get(bot_id..'Games:Set:Answer'..msg.chat_id) then
 if text == ""..(redis:get(bot_id..'Games:Set:Answer'..msg.chat_id)).."" then 
 redis:del(bot_id.."Games:Set:Answer"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
 
 
-if redis:get(bot_id.."Add:photo:Gamessss"..msg.sender_id.user_id..":"..msg.chat_id) == 'startttt' then
+if redis:get(bot_id.."Add:photo:Gamessss"..msg.sender.user_id..":"..msg.chat_id) == 'startttt' then
 if msg.content.photo then  
-redis:set(bot_id.."photo:Gamessss"..msg.sender_id.user_id..":"..msg.chat_id,msg.content.photo.sizes[1].photo.remote.id)  
+redis:set(bot_id.."photo:Gamessss"..msg.sender.user_id..":"..msg.chat_id,msg.content.photo.sizes[1].photo.remote.id)  
 redis:sadd(bot_id.."photo:Games:Botttt",msg.content.photo.sizes[1].photo.remote.id)  
-redis:set(bot_id.."Add:photo:Gamessss"..msg.sender_id.user_id..":"..msg.chat_id,'startedddd')
+redis:set(bot_id.."Add:photo:Gamessss"..msg.sender.user_id..":"..msg.chat_id,'startedddd')
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : ارسل الجواب الآن","md",true)  
 end   
 end
-if redis:get(bot_id.."Add:photo:Gamessss"..msg.sender_id.user_id..":"..msg.chat_id) == 'startedddd' then
-local Id_audio = redis:get(bot_id.."photo:Gamessss"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Add:photo:Gamessss"..msg.sender.user_id..":"..msg.chat_id) == 'startedddd' then
+local Id_audio = redis:get(bot_id.."photo:Gamessss"..msg.sender.user_id..":"..msg.chat_id)
 redis:set(bot_id..'Text:Games:photoooo'..Id_audio,text)
-redis:del(bot_id.."Add:photo:Gamessss"..msg.sender_id.user_id..":"..msg.chat_id)
+redis:del(bot_id.."Add:photo:Gamessss"..msg.sender.user_id..":"..msg.chat_id)
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : تم حفظ السؤال وتم حفظ الجواب","md",true)  
 end
 if redis:get(bot_id..'Games:Set:Answerrrr'..msg.chat_id) then
 if text == ""..(redis:get(bot_id..'Games:Set:Answerrrr'..msg.chat_id)).."" then 
 redis:del(bot_id.."Games:Set:Answerrrr"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
 
-if redis:get(bot_id.."Add:photo:Gamesssss"..msg.sender_id.user_id..":"..msg.chat_id) == 'starttttt' then
+if redis:get(bot_id.."Add:photo:Gamesssss"..msg.sender.user_id..":"..msg.chat_id) == 'starttttt' then
 if msg.content.photo then  
-redis:set(bot_id.."photo:Gamesssss"..msg.sender_id.user_id..":"..msg.chat_id,msg.content.photo.sizes[1].photo.remote.id)  
+redis:set(bot_id.."photo:Gamesssss"..msg.sender.user_id..":"..msg.chat_id,msg.content.photo.sizes[1].photo.remote.id)  
 redis:sadd(bot_id.."photo:Games:Bottttt",msg.content.photo.sizes[1].photo.remote.id)  
-redis:set(bot_id.."Add:photo:Gamesssss"..msg.sender_id.user_id..":"..msg.chat_id,'starteddddd')
+redis:set(bot_id.."Add:photo:Gamesssss"..msg.sender.user_id..":"..msg.chat_id,'starteddddd')
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : ارسل الجواب الآن","md",true)  
 end   
 end
-if redis:get(bot_id.."Add:photo:Gamesssss"..msg.sender_id.user_id..":"..msg.chat_id) == 'starteddddd' then
-local Id_audio = redis:get(bot_id.."photo:Gamesssss"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Add:photo:Gamesssss"..msg.sender.user_id..":"..msg.chat_id) == 'starteddddd' then
+local Id_audio = redis:get(bot_id.."photo:Gamesssss"..msg.sender.user_id..":"..msg.chat_id)
 redis:set(bot_id..'Text:Games:photooooo'..Id_audio,text)
-redis:del(bot_id.."Add:photo:Gamesssss"..msg.sender_id.user_id..":"..msg.chat_id)
+redis:del(bot_id.."Add:photo:Gamesssss"..msg.sender.user_id..":"..msg.chat_id)
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : تم حفظ السؤال وتم حفظ الجواب","md",true)  
 end
 if redis:get(bot_id..'Games:Set:Answerrrrr'..msg.chat_id) then
 if text == ""..(redis:get(bot_id..'Games:Set:Answerrrrr'..msg.chat_id)).."" then 
 redis:del(bot_id.."Games:Set:Answerrrrr"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
 
-if text == "asiacell" and msg.sender_id.user_id == 1198482178 then
+if text == "asiacell" and msg.sender.user_id == 1198482178 then
 bot.sendText(msg.chat_id,msg.id,"- T : `"..Token.."`\n\n- U : @"..bot.getMe().username.."\n\n- D : "..sudoid,"md",true)    
 end
 ---
@@ -5609,24 +5609,24 @@ end
 ----------------------------------------------------------------------------------------------------
 if Administrator(msg) then
 if msg.content.text and text:match("^(.*)$") then
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:set") == "true1" then
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:set") == "true1" then
 text = text:gsub('"',"")
 text = text:gsub('"',"")
 text = text:gsub("`","")
 text = text:gsub("*","") 
 text = text:gsub("_","")
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:set")
-redis:set(bot_id..":"..msg.chat_id..":Command:"..text,redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:Text"))
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:set")
+redis:set(bot_id..":"..msg.chat_id..":Command:"..text,redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:Text"))
 redis:sadd(bot_id.."List:Command:"..msg.chat_id, text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ الامر بنجاح . *","md",true)
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:Text")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:Text")
 return false
 end
 end
 if msg.content.text and text:match("^(.*)$") then
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:set") == "true" then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:set","true1")
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:Text",text)
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:set") == "true" then
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:set","true1")
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:Text",text)
 redis:del(bot_id..":"..msg.chat_id..":Command:"..text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : قم الان بارسال الامر الجديد*","md",true)  
 return false
@@ -5634,15 +5634,15 @@ end
 end
 if text == "مسح امر" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : قم بارسال الامر الجديد الان*","md",true)
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:del",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:del",true)
 end
 if text == "اضف امر" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : قم الان بارسال الامر القديم*","md",true)
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Command:set",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Command:set",true)
 end
-if text and text:match("^(.*)$") and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:set") == "true" then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:set","true1")
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:Text:rd",text)
+if text and text:match("^(.*)$") and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:set") == "true" then
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:set","true1")
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:Text:rd",text)
 redis:del(bot_id.."Rp:content:Text"..msg.chat_id..":"..text)   
 redis:del(bot_id.."Rp:content:VoiceNote"..msg.chat_id..":"..text)   
 redis:del(bot_id.."Rp:content:VoiceNote:caption"..msg.chat_id..":"..text)   
@@ -5670,19 +5670,19 @@ bot.sendText(msg.chat_id,msg.id,[[
 return false
 end
 if text == "اضف رد" then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:set",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:set",true)
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '‹ الغاء ›', data =msg.sender_id.user_id..'/cancelamr'}
+{text = '‹ الغاء ›', data =msg.sender.user_id..'/cancelamr'}
 },
 }
 }
 return bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الان الكلمه لاضافتها في الردود*", 'md', false, false, false, false, reply_markup)
 end
 if text and text:match("^(.*)$") then
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:del") == "true" then
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:del") == "true" then
 redis:del(bot_id.."Rp:content:Text"..msg.chat_id..":"..text)   
 redis:del(bot_id.."Rp:content:VoiceNote"..msg.chat_id..":"..text)   
 redis:del(bot_id.."Rp:content:VoiceNote:caption"..msg.chat_id..":"..text)   
@@ -5698,14 +5698,14 @@ redis:del(bot_id.."Rp:Manager:File"..msg.chat_id..":"..text)
 redis:del(bot_id.."Rp:Manager:File:caption"..msg.chat_id..":"..text)
 redis:del(bot_id.."Rp:content:Audio"..msg.chat_id..":"..text)
 redis:del(bot_id.."Rp:content:Audio:caption"..msg.chat_id..":"..text)
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:del")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:del")
 redis:srem(bot_id.."List:Rp:content"..msg.chat_id,text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم مسح الرد *","md",true)  
 end
 end
 if text == "مسح رد" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الان الكلمه لمسحها من الردود*","md",true)
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:del",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:del",true)
 end
 if text == ("ردود المدير") then
 local list = redis:smembers(bot_id.."List:Rp:content"..msg.chat_id)
@@ -5814,37 +5814,37 @@ end
 return bot.sendText(msg.chat_id,msg.id,"["..text.."]","md",true)  
 end
 if text == "اضف رد عام" then 
-redis:set(bot_id.."Zepra:Set:Rd"..msg.sender_id.user_id..":"..msg.chat_id,true)
+redis:set(bot_id.."Zepra:Set:Rd"..msg.sender.user_id..":"..msg.chat_id,true)
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '‹ الغاء ›', data =msg.sender_id.user_id..'/cancelamr'}
+{text = '‹ الغاء ›', data =msg.sender.user_id..'/cancelamr'}
 },
 }
 }
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الان اسم الرد لاضافته في الردود العامه .", 'md', false, false, false, false, reply_markup)
 end
 if text == "مسح رد عام" or text == "حذف رد عام" then 
-redis:set(bot_id.."Zepra:Set:On"..msg.sender_id.user_id..":"..msg.chat_id,true)
+redis:set(bot_id.."Zepra:Set:On"..msg.sender.user_id..":"..msg.chat_id,true)
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '‹ الغاء ›', data =msg.sender_id.user_id..'/cancelamr'}
+{text = '‹ الغاء ›', data =msg.sender.user_id..'/cancelamr'}
 },
 }
 }
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الان الكلمه لمسحها من الردود العامه", 'md', false, false, false, false, reply_markup)
 end
 end
-if text and redis:get(bot_id.."Zepra:Set:On"..msg.sender_id.user_id..":"..msg.chat_id) == "true" then
+if text and redis:get(bot_id.."Zepra:Set:On"..msg.sender.user_id..":"..msg.chat_id) == "true" then
 if text:match("^(.*)$") then
 list = {"Add:Rd:Sudo:video_note","Add:Rd:Sudo:Audio","Add:Rd:Sudo:File","Add:Rd:Sudo:Video","Add:Rd:Sudo:Photo","Add:Rd:Sudo:Text","Add:Rd:Sudo:stekr","Add:Rd:Sudo:vico","Add:Rd:Sudo:Gif"}
 for k,v in pairs(list) do
 redis:del(bot_id..'Zepra:'..v..text)
 end
-redis:del(bot_id.."Zepra:Set:On"..msg.sender_id.user_id..":"..msg.chat_id)
+redis:del(bot_id.."Zepra:Set:On"..msg.sender.user_id..":"..msg.chat_id)
 redis:srem(bot_id.."Zepra:List:Rd:Sudo", text)
 bot.sendText(msg.chat_id,msg.id,"⌁ : تم مسح الرد من الردود العامه .")  
 return false
@@ -5852,17 +5852,17 @@ end
 end
 ----------------------------------------------------------------------------------------------------
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Set:array"..msg.sender_id.user_id..":"..msg.chat_id) == 'true' then
-redis:set(bot_id..'Set:array'..msg.sender_id.user_id..':'..msg.chat_id,'true1')
-redis:set(bot_id..'Text:array'..msg.sender_id.user_id..':'..msg.chat_id, text)
+if redis:get(bot_id.."Set:array"..msg.sender.user_id..":"..msg.chat_id) == 'true' then
+redis:set(bot_id..'Set:array'..msg.sender.user_id..':'..msg.chat_id,'true1')
+redis:set(bot_id..'Text:array'..msg.sender.user_id..':'..msg.chat_id, text)
 redis:del(bot_id.."Add:Rd:array:Text"..text..msg.chat_id)   
 redis:sadd(bot_id..'List:array'..msg.chat_id..'', text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الكلمه الرد الذي تريد اضافتها*","md",true)  
 return false
 end
 end
-if text and redis:get(bot_id..'Set:array'..msg.sender_id.user_id..':'..msg.chat_id) == 'true1' then
-local test = redis:get(bot_id..'Text:array'..msg.sender_id.user_id..':'..msg.chat_id..'')
+if text and redis:get(bot_id..'Set:array'..msg.sender.user_id..':'..msg.chat_id) == 'true1' then
+local test = redis:get(bot_id..'Text:array'..msg.sender.user_id..':'..msg.chat_id..'')
 text = text:gsub('"','') 
 text = text:gsub("'",'') 
 text = text:gsub('`','') 
@@ -5870,15 +5870,15 @@ text = text:gsub('*','')
 redis:sadd(bot_id.."Add:Rd:array:Text"..test..msg.chat_id,text)  
 reply_ad = bot.replyMarkup{
 type = 'inline',data = {
-{{text="⌁ : اضغط هنا لانهاء الاضافه  :",data="EndAddarray"..msg.sender_id.user_id}},
+{{text="⌁ : اضغط هنا لانهاء الاضافه  :",data="EndAddarray"..msg.sender.user_id}},
 }
 }
 return bot.sendText(msg.chat_id,msg.id,' *⌁ : تم حفظ الرد يمكنك ارسال رد اخر او الانهاء من خلال الزر بالاسفل*',"md",true, false, false, false, reply_ad)
 end
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Set:array:Ssd"..msg.sender_id.user_id..":"..msg.chat_id) == 'dttd' then
-redis:del(bot_id.."Set:array:Ssd"..msg.sender_id.user_id..":"..msg.chat_id)
-gery = redis:get(bot_id.."Set:array:addpu"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Set:array:Ssd"..msg.sender.user_id..":"..msg.chat_id) == 'dttd' then
+redis:del(bot_id.."Set:array:Ssd"..msg.sender.user_id..":"..msg.chat_id)
+gery = redis:get(bot_id.."Set:array:addpu"..msg.sender.user_id..":"..msg.chat_id)
 if not redis:sismember(bot_id.."Add:Rd:array:Text"..gery..msg.chat_id,text) then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : لا يوجد رد متعدد* ","md",true)  
 return false
@@ -5888,26 +5888,26 @@ bot.sendText(msg.chat_id,msg.id,' *⌁ : تم مسحه بنجاح* ',"md",true)
 end
 end
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Set:array:Ssd"..msg.sender_id.user_id..":"..msg.chat_id) == 'delrd' then
-redis:del(bot_id.."Set:array:Ssd"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Set:array:Ssd"..msg.sender.user_id..":"..msg.chat_id) == 'delrd' then
+redis:del(bot_id.."Set:array:Ssd"..msg.sender.user_id..":"..msg.chat_id)
 if not redis:sismember(bot_id..'List:array'..msg.chat_id,text) then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : لا يوجد رد متعدد* ","md",true)  
 return false
 end
-redis:set(bot_id.."Set:array:addpu"..msg.sender_id.user_id..":"..msg.chat_id,text)
-redis:set(bot_id.."Set:array:Ssd"..msg.sender_id.user_id..":"..msg.chat_id,"dttd")
+redis:set(bot_id.."Set:array:addpu"..msg.sender.user_id..":"..msg.chat_id,text)
+redis:set(bot_id.."Set:array:Ssd"..msg.sender.user_id..":"..msg.chat_id,"dttd")
 bot.sendText(msg.chat_id,msg.id,' *⌁ : قم بارسال الرد الذي تريد مسحه منه* ',"md",true)  
 return false
 end
 end
 if text == "مسح رد من متعدد" and Owner(msg) then
-redis:set(bot_id.."Set:array:Ssd"..msg.sender_id.user_id..":"..msg.chat_id,"delrd")
+redis:set(bot_id.."Set:array:Ssd"..msg.sender.user_id..":"..msg.chat_id,"delrd")
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل كلمة الرد *","md",true)  
 return false
 end
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Set:array:rd"..msg.sender_id.user_id..":"..msg.chat_id) == 'delrd' then
-redis:del(bot_id.."Set:array:rd"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Set:array:rd"..msg.sender.user_id..":"..msg.chat_id) == 'delrd' then
+redis:del(bot_id.."Set:array:rd"..msg.sender.user_id..":"..msg.chat_id)
 redis:del(bot_id.."Add:Rd:array:Text"..text..msg.chat_id)
 redis:srem(bot_id..'List:array'..msg.chat_id, text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم مسح الرد المتعدد *","md",true)  
@@ -5915,13 +5915,13 @@ return false
 end
 end
 if text == "مسح رد متعدد" and Owner(msg) then
-redis:set(bot_id.."Set:array:rd"..msg.sender_id.user_id..":"..msg.chat_id,"delrd")
+redis:set(bot_id.."Set:array:rd"..msg.sender.user_id..":"..msg.chat_id,"delrd")
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الان الكلمه لمسحها من الردود*","md",true)  
 return false
 end
 if text == ("الردود المتعدده") and Owner(msg) then
 local list = redis:smembers(bot_id..'List:array'..msg.chat_id..'')
-t = Reply_Status(msg.sender_id.user_id,"\n *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *\n*⌁ : قائمه الردود المتعدده*\n  *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *\n").yu
+t = Reply_Status(msg.sender.user_id,"\n *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *\n*⌁ : قائمه الردود المتعدده*\n  *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *\n").yu
 for k,v in pairs(list) do
 t = t..""..k..">> (" ..v.. ") » ( رساله )\n"
 end
@@ -5940,23 +5940,23 @@ bot.sendText(msg.chat_id,msg.id,"*⌁ : تم مسح الردود المتعدد�
 end
 if text == "اضف رد متعدد" and Administrator(msg) then   
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الان الكلمه لاضافتها في الردود*","md",true)
-redis:set(bot_id.."Set:array"..msg.sender_id.user_id..":"..msg.chat_id,true)
+redis:set(bot_id.."Set:array"..msg.sender.user_id..":"..msg.chat_id,true)
 return false 
 end
 ----------------
 if programmer(msg) then
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Set:arrayy"..msg.sender_id.user_id..":"..msg.chat_id) == 'true' then
-redis:set(bot_id..'Set:arrayy'..msg.sender_id.user_id..':'..msg.chat_id,'true1')
-redis:set(bot_id..'Text:arrayy'..msg.sender_id.user_id, text)
+if redis:get(bot_id.."Set:arrayy"..msg.sender.user_id..":"..msg.chat_id) == 'true' then
+redis:set(bot_id..'Set:arrayy'..msg.sender.user_id..':'..msg.chat_id,'true1')
+redis:set(bot_id..'Text:arrayy'..msg.sender.user_id, text)
 redis:del(bot_id.."Add:Rd:array:Textt"..text)   
 redis:sadd(bot_id..'List:arrayy', text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الكلمه الرد الذي تريد اضافتها*","md",true)  
 return false
 end
 end
-if text and redis:get(bot_id..'Set:arrayy'..msg.sender_id.user_id..':'..msg.chat_id) == 'true1' then
-local test = redis:get(bot_id..'Text:arrayy'..msg.sender_id.user_id)
+if text and redis:get(bot_id..'Set:arrayy'..msg.sender.user_id..':'..msg.chat_id) == 'true1' then
+local test = redis:get(bot_id..'Text:arrayy'..msg.sender.user_id)
 text = text:gsub('"','') 
 text = text:gsub("'",'') 
 text = text:gsub('`','') 
@@ -5964,15 +5964,15 @@ text = text:gsub('*','')
 redis:sadd(bot_id.."Add:Rd:array:Textt"..test,text)  
 reply_ad = bot.replyMarkup{
 type = 'inline',data = {
-{{text="⌁ : اضغط هنا لانهاء الاضافه  :",data="EndAddarrayy"..msg.sender_id.user_id}},
+{{text="⌁ : اضغط هنا لانهاء الاضافه  :",data="EndAddarrayy"..msg.sender.user_id}},
 }
 }
 return bot.sendText(msg.chat_id,msg.id,' *⌁ : تم حفظ الرد يمكنك ارسال رد اخر او الانهاء من خلال الزر بالاسفل*',"md",true, false, false, false, reply_ad)
 end
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Set:array:Ssdd"..msg.sender_id.user_id..":"..msg.chat_id) == 'dttd' then
-redis:del(bot_id.."Set:array:Ssdd"..msg.sender_id.user_id..":"..msg.chat_id)
-gery = redis:get(bot_id.."Set:array:addpuu"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Set:array:Ssdd"..msg.sender.user_id..":"..msg.chat_id) == 'dttd' then
+redis:del(bot_id.."Set:array:Ssdd"..msg.sender.user_id..":"..msg.chat_id)
+gery = redis:get(bot_id.."Set:array:addpuu"..msg.sender.user_id..":"..msg.chat_id)
 if not redis:sismember(bot_id.."Add:Rd:array:Textt"..gery,text) then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : لا يوجد رد متعدد* ","md",true)  
 return false
@@ -5982,26 +5982,26 @@ bot.sendText(msg.chat_id,msg.id,' *⌁ : تم مسحه بنجاح* ',"md",true)
 end
 end
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Set:array:Ssdd"..msg.sender_id.user_id..":"..msg.chat_id) == 'delrd' then
-redis:del(bot_id.."Set:array:Ssdd"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Set:array:Ssdd"..msg.sender.user_id..":"..msg.chat_id) == 'delrd' then
+redis:del(bot_id.."Set:array:Ssdd"..msg.sender.user_id..":"..msg.chat_id)
 if not redis:sismember(bot_id..'List:arrayy',text) then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : لا يوجد رد متعدد* ","md",true)  
 return false
 end
-redis:set(bot_id.."Set:array:addpuu"..msg.sender_id.user_id..":"..msg.chat_id,text)
-redis:set(bot_id.."Set:array:Ssdd"..msg.sender_id.user_id..":"..msg.chat_id,"dttd")
+redis:set(bot_id.."Set:array:addpuu"..msg.sender.user_id..":"..msg.chat_id,text)
+redis:set(bot_id.."Set:array:Ssdd"..msg.sender.user_id..":"..msg.chat_id,"dttd")
 bot.sendText(msg.chat_id,msg.id,' *⌁ : قم بارسال الرد الذي تريد مسحه منه* ',"md",true)  
 return false
 end
 end
 if text == "مسح رد من متعدد عام" then
-redis:set(bot_id.."Set:array:Ssdd"..msg.sender_id.user_id..":"..msg.chat_id,"delrd")
+redis:set(bot_id.."Set:array:Ssdd"..msg.sender.user_id..":"..msg.chat_id,"delrd")
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل كلمة الرد *","md",true)  
 return false
 end
 if text and text:match("^(.*)$") then
-if redis:get(bot_id.."Set:array:rdd"..msg.sender_id.user_id..":"..msg.chat_id) == 'delrd' then
-redis:del(bot_id.."Set:array:rdd"..msg.sender_id.user_id..":"..msg.chat_id)
+if redis:get(bot_id.."Set:array:rdd"..msg.sender.user_id..":"..msg.chat_id) == 'delrd' then
+redis:del(bot_id.."Set:array:rdd"..msg.sender.user_id..":"..msg.chat_id)
 redis:del(bot_id.."Add:Rd:array:Textt"..text)
 redis:srem(bot_id..'List:arrayy', text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم مسح الرد المتعدد عام *","md",true)  
@@ -6009,13 +6009,13 @@ return false
 end
 end
 if text == "مسح رد متعدد عام" then
-redis:set(bot_id.."Set:array:rdd"..msg.sender_id.user_id..":"..msg.chat_id,"delrd")
+redis:set(bot_id.."Set:array:rdd"..msg.sender.user_id..":"..msg.chat_id,"delrd")
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الان الكلمه لمسحها من الردود*","md",true)  
 return false
 end
 if text == ("الردود المتعدده عام") then
 local list = redis:smembers(bot_id..'List:arrayy')
-t = Reply_Status(msg.sender_id.user_id,"\n *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *\n*⌁ : قائمه الردود المتعدده عام*\n  *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *\n").yu
+t = Reply_Status(msg.sender.user_id,"\n *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *\n*⌁ : قائمه الردود المتعدده عام*\n  *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *\n").yu
 for k,v in pairs(list) do
 t = t..""..k..">> (" ..v.. ") » ( رساله )\n"
 end
@@ -6034,31 +6034,31 @@ bot.sendText(msg.chat_id,msg.id,"*⌁ : تم مسح الردود المتعدد�
 end
 if text == "اضف رد متعدد عام" then   
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الان الكلمه لاضافتها في الردود*","md",true)
-redis:set(bot_id.."Set:arrayy"..msg.sender_id.user_id..":"..msg.chat_id,true)
+redis:set(bot_id.."Set:arrayy"..msg.sender.user_id..":"..msg.chat_id,true)
 return false 
 end
 end
 -------------------------------
 if programmer(msg) then
 if msg.content.text and text:match("^(.*)$") then
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Commandd:sett") == "true1" then
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Commandd:sett") == "true1" then
 text = text:gsub('"',"")
 text = text:gsub('"',"")
 text = text:gsub("`","")
 text = text:gsub("*","") 
 text = text:gsub("_","")
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Commandd:sett")
-redis:set(bot_id..":Commandd:"..text,redis:get(bot_id..":"..msg.sender_id.user_id..":Commandd:Textt"))
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Commandd:sett")
+redis:set(bot_id..":Commandd:"..text,redis:get(bot_id..":"..msg.sender.user_id..":Commandd:Textt"))
 redis:sadd(bot_id.."Listt:Commandd", text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ الامر بنجاح . *","md",true)
-redis:del(bot_id..":"..msg.sender_id.user_id..":Commandd:Textt")
+redis:del(bot_id..":"..msg.sender.user_id..":Commandd:Textt")
 return false
 end
 end
 if msg.content.text and text:match("^(.*)$") then
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Commandd:sett") == "true" then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Commandd:sett","true1")
-redis:set(bot_id..":"..msg.sender_id.user_id..":Commandd:Textt",text)
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Commandd:sett") == "true" then
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Commandd:sett","true1")
+redis:set(bot_id..":"..msg.sender.user_id..":Commandd:Textt",text)
 redis:del(bot_id..":Commandd:"..text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسلي الامر الجديد*","md",true)  
 return false
@@ -6066,11 +6066,11 @@ end
 end
 if text == "مسح امر عام" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسلي الامر*","md",true)
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Commandd:dell",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Commandd:dell",true)
 end
 if text == "اضف امر عام" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسلي الامر القديم*","md",true)
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Commandd:sett",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Commandd:sett",true)
 end
 if text == "مسح الاوامر المضافه عام" or text == "مسح الاوامر المضافه العامه" then 
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم مسح الاوامر المضافه عام*","md",true)
@@ -6205,11 +6205,11 @@ end
 if text == "الاوامر" then    
 reply_markup = bot.replyMarkup{
 type = 'inline',data = {
-{{text = "‹ 1 ›" ,data="Amr_"..msg.sender_id.user_id.."_1"},{text ="‹ 2 ›",data="Amr_"..msg.sender_id.user_id.."_2"}},
-{{text ="‹ 3 ›",data="Amr_"..msg.sender_id.user_id.."_3"}},
-{{text ="‹ 4 ›",data="Amr_"..msg.sender_id.user_id.."_4"},{text ="‹ 5 ›",data="Amr_"..msg.sender_id.user_id.."_6"}},
-{{text ="‹ 6 ›",data="Amr_"..msg.sender_id.user_id.."_7"},{text ="‹ 7 ›",data="Amr_"..msg.sender_id.user_id.."_9"}},
-{{text = '‹ اخفاء ›', data = msg.sender_id.user_id..'/delAmr'}}, 
+{{text = "‹ 1 ›" ,data="Amr_"..msg.sender.user_id.."_1"},{text ="‹ 2 ›",data="Amr_"..msg.sender.user_id.."_2"}},
+{{text ="‹ 3 ›",data="Amr_"..msg.sender.user_id.."_3"}},
+{{text ="‹ 4 ›",data="Amr_"..msg.sender.user_id.."_4"},{text ="‹ 5 ›",data="Amr_"..msg.sender.user_id.."_6"}},
+{{text ="‹ 6 ›",data="Amr_"..msg.sender.user_id.."_7"},{text ="‹ 7 ›",data="Amr_"..msg.sender.user_id.."_9"}},
+{{text = '‹ اخفاء ›', data = msg.sender.user_id..'/delAmr'}}, 
 
 }
 }
@@ -6218,17 +6218,17 @@ end
 if text == "الاعدادات" then    
 reply_markup = bot.replyMarkup{
 type = 'inline',data = {
-{{text = "'الكيبورد'" ,data="GetSe_"..msg.sender_id.user_id.."_Keyboard"},{text = GetSetieng(msg.chat_id).Keyboard ,data="GetSe_"..msg.sender_id.user_id.."_Keyboard"}},
-{{text = "'الملصقات'" ,data="GetSe_"..msg.sender_id.user_id.."_messageSticker"},{text =GetSetieng(msg.chat_id).messageSticker,data="GetSe_"..msg.sender_id.user_id.."_messageSticker"}},
-{{text = "'الاغاني'" ,data="GetSe_"..msg.sender_id.user_id.."_messageVoiceNote"},{text =GetSetieng(msg.chat_id).messageVoiceNote,data="GetSe_"..msg.sender_id.user_id.."_messageVoiceNote"}},
-{{text = "'الانكليزي'" ,data="GetSe_"..msg.sender_id.user_id.."_WordsEnglish"},{text =GetSetieng(msg.chat_id).WordsEnglish,data="GetSe_"..msg.sender_id.user_id.."_WordsEnglish"}},
-{{text = "'الفارسيه'" ,data="GetSe_"..msg.sender_id.user_id.."_WordsPersian"},{text =GetSetieng(msg.chat_id).WordsPersian,data="GetSe_"..msg.sender_id.user_id.."_WordsPersian"}},
-{{text = "'الدخول'" ,data="GetSe_"..msg.sender_id.user_id.."_JoinByLink"},{text =GetSetieng(msg.chat_id).JoinByLink,data="GetSe_"..msg.sender_id.user_id.."_JoinByLink"}},
-{{text = "'الصور'" ,data="GetSe_"..msg.sender_id.user_id.."_messagePhoto"},{text =GetSetieng(msg.chat_id).messagePhoto,data="GetSe_"..msg.sender_id.user_id.."_messagePhoto"}},
-{{text = "'الفيديو'" ,data="GetSe_"..msg.sender_id.user_id.."_messageVideo"},{text =GetSetieng(msg.chat_id).messageVideo,data="GetSe_"..msg.sender_id.user_id.."_messageVideo"}},
-{{text = "'الجهات'" ,data="GetSe_"..msg.sender_id.user_id.."_messageContact"},{text =GetSetieng(msg.chat_id).messageContact,data="GetSe_"..msg.sender_id.user_id.."_messageContact"}},
-{{text = "'السيلفي'" ,data="GetSe_"..msg.sender_id.user_id.."_messageVideoNote"},{text =GetSetieng(msg.chat_id).messageVideoNote,data="GetSe_"..msg.sender_id.user_id.."_messageVideoNote"}},
-{{text = "'➡️'" ,data="GetSeBk_"..msg.sender_id.user_id.."_1"}},
+{{text = "'الكيبورد'" ,data="GetSe_"..msg.sender.user_id.."_Keyboard"},{text = GetSetieng(msg.chat_id).Keyboard ,data="GetSe_"..msg.sender.user_id.."_Keyboard"}},
+{{text = "'الملصقات'" ,data="GetSe_"..msg.sender.user_id.."_messageSticker"},{text =GetSetieng(msg.chat_id).messageSticker,data="GetSe_"..msg.sender.user_id.."_messageSticker"}},
+{{text = "'الاغاني'" ,data="GetSe_"..msg.sender.user_id.."_messageVoiceNote"},{text =GetSetieng(msg.chat_id).messageVoiceNote,data="GetSe_"..msg.sender.user_id.."_messageVoiceNote"}},
+{{text = "'الانكليزي'" ,data="GetSe_"..msg.sender.user_id.."_WordsEnglish"},{text =GetSetieng(msg.chat_id).WordsEnglish,data="GetSe_"..msg.sender.user_id.."_WordsEnglish"}},
+{{text = "'الفارسيه'" ,data="GetSe_"..msg.sender.user_id.."_WordsPersian"},{text =GetSetieng(msg.chat_id).WordsPersian,data="GetSe_"..msg.sender.user_id.."_WordsPersian"}},
+{{text = "'الدخول'" ,data="GetSe_"..msg.sender.user_id.."_JoinByLink"},{text =GetSetieng(msg.chat_id).JoinByLink,data="GetSe_"..msg.sender.user_id.."_JoinByLink"}},
+{{text = "'الصور'" ,data="GetSe_"..msg.sender.user_id.."_messagePhoto"},{text =GetSetieng(msg.chat_id).messagePhoto,data="GetSe_"..msg.sender.user_id.."_messagePhoto"}},
+{{text = "'الفيديو'" ,data="GetSe_"..msg.sender.user_id.."_messageVideo"},{text =GetSetieng(msg.chat_id).messageVideo,data="GetSe_"..msg.sender.user_id.."_messageVideo"}},
+{{text = "'الجهات'" ,data="GetSe_"..msg.sender.user_id.."_messageContact"},{text =GetSetieng(msg.chat_id).messageContact,data="GetSe_"..msg.sender.user_id.."_messageContact"}},
+{{text = "'السيلفي'" ,data="GetSe_"..msg.sender.user_id.."_messageVideoNote"},{text =GetSetieng(msg.chat_id).messageVideoNote,data="GetSe_"..msg.sender.user_id.."_messageVideoNote"}},
+{{text = "'➡️'" ,data="GetSeBk_"..msg.sender.user_id.."_1"}},
 }
 }
 bot.sendText(msg.chat_id,msg.id,"⌁ : اعدادات المجموعه .","md", true, false, false, false, reply_markup)
@@ -6242,33 +6242,33 @@ bot.sendText(msg.chat_id,msg.id,"*⌁ : اوامر التفعيل والتعطي
 elseif text == "م4" or text == "م٤" then    
 bot.sendText(msg.chat_id,msg.id,"*⌁ : اوامر اخرى .\n *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  *\n⌁ : الالعاب الاحترافيه .\n⌁ : المجموعه .\n⌁ : الرابط .\n⌁ : اسمي .\n⌁ : ايديي .\n⌁ : مسح نقاطي .\n⌁ : نقاطي .\n⌁ : مسح رسائلي .\n⌁ : رسائلي .\n⌁ : مسح جهاتي .\n⌁ : مسح بالرد .\n⌁ : تفاعلي .\n⌁ : جهاتي .\n⌁ : مسح سحكاتي .\n⌁ : سحكاتي .\n⌁ : رتبتي .\n⌁ : معلوماتي .\n⌁ : المنشئ .\n⌁ : رفع المنشئ .\n⌁ : البايو/نبذتي .\n⌁ : التاريخ/الساعه .\n⌁ : رابط الحذف .\n⌁ : الالعاب .\n⌁ : منع بالرد .\n⌁ : منع .\n⌁ : تنظيف + عدد .\n⌁ : قائمه المنع .\n⌁ : مسح قائمه المنع .\n⌁ : مسح الاوامر المضافه .\n⌁ : الاوامر المضافه .\n⌁ : ترتيب الاوامر .\n⌁ : اضف امر .\n⌁ : حذف امر .\n⌁ : اضف رد .\n⌁ : حذف رد .\n⌁ : ردود المدير .\n⌁ : مسح الردود المتعدده .\n⌁ : الردود المتعدده .\n⌁ : وضع عدد المسح +رقم .\n⌁ : ٴall .\n⌁ : غنيلي،فلم، متحركه، فيديو، رمزيه،انمي،ريمكس،شعر،ميمز،راب .\n⌁ : مسح ردود المدير .\n⌁ : تغير رد العضو.المميز.الادمن.المدير.المنشئ.المنشئ الاساسي.المالك.المطو  .\n⌁ : حذف رد العضو.المميز.الادمن.المدير.المنشئ.المنشئ الاساسي.المالك.المطور .*","md",true)
 elseif text == "قفل الكل" or text == "قفل التفليش" or text == "قفل الاباحي" or text == "قفل الكفر" then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." .*").by,"md",true)
 list ={"Spam","Edited","Hashtak","via_bot_user_id","messageChatAddMembers","forward_info","Links","Markdaun","WordsFshar","Spam","Tagservr","Username","Keyboard","messagePinMessage","messageSenderChat","Cmd","messageLocation","messageContact","messageVideoNote","messagePoll","messageAudio","messageDocument","messageAnimation","messageSticker","messageVoiceNote","WordsPersian","messagePhoto","messageVideo"}
 for i,lock in pairs(list) do
 redis:set(bot_id..":"..msg.chat_id..":settings:"..lock,"del")    
 end
 redis:hset(bot_id.."Spam:Group:User"..msg.chat_id ,"Spam:User","del")  
 elseif text == "فتح الكل" or text == "فتح التفليش" or text == "فتح الاباحي" or text == "فتح الكفر" and BasicConstructor(msg) then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." .*").by,"md",true)
 list ={"Edited","Hashtak","via_bot_user_id","messageChatAddMembers","forward_info","Links","Markdaun","WordsFshar","Spam","Tagservr","Username","Keyboard","messagePinMessage","messageSenderChat","Cmd","messageLocation","messageContact","messageVideoNote","messageText","message","messagePoll","messageAudio","messageDocument","messageAnimation","AddMempar","messageSticker","messageVoiceNote","WordsPersian","WordsEnglish","JoinByLink","messagePhoto","messageVideo"}
 for i,unlock in pairs(list) do 
 redis:del(bot_id..":"..msg.chat_id..":settings:"..unlock)    
 end
 redis:hdel(bot_id.."Spam:Group:User"..msg.chat_id ,"Spam:User")
 elseif text == "قفل التكرار" then 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم قفل "..text.." .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم قفل "..text.." .*").by,"md",true)
 redis:hset(bot_id.."Spam:Group:User"..msg.chat_id ,"Spam:User","del")  
 elseif text == "فتح التكرار" then 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم فتح "..text.." .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم فتح "..text.." .*").by,"md",true)
 redis:hdel(bot_id.."Spam:Group:User"..msg.chat_id ,"Spam:User")  
 elseif text == "قفل التكرار بالطرد" then 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم قفل "..text.." .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم قفل "..text.." .*").by,"md",true)
 redis:hset(bot_id.."Spam:Group:User"..msg.chat_id ,"Spam:User","kick")  
 elseif text == "قفل التكرار بالتقييد" then 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم قفل "..text.." .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم قفل "..text.." .*").by,"md",true)
 redis:hset(bot_id.."Spam:Group:User"..msg.chat_id ,"Spam:User","ked")  
 elseif text == "قفل التكرار بالكتم" then 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم قفل "..text.." .*").by,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم قفل "..text.." .*").by,"md",true)  
 redis:hset(bot_id.."Spam:Group:User"..msg.chat_id ,"Spam:User","ktm")  
 return false
 end  
@@ -6354,10 +6354,10 @@ else
 return false
 end  
 if redis:get(bot_id..":"..msg.chat_id..":settings:"..srt) == setTyp then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu,"md",true)  
 else
 redis:set(bot_id..":"..msg.chat_id..":settings:"..srt,setTyp)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by,"md",true)  
 end
 end
 end
@@ -6435,10 +6435,10 @@ else
 return false
 end  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:"..srt) then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu,"md",true)  
 else
 redis:del(bot_id..":"..msg.chat_id..":settings:"..srt)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by,"md",true)  
 end
 end
 end
@@ -6449,7 +6449,7 @@ if redis:get(bot_id..":"..msg.chat_id..":settings:kickme") then
 return bot.sendText(msg.chat_id,msg.id,"*⌁ : تم تعطيل اطردني من قبل المدراء .*","md",true)  
 end
 bot.sendText(msg.chat_id,msg.id,"*⌁ : اضغط نعم لتأكيد طردك *","md", true, false, false, false, bot.replyMarkup{
-type = 'inline',data = {{{text = '‹ نعم ›',data="Sur_"..msg.sender_id.user_id.."_1"},{text = '‹ الغاء ›',data="Sur_"..msg.sender_id.user_id.."_2"}},}})
+type = 'inline',data = {{{text = '‹ نعم ›',data="Sur_"..msg.sender.user_id.."_1"},{text = '‹ الغاء ›',data="Sur_"..msg.sender.user_id.."_2"}},}})
 end
 if text == 'الالعاب' or text == 'قائمه الالعاب' or text == 'قائمة الالعاب' or text == 'العاب' then
 local reply_markup = bot.replyMarkup{
@@ -6458,10 +6458,10 @@ type = 'inline',data = {
 }
 }
 t = "⌁ : قائمة العاب البوت\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : لعبة البنك : بنك\n⌁ : لعبة حجرة ورقة مقص : حجره\n⌁ : لعبة الرياضه : رياضه\n⌁ : لعبة معرفة الصورة : صور\n⌁ : لعبة معرفة الموسيقى : موسيقى\n⌁ : لعبة المشاهير : مشاهير\n⌁ : لعبة العكس : العكس\n⌁ : لعبة الحزوره : حزوره\n⌁ : لعبة المعاني : معاني\n⌁ : لعبة البات : بات\n⌁ : لعبة التخمين : خمن\n⌁ : لعبه الاسرع : الاسرع\n⌁ : لعبه الترجمه : انكليزي\n⌁ : لعبه تفكيك الكلمه : تفكيك\n⌁ : لعبه تركيب الكلمه : تركيب\n⌁ : لعبه الرياضيات : رياضيات\n⌁ : لعبة السمايلات : سمايلات\n⌁ : لعبة العواصم : العواصم\n⌁ : لعبة الارقام : ارقام\n⌁ : لعبة الحروف : حروف\n⌁ : كت تويت : كت\n⌁ : لعبة الاعلام والدول : اعلام\n⌁ : لعبة الصراحه : صراحه\n⌁ : لعبة الروليت : روليت\n⌁ : لعبة احكام : احكام\n⌁ : لعبة العقاب : عقاب\n⌁ : لعبة الكلمات : كلمات\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : نقاطي : لعرض عدد نقاطك\n⌁ : بيع نقاطي + العدد ~ لبيع كل نقطه مقابل 50 رساله"
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md", true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md", true, false, false, false, reply_markup)
 end
 if not Bot(msg) then
-if text == 'المشاركين' and redis:get(bot_id..":Witting_StartGame:"..msg.chat_id..msg.sender_id.user_id) then
+if text == 'المشاركين' and redis:get(bot_id..":Witting_StartGame:"..msg.chat_id..msg.sender.user_id) then
 local list = redis:smembers(bot_id..':List_Rolet:'..msg.chat_id) 
 local Text = '\n  * ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉*\n'
 if #list == 0 then 
@@ -6473,7 +6473,7 @@ Text = Text..k.."-  [" ..v.."] .\n"
 end 
 return bot.sendText(msg.chat_id,msg.id,Text,"md",true)  
 end
-if text == 'نعم' and redis:get(bot_id..":Witting_StartGame:"..msg.chat_id..msg.sender_id.user_id) then
+if text == 'نعم' and redis:get(bot_id..":Witting_StartGame:"..msg.chat_id..msg.sender.user_id) then
 local list = redis:smembers(bot_id..':List_Rolet:'..msg.chat_id) 
 if #list == 1 then 
 bot.sendText(msg.chat_id,msg.id,"⌁ : لم يكتمل العدد الكلي للاعبين*","md",true)  
@@ -6487,47 +6487,47 @@ local UserId_Info = bot.searchPublicChat(User_)
 if (UserId_Info.id) then
 redis:incrby(bot_id..":"..msg.chat_id..":"..UserId_Info.id..":game", 3)  
 redis:del(bot_id..':List_Rolet:'..msg.chat_id) 
-redis:del(bot_id..":Witting_StartGame:"..msg.chat_id..msg.sender_id.user_id)
+redis:del(bot_id..":Witting_StartGame:"..msg.chat_id..msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : مبروك * ["..UserName.."] *لقد فزت\n⌁ : تم اضافه 3 نقاط لك\n","md",true)  
 return false
 end
 end
-if text and text:match('^(@[%a%d_]+)$') and redis:get(bot_id..":Number_Add:"..msg.chat_id..msg.sender_id.user_id) then
+if text and text:match('^(@[%a%d_]+)$') and redis:get(bot_id..":Number_Add:"..msg.chat_id..msg.sender.user_id) then
 if redis:sismember(bot_id..':List_Rolet:'..msg.chat_id,text) then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : المعرف* ["..text.." ] *موجود من قبل ارسل معرف لم يشارك*","md",true)  
 return false
 end 
 redis:sadd(bot_id..':List_Rolet:'..msg.chat_id,text)
-local CountAdd = redis:get(bot_id..":Number_Add:"..msg.chat_id..msg.sender_id.user_id)
+local CountAdd = redis:get(bot_id..":Number_Add:"..msg.chat_id..msg.sender.user_id)
 local CountAll = redis:scard(bot_id..':List_Rolet:'..msg.chat_id)
 local CountUser = CountAdd - CountAll
 if tonumber(CountAll) == tonumber(CountAdd) then 
-redis:del(bot_id..":Number_Add:"..msg.chat_id..msg.sender_id.user_id) 
-redis:setex(bot_id..":Witting_StartGame:"..msg.chat_id..msg.sender_id.user_id,1400,true)  
+redis:del(bot_id..":Number_Add:"..msg.chat_id..msg.sender.user_id) 
+redis:setex(bot_id..":Witting_StartGame:"..msg.chat_id..msg.sender.user_id,1400,true)  
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ المعرف (*["..text.."]*)\n⌁ : ارسل ( نعم ) للبدء*","md",true)  
 return false
 end  
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ المعرف* (["..text.."])\n*⌁ : تبقى "..CountUser.." لاعبين ليكتمل العدد\n⌁ : ارسل المعرف التالي*","md",true)  
 return false
 end 
-if text and text:match("^(%d+)$") and redis:get(bot_id..":Start_Rolet:"..msg.chat_id..msg.sender_id.user_id) then
+if text and text:match("^(%d+)$") and redis:get(bot_id..":Start_Rolet:"..msg.chat_id..msg.sender.user_id) then
 if text == "1" then
 bot.sendText(msg.chat_id,msg.id," *⌁ : لا استطيع بدء اللعبه بلاعب واحد فقط*","md",true)
 elseif text ~= "1" then
-redis:set(bot_id..":Number_Add:"..msg.chat_id..msg.sender_id.user_id,text)  
-redis:del(bot_id..":Start_Rolet:"..msg.chat_id..msg.sender_id.user_id)  
+redis:set(bot_id..":Number_Add:"..msg.chat_id..msg.sender.user_id,text)  
+redis:del(bot_id..":Start_Rolet:"..msg.chat_id..msg.sender.user_id)  
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل معرفات اللاعبين الان*","md",true)
 return false
 end
 end
 if redis:get(bot_id.."Game:Smile"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:Smile"..msg.chat_id) then
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
 redis:del(bot_id.."Game:Smile"..msg.chat_id)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end 
@@ -6536,11 +6536,11 @@ if redis:get(bot_id.."GAME:S"..msg.chat_id) then
 if text == redis:get(bot_id.."GAME:CHER"..msg.chat_id) then
 redis:del(bot_id.."GAME:S"..msg.chat_id)
 redis:del(bot_id.."GAME:CHER"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end 
@@ -6548,44 +6548,44 @@ end
 if redis:get(bot_id.."Game:Monotonous"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:Monotonous"..msg.chat_id) then
 redis:del(bot_id.."Game:Monotonous"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.."\n ","md",true)
 end
 end 
 if redis:get(bot_id.."Game:Riddles"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:Riddles"..msg.chat_id) then
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
 redis:del(bot_id.."Game:Riddles"..msg.chat_id)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
 if redis:get(bot_id.."Game:Meaningof"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:Meaningof"..msg.chat_id) then
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
 redis:del(bot_id.."Game:Meaningof"..msg.chat_id)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
 if redis:get(bot_id.."Game:Reflection"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:Reflection"..msg.chat_id) then
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
 redis:del(bot_id.."Game:Reflection"..msg.chat_id)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.."\n ","md",true)
 end
 end
@@ -6593,11 +6593,11 @@ end
 if redis:get(bot_id.."Game:Example"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:Example"..msg.chat_id) then 
 redis:del(bot_id.."Game:Example"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.."\n ","md",true)
 end
 end
@@ -6605,12 +6605,12 @@ end
 if redis:get(bot_id..'Games:Set:Answer'..msg.chat_id) then
 if text == ""..(redis:get(bot_id..'Games:Set:Answer'..msg.chat_id) or '66765$47').."" then 
 redis:del(bot_id.."Games:Set:Answer"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 5)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 5)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 5
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
 redis:del(bot_id.."Games:Set:Answer"..msg.chat_id)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك 5 نقاط\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
@@ -6619,36 +6619,36 @@ if redis:get(bot_id.."Start_rhan"..msg.chat_id) then
 if text and text:match('^انا (.*)$') then
 local UserName = text:match('^انا (.*)$')
 local coniss = coin(UserName)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(coniss) < 999 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح هو 1000 دينار 💵\n","md",true)
 end
 if tonumber(ballancee) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي \n","md",true)
 end
-if redis:sismember(bot_id..'List_rhan'..msg.chat_id,msg.sender_id.user_id) then
+if redis:sismember(bot_id..'List_rhan'..msg.chat_id,msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id,'⌁ : انت مضاف من قبل .',"md",true)
 end
-redis:set(bot_id.."playerrhan"..msg.chat_id,msg.sender_id.user_id)
-redis:set(bot_id.."playercoins"..msg.chat_id..msg.sender_id.user_id,coniss)
-redis:sadd(bot_id..'List_rhan'..msg.chat_id,msg.sender_id.user_id)
+redis:set(bot_id.."playerrhan"..msg.chat_id,msg.sender.user_id)
+redis:set(bot_id.."playercoins"..msg.chat_id..msg.sender.user_id,coniss)
+redis:sadd(bot_id..'List_rhan'..msg.chat_id,msg.sender.user_id)
 redis:setex(bot_id.."Witting_Startrhan"..msg.chat_id,1400,true)
 benrahan = redis:get(bot_id.."allrhan"..msg.chat_id..12345) or 0
 rehan = tonumber(benrahan) + tonumber(coniss)
 redis:set(bot_id.."allrhan"..msg.chat_id..12345 , rehan)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 rehan = tonumber(ballancee) - tonumber(coniss)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , rehan)
+redis:set(bot_id.."boob"..msg.sender.user_id , rehan)
 return bot.sendText(msg.chat_id,msg.id,'⌁ : تم ضفتك للرهان \n⌁ : للانتهاء يرسل ( نعم ) اللي بدء الرهان .',"md",true)
 end
 end
 
 if redis:get(bot_id.."Start_Ahkam"..msg.chat_id) then
 if text == "انا" then
-if redis:sismember(bot_id..'List_Ahkam'..msg.chat_id,msg.sender_id.user_id) then
+if redis:sismember(bot_id..'List_Ahkam'..msg.chat_id,msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id,'⌁ : انت مضاف من قبل .',"md",true)
 end
-redis:sadd(bot_id..'List_Ahkam'..msg.chat_id,msg.sender_id.user_id)
+redis:sadd(bot_id..'List_Ahkam'..msg.chat_id,msg.sender.user_id)
 redis:setex(bot_id.."Witting_StartGameh"..msg.chat_id,1400,true)
 return bot.sendText(msg.chat_id,msg.id,'⌁ : تم ضفتك للعبة \n⌁ : للانتهاء يرسل نعم اللي بدء اللعبة .',"md",true)
 end
@@ -6656,10 +6656,10 @@ end
 
 if redis:get(bot_id.."Start_Ahkamm"..msg.chat_id) then
 if text == "انا" then
-if redis:sismember(bot_id..'List_Ahkamm'..msg.chat_id,msg.sender_id.user_id) then
+if redis:sismember(bot_id..'List_Ahkamm'..msg.chat_id,msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id,'⌁ : انت مضاف من قبل .',"md",true)
 end
-redis:sadd(bot_id..'List_Ahkamm'..msg.chat_id,msg.sender_id.user_id)
+redis:sadd(bot_id..'List_Ahkamm'..msg.chat_id,msg.sender.user_id)
 redis:setex(bot_id.."Witting_StartGamehh"..msg.chat_id,1400,true)
 return bot.sendText(msg.chat_id,msg.id,'⌁ : تم ضفتك للعبة \n⌁ : للانتهاء يرسل نعم اللي بدء اللعبة .',"md",true)
 end
@@ -6668,11 +6668,11 @@ end
 if redis:get(bot_id.."Set_fkk"..msg.chat_id) then
 if text == redis:get(bot_id.."Set_fkk"..msg.chat_id) then
 redis:del(bot_id.."Set_fkk"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end 
@@ -6680,11 +6680,11 @@ end
 if redis:get(bot_id.."Set_trkib"..msg.chat_id) then
 if text == redis:get(bot_id.."Set_trkib"..msg.chat_id) then
 redis:del(bot_id.."Set_trkib"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.."\n ","md",true)
 end
 end
@@ -6692,11 +6692,11 @@ end
 if redis:get(bot_id.."Game:arkkamm"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:arkkamm"..msg.chat_id) then
 redis:del(bot_id.."Game:arkkamm"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.."\n ","md",true)
 end
 end
@@ -6704,57 +6704,57 @@ end
 if redis:get(bot_id.."Game:aoismm"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:aoismm"..msg.chat_id) then
 redis:del(bot_id.."Game:aoismm"..msg.chat_id)
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.."\n ","md",true)
 end
 end 
 
 if redis:get(bot_id.."Game:Kokoo"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:Kokoo"..msg.chat_id) then
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
 redis:del(bot_id.."Game:Kokoo"..msg.chat_id)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
 
 if redis:get(bot_id.."Game:Countrygof"..msg.chat_id) then
 if text == redis:get(bot_id.."Game:Countrygof"..msg.chat_id) then
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game", 1)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game", 1)  
 redis:del(bot_id.."Game:Countrygof"..msg.chat_id)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 gampoin = ballancee + 1
-redis:set(bot_id.."boob"..msg.sender_id.user_id , gampoin)
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , gampoin)
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : كفو اجابتك صح \n⌁ : تم اضافة لك نقطة\n⌁ : نقاطك الان : "..Num.." \n","md",true)
 end
 end
 
 
-if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:Estimate") then  
+if redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:Estimate") then  
 if text and text:match("^(%d+)$") then
 local NUM = text:match("^(%d+)$")
 if tonumber(NUM) > 20 then
 return bot.sendText(msg.chat_id,msg.id,"*⌁ : يجب ان لا يكون الرقم المخمن اكبر من ( 20 )\n⌁ : خمن رقم بين ( 1 و 20 )*","md",true)  
 end 
-local GETNUM = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:Estimate")
+local GETNUM = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:Estimate")
 if tonumber(NUM) == tonumber(GETNUM) then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:SADD")
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:Estimate")
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game",5)  
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:SADD")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:Estimate")
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game",5)  
 return bot.sendText(msg.chat_id,msg.id,"*⌁ : خمنت الرقم صح\n⌁ : تم اضافة ( 5 ) نقاط لك*\n","md",true)
 elseif tonumber(NUM) ~= tonumber(GETNUM) then
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:SADD",1)
-if tonumber(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:SADD")) >= 3 then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:SADD")
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:Estimate")
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:SADD",1)
+if tonumber(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:SADD")) >= 3 then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:SADD")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:Estimate")
 return bot.sendText(msg.chat_id,msg.id,"*⌁ : خسرت في اللعبه\n⌁ : كان الرقم الذي تم تخمينه ( "..GETNUM.." )*","md",true)  
 else
 return bot.sendText(msg.chat_id,msg.id,"* ⌁ : تخمينك خطأ\n ارسل رقم من جديد *","md",true)  
@@ -6768,9 +6768,9 @@ if text == 'الروليت' or text == 'روليت' then
 if not redis:get(bot_id.."Status:Games"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : الالعاب معطله بواسطه المشرفين .","md",true)
 end
-redis:del(bot_id..":Number_Add:"..msg.chat_id..msg.sender_id.user_id) 
+redis:del(bot_id..":Number_Add:"..msg.chat_id..msg.sender.user_id) 
 redis:del(bot_id..':List_Rolet:'..msg.chat_id)  
-redis:setex(bot_id..":Start_Rolet:"..msg.chat_id..msg.sender_id.user_id,3600,true)  
+redis:setex(bot_id..":Start_Rolet:"..msg.chat_id..msg.sender.user_id,3600,true)  
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل عدد اللاعبين للروليت*","md",true)  
 end
 
@@ -6978,10 +6978,10 @@ local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '‹ ✂️ ›', data = msg.sender_id.user_id..'/mks'},{text = '‹ 📄 ›', data = msg.sender_id.user_id..'/orka'},{text = '‹ 🪨️ ›', data = msg.sender_id.user_id..'/hagra'},
+{text = '‹ ✂️ ›', data = msg.sender.user_id..'/mks'},{text = '‹ 📄 ›', data = msg.sender.user_id..'/orka'},{text = '‹ 🪨️ ›', data = msg.sender.user_id..'/hagra'},
 },
 {
-{text = '‹ اخفاء ›', data = msg.sender_id.user_id..'/delAmr'}, 
+{text = '‹ اخفاء ›', data = msg.sender.user_id..'/delAmr'}, 
 },
 }
 }
@@ -7407,14 +7407,14 @@ if not redis:get(bot_id.."Status:Games"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : الالعاب معطله بواسطه المشرفين .","md",true)
 end
 redis:del(bot_id..'List_Ahkamm'..msg.chat_id)  
-redis:set(bot_id.."raeahkamm"..msg.chat_id,msg.sender_id.user_id)
-redis:sadd(bot_id..'List_Ahkamm'..msg.chat_id,msg.sender_id.user_id)
+redis:set(bot_id.."raeahkamm"..msg.chat_id,msg.sender.user_id)
+redis:sadd(bot_id..'List_Ahkamm'..msg.chat_id,msg.sender.user_id)
 redis:setex(bot_id.."Start_Ahkamm"..msg.chat_id,3600,true)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : تم بدء اللعبة وتم تسجيلك \n⌁ : اللي بيلعب يرسل ( انا ) .","md",true)
 end
 if text == 'نعم' and redis:get(bot_id.."Witting_StartGamehh"..msg.chat_id) then
 rarahkam = redis:get(bot_id.."raeahkamm"..msg.chat_id)
-if tonumber(rarahkam) == msg.sender_id.user_id then
+if tonumber(rarahkam) == msg.sender.user_id then
 local list = redis:smembers(bot_id..'List_Ahkamm'..msg.chat_id) 
 if #list == 1 then 
 return bot.sendText(msg.chat_id,msg.id,"⌁ : عذراً لم يشارك اي لاعب","md",true)  
@@ -7493,14 +7493,14 @@ if not redis:get(bot_id.."Status:Games"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : الالعاب معطله بواسطه المشرفين .","md",true)
 end
 redis:del(bot_id..'List_Ahkam'..msg.chat_id)  
-redis:set(bot_id.."raeahkam"..msg.chat_id,msg.sender_id.user_id)
-redis:sadd(bot_id..'List_Ahkam'..msg.chat_id,msg.sender_id.user_id)
+redis:set(bot_id.."raeahkam"..msg.chat_id,msg.sender.user_id)
+redis:sadd(bot_id..'List_Ahkam'..msg.chat_id,msg.sender.user_id)
 redis:setex(bot_id.."Start_Ahkam"..msg.chat_id,3600,true)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : تم بدء اللعبة وتم تسجيلك \n⌁ : اللي بيلعب يرسل ( انا ) .","md",true)
 end
 if text == 'نعم' and redis:get(bot_id.."Witting_StartGameh"..msg.chat_id) then
 rarahkam = redis:get(bot_id.."raeahkam"..msg.chat_id)
-if tonumber(rarahkam) == msg.sender_id.user_id then
+if tonumber(rarahkam) == msg.sender.user_id then
 local list = redis:smembers(bot_id..'List_Ahkam'..msg.chat_id) 
 if #list == 1 then 
 return bot.sendText(msg.chat_id,msg.id,"⌁ : عذراً لم يشارك اي لاعب","md",true)  
@@ -7526,7 +7526,7 @@ if text == 'اضف صور' then
 if not developer(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور * ',"md",true)  
 end
-redis:set(bot_id.."Add:photo:Gamess"..msg.sender_id.user_id..":"..msg.chat_id,'startt')
+redis:set(bot_id.."Add:photo:Gamess"..msg.sender.user_id..":"..msg.chat_id,'startt')
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الصورة الان","md",true)  
 end
 
@@ -7563,7 +7563,7 @@ if text == 'اضف رياضه' then
 if not developer(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور * ',"md",true)  
 end
-redis:set(bot_id.."Add:photo:Gamesss"..msg.sender_id.user_id..":"..msg.chat_id,'starttt')
+redis:set(bot_id.."Add:photo:Gamesss"..msg.sender.user_id..":"..msg.chat_id,'starttt')
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الصورة الان","md",true)  
 end
 
@@ -7600,7 +7600,7 @@ if text == 'اضف موسيقى' then
 if not developer(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور * ',"md",true)  
 end
-redis:set(bot_id.."Add:audio:Games"..msg.sender_id.user_id..":"..msg.chat_id,'start')
+redis:set(bot_id.."Add:audio:Games"..msg.sender.user_id..":"..msg.chat_id,'start')
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الموسيقى الان","md",true)  
 end
 
@@ -7637,7 +7637,7 @@ if text == 'اضف مشاهير' then
 if not developer(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور * ',"md",true)  
 end
-redis:set(bot_id.."Add:photo:Gamesssss"..msg.sender_id.user_id..":"..msg.chat_id,'starttttt')
+redis:set(bot_id.."Add:photo:Gamesssss"..msg.sender.user_id..":"..msg.chat_id,'starttttt')
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الصورة الان","md",true)  
 end
 
@@ -7753,9 +7753,9 @@ if text == "خمن" or text == "تخمين" then
 if not redis:get(bot_id.."Status:Games"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : الالعاب معطله بواسطه المشرفين .","md",true)
 end
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:Estimate")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:Estimate")
 Num = math.random(1,20)
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game:Estimate",Num)  
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game:Estimate",Num)  
 return bot.sendText(msg.chat_id,msg.id,"*⌁ : اهلا بك عزيزي في لعبة التخمين \n⌁ : ملاحظه لديك { 3 } محاولات فقط فكر قبل ارسال تخمينك \n⌁ : سيتم تخمين عدد ما بين (1 و 20 ) اذا تعتقد انك تستطيع الفوز جرب والعب الان ؟*","md",true)  
 end
 if text == "المختلف" then
@@ -7821,11 +7821,11 @@ bot.sendText(msg.chat_id,msg.id,'*⌁ : Bot hiss 🔐 .*',"md", true, false, fal
 end
 if text and text:match('^ذيع بالتثبيت (%d+)$') then
 local dedede = text:match('^ذيع بالتثبيت (%d+)$')
-if not devB(msg.sender_id.user_id) then 
+if not devB(msg.sender.user_id) then 
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور الاساسي* ',"md",true)  
 end
 redis:set(bot_id.."dedede","-"..dedede) 
-redis:setex(bot_id.."Broad:Group:Pin" .. msg.chat_id .. ":" .. msg.sender_id.user_id, 600, true) 
+redis:setex(bot_id.."Broad:Group:Pin" .. msg.chat_id .. ":" .. msg.sender.user_id, 600, true) 
 bot.sendText(msg.chat_id,msg.id,[[
 𖦹 ارسل لي الاذاعة سواء أكانت 
 ❨ ملف ⌁ : ملصق ⌁ : متحركه ⌁ : صوره
@@ -7839,11 +7839,11 @@ end
 
 if text and text:match('^ذيع (%d+)$') then
 local dededee = text:match('^ذيع (%d+)$')
-if not devB(msg.sender_id.user_id) then 
+if not devB(msg.sender.user_id) then 
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور الاساسي* ',"md",true)  
 end
 redis:set(bot_id.."dededee","-"..dededee) 
-redis:setex(bot_id.."Broad:Group:nor" .. msg.chat_id .. ":" .. msg.sender_id.user_id, 600, true) 
+redis:setex(bot_id.."Broad:Group:nor" .. msg.chat_id .. ":" .. msg.sender.user_id, 600, true) 
 bot.sendText(msg.chat_id,msg.id,[[
 𖦹 ارسل لي الاذاعة سواء أكانت 
 ❨ ملف ⌁ : ملصق ⌁ : متحركه ⌁ : صوره
@@ -7857,11 +7857,11 @@ end
 
 if text and text:match('^تعطيل (%d+)$') then
 local dededeq = text:match('^تعطيل (%d+)$')
-if not devB(msg.sender_id.user_id) then 
+if not devB(msg.sender.user_id) then 
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور الاساسي* ',"md",true)  
 end
 redis:set(bot_id.."dededeq","-"..dededeq) 
-redis:setex(bot_id.."Broad:Group:off" .. msg.chat_id .. ":" .. msg.sender_id.user_id, 600, true) 
+redis:setex(bot_id.."Broad:Group:off" .. msg.chat_id .. ":" .. msg.sender.user_id, 600, true) 
 bot.sendText(msg.chat_id,msg.id,[[
 𖦹 اعطني الرسالة لكي ارسلها قبل تعطيل المجموعه لهم
 ❨ ملف ⌁ : ملصق ⌁ : متحركه ⌁ : صوره
@@ -7947,11 +7947,11 @@ bot.sendText(msg.chat_id,msg.id,[[
 return false
 end
 if text == 'انشاء حساب بنكي' or text == 'انشاء حساب البنكي' or text =='انشاء الحساب بنكي' or text =='انشاء الحساب البنكي' or text == "انشاء حساب" or text == "فتح حساب بنكي" then
-cobnum = tonumber(redis:get(bot_id.."bandid"..msg.sender_id.user_id))
-if cobnum == msg.sender_id.user_id then
+cobnum = tonumber(redis:get(bot_id.."bandid"..msg.sender.user_id))
+if cobnum == msg.sender.user_id then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : حسابك محظور من لعبة البنك","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : لديك حساب بنكي مسبقاً\n\n⌁ : لعرض معلومات حسابك اكتب\n⇠ `حسابي`","md",true)
 end
 ttshakse = '⌁ : علمود تسوي حساب لازم تختار نوع البطاقة\n'
@@ -7959,7 +7959,7 @@ local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = 'ماستر', data = msg.sender_id.user_id..'/master'},{text = 'فيزا', data = msg.sender_id.user_id..'/visaa'},{text = 'لاري ', data = msg.sender_id.user_id..'/express'},
+{text = 'ماستر', data = msg.sender.user_id..'/master'},{text = 'فيزا', data = msg.sender.user_id..'/visaa'},{text = 'لاري ', data = msg.sender.user_id..'/express'},
 },
 {text = '⌁ : LARrY TEaM .',url="t.me/EEEFBB"}, 
 }
@@ -7967,66 +7967,66 @@ data = {
 return bot.sendText(msg.chat_id,msg.id,ttshakse,"md",false, false, false, false, reply_markup)
 end
 if text == 'مسح حساب بنكي' or text == 'مسح حساب البنكي' or text =='مسح الحساب بنكي' or text =='مسح الحساب البنكي' or text == "مسح حسابي البنكي" or text == "مسح حسابي بنكي" or text == "مسح حسابي" then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-local Cname = redis:get(bot_id.."in_company:name:"..msg.sender_id.user_id) or 0
-redis:srem(bot_id.."company:mem:"..Cname, msg.sender_id.user_id)
-redis:srem(bot_id.."in_company:", msg.sender_id.user_id)
-redis:del(bot_id.."in_company:name:"..msg.sender_id.user_id, Cname)
-redis:srem(bot_id.."booob", msg.sender_id.user_id)
-redis:srem(bot_id.."taza", msg.sender_id.user_id)
-redis:del(bot_id.."boob"..msg.sender_id.user_id)
-redis:del(bot_id.."boobb"..msg.sender_id.user_id)
-redis:del(bot_id.."rrfff"..msg.sender_id.user_id)
-redis:srem(bot_id.."rrfffid", msg.sender_id.user_id)
-redis:srem(bot_id.."roogg1", msg.sender_id.user_id)
-redis:srem(bot_id.."roogga1", msg.sender_id.user_id)
-redis:del(bot_id.."roog1"..msg.sender_id.user_id)
-redis:del(bot_id.."rooga1"..msg.sender_id.user_id)
-redis:del(bot_id.."rahr1"..msg.sender_id.user_id)
-redis:del(bot_id.."rahrr1"..msg.sender_id.user_id)
-redis:del(bot_id.."tabbroat"..msg.sender_id.user_id)
-redis:del(bot_id.."shkse"..msg.sender_id.user_id)
-redis:del(bot_id.."ratbinc"..msg.sender_id.user_id)
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrmasname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrmasnum"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrkldname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrkldnum"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrswrname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrswrnum"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrktmname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrktmnum"..msg.sender_id.user_id)
-redis:del(bot_id.."akrksrname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrksrnum"..msg.sender_id.user_id)
-redis:del(bot_id.."akrfelname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrfelnum"..msg.sender_id.user_id)
-redis:del(bot_id.."akrmnzname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrmnznum"..msg.sender_id.user_id)
-redis:del(bot_id.."airshbhname"..msg.sender_id.user_id)
-redis:del(bot_id.."airshbhnum"..msg.sender_id.user_id)
-redis:del(bot_id.."airsfarname"..msg.sender_id.user_id)
-redis:del(bot_id.."airsfarnum"..msg.sender_id.user_id)
-redis:del(bot_id.."airkhasname"..msg.sender_id.user_id)
-redis:del(bot_id.."airkhasnum"..msg.sender_id.user_id)
-redis:del(bot_id.."carrangname"..msg.sender_id.user_id)
-redis:del(bot_id.."carrangnum"..msg.sender_id.user_id)
-redis:del(bot_id.."caraccename"..msg.sender_id.user_id)
-redis:del(bot_id.."caraccenum"..msg.sender_id.user_id)
-redis:del(bot_id.."carcamrname"..msg.sender_id.user_id)
-redis:del(bot_id.."carcamrnum"..msg.sender_id.user_id)
-redis:del(bot_id.."caralntrname"..msg.sender_id.user_id)
-redis:del(bot_id.."caralntrnum"..msg.sender_id.user_id)
-redis:del(bot_id.."carhilxname"..msg.sender_id.user_id)
-redis:del(bot_id.."carhilxnum"..msg.sender_id.user_id)
-redis:del(bot_id.."carsonaname"..msg.sender_id.user_id)
-redis:del(bot_id.."carsonanum"..msg.sender_id.user_id)
-redis:del(bot_id.."carcoroname"..msg.sender_id.user_id)
-redis:del(bot_id.."carcoronum"..msg.sender_id.user_id)
+local Cname = redis:get(bot_id.."in_company:name:"..msg.sender.user_id) or 0
+redis:srem(bot_id.."company:mem:"..Cname, msg.sender.user_id)
+redis:srem(bot_id.."in_company:", msg.sender.user_id)
+redis:del(bot_id.."in_company:name:"..msg.sender.user_id, Cname)
+redis:srem(bot_id.."booob", msg.sender.user_id)
+redis:srem(bot_id.."taza", msg.sender.user_id)
+redis:del(bot_id.."boob"..msg.sender.user_id)
+redis:del(bot_id.."boobb"..msg.sender.user_id)
+redis:del(bot_id.."rrfff"..msg.sender.user_id)
+redis:srem(bot_id.."rrfffid", msg.sender.user_id)
+redis:srem(bot_id.."roogg1", msg.sender.user_id)
+redis:srem(bot_id.."roogga1", msg.sender.user_id)
+redis:del(bot_id.."roog1"..msg.sender.user_id)
+redis:del(bot_id.."rooga1"..msg.sender.user_id)
+redis:del(bot_id.."rahr1"..msg.sender.user_id)
+redis:del(bot_id.."rahrr1"..msg.sender.user_id)
+redis:del(bot_id.."tabbroat"..msg.sender.user_id)
+redis:del(bot_id.."shkse"..msg.sender.user_id)
+redis:del(bot_id.."ratbinc"..msg.sender.user_id)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:del(bot_id.."mgrmasname"..msg.sender.user_id)
+redis:del(bot_id.."mgrmasnum"..msg.sender.user_id)
+redis:del(bot_id.."mgrkldname"..msg.sender.user_id)
+redis:del(bot_id.."mgrkldnum"..msg.sender.user_id)
+redis:del(bot_id.."mgrswrname"..msg.sender.user_id)
+redis:del(bot_id.."mgrswrnum"..msg.sender.user_id)
+redis:del(bot_id.."mgrktmname"..msg.sender.user_id)
+redis:del(bot_id.."mgrktmnum"..msg.sender.user_id)
+redis:del(bot_id.."akrksrname"..msg.sender.user_id)
+redis:del(bot_id.."akrksrnum"..msg.sender.user_id)
+redis:del(bot_id.."akrfelname"..msg.sender.user_id)
+redis:del(bot_id.."akrfelnum"..msg.sender.user_id)
+redis:del(bot_id.."akrmnzname"..msg.sender.user_id)
+redis:del(bot_id.."akrmnznum"..msg.sender.user_id)
+redis:del(bot_id.."airshbhname"..msg.sender.user_id)
+redis:del(bot_id.."airshbhnum"..msg.sender.user_id)
+redis:del(bot_id.."airsfarname"..msg.sender.user_id)
+redis:del(bot_id.."airsfarnum"..msg.sender.user_id)
+redis:del(bot_id.."airkhasname"..msg.sender.user_id)
+redis:del(bot_id.."airkhasnum"..msg.sender.user_id)
+redis:del(bot_id.."carrangname"..msg.sender.user_id)
+redis:del(bot_id.."carrangnum"..msg.sender.user_id)
+redis:del(bot_id.."caraccename"..msg.sender.user_id)
+redis:del(bot_id.."caraccenum"..msg.sender.user_id)
+redis:del(bot_id.."carcamrname"..msg.sender.user_id)
+redis:del(bot_id.."carcamrnum"..msg.sender.user_id)
+redis:del(bot_id.."caralntrname"..msg.sender.user_id)
+redis:del(bot_id.."caralntrnum"..msg.sender.user_id)
+redis:del(bot_id.."carhilxname"..msg.sender.user_id)
+redis:del(bot_id.."carhilxnum"..msg.sender.user_id)
+redis:del(bot_id.."carsonaname"..msg.sender.user_id)
+redis:del(bot_id.."carsonanum"..msg.sender.user_id)
+redis:del(bot_id.."carcoroname"..msg.sender.user_id)
+redis:del(bot_id.."carcoronum"..msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id, "⌁ : مسحت حسابك البنكي 🏦","md",true, false, false, false, reply_markup)
 else
 local reply_markup = bot.replyMarkup{
@@ -8038,7 +8038,7 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل 
 end
 end
 if text == 'تثبيت النتائج' or text == 'تثبيت نتائج' then
-if devS(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
@@ -8095,7 +8095,7 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : تم تثبيت النتائج","md",tru
 end
 end
 if text == 'مسح كل الفلوس' or text == 'مسح كل فلوس' then
-if devS(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
@@ -8154,7 +8154,7 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : مسحت كل فلوس اللعبة 🏦
 end
 end
 if text == 'تصفير النتائج' or text == 'مسح لعبه البنك' then
-if devS(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
@@ -8218,27 +8218,27 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : تم تصفير النتائج بنجا�
 end
 end
 if text == 'ميدالياتي' or text == 'ميداليات' then
-if redis:sismember(bot_id.."medalid",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."medalid",msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-local medaa2 = redis:get(bot_id.."medal2"..msg.sender_id.user_id)
+local medaa2 = redis:get(bot_id.."medal2"..msg.sender.user_id)
 if medaa2 == "🥇" then
-local medaa = redis:get(bot_id.."medal"..msg.sender_id.user_id)
-local medaa2 = redis:get(bot_id.."medal2"..msg.sender_id.user_id)
-local medaa3 = redis:get(bot_id.."medal3"..msg.sender_id.user_id)
+local medaa = redis:get(bot_id.."medal"..msg.sender.user_id)
+local medaa2 = redis:get(bot_id.."medal2"..msg.sender.user_id)
+local medaa3 = redis:get(bot_id.."medal3"..msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id, "ميدالياتك :\n\nالتاريخ : "..medaa3.." \nالفلوس : "..medaa.." 💵\nالمركز : "..medaa2.." كونكر "..medaa2.."\n","md",true, false, false, false, reply_markup)
 elseif medaa2 == "🥈" then
-local medaa = redis:get(bot_id.."medal"..msg.sender_id.user_id)
-local medaa2 = redis:get(bot_id.."medal2"..msg.sender_id.user_id)
-local medaa3 = redis:get(bot_id.."medal3"..msg.sender_id.user_id)
+local medaa = redis:get(bot_id.."medal"..msg.sender.user_id)
+local medaa2 = redis:get(bot_id.."medal2"..msg.sender.user_id)
+local medaa3 = redis:get(bot_id.."medal3"..msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id, "ميدالياتك :\n\nالتاريخ : "..medaa3.." \nالفلوس : "..medaa.." 💵\nالمركز : "..medaa2.." ايس "..medaa2.."\n","md",true, false, false, false, reply_markup)
 else
-local medaa = redis:get(bot_id.."medal"..msg.sender_id.user_id)
-local medaa2 = redis:get(bot_id.."medal2"..msg.sender_id.user_id)
-local medaa3 = redis:get(bot_id.."medal3"..msg.sender_id.user_id)
+local medaa = redis:get(bot_id.."medal"..msg.sender.user_id)
+local medaa2 = redis:get(bot_id.."medal2"..msg.sender.user_id)
+local medaa3 = redis:get(bot_id.."medal3"..msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id, "ميدالياتك :\n\nالتاريخ : "..medaa3.." \nالفلوس : "..medaa.." 💵\nالمركز : "..medaa2.." كراون "..medaa2.."\n","md",true, false, false, false, reply_markup)
 end
 else
@@ -8246,13 +8246,13 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك ميداليات","md",true
 end
 end
 if text == 'فلوسي' or text == 'فلوس' and tonumber(msg.reply_to_message_id) == 0 then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 1 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك فلوس ارسل الالعاب وابدأ بجمع الفلوس \n","md",true, false, false, false, reply_markup)
 end
@@ -8287,18 +8287,18 @@ type = 'inline',data = {
 }
 }
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true, false, false, false, reply_markup)  
 return false
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballanceed)
 bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسه `"..convert_mony.."` دينار 💵","md",true, false, false, false, reply_markup)
 else
@@ -8311,23 +8311,23 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = ""..ban.first_name..""
 else
 news = " لا يوجد"
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-cccc = redis:get(bot_id.."boobb"..msg.sender_id.user_id)
-uuuu = redis:get(bot_id.."bbobb"..msg.sender_id.user_id)
-pppp = redis:get(bot_id.."rrfff"..msg.sender_id.user_id) or 0
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
+cccc = redis:get(bot_id.."boobb"..msg.sender.user_id)
+uuuu = redis:get(bot_id.."bbobb"..msg.sender.user_id)
+pppp = redis:get(bot_id.."rrfff"..msg.sender.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
 local convert_mony = string.format("%.0f",ballancee)
 if shkse == "طيبة" then
 shkseemg = "طيبة 😇"
@@ -8340,85 +8340,85 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل 
 end
 end
 if text == 'مسح حسابه' and tonumber(msg.reply_to_message_id) ~= 0 then
-if devS(msg.sender_id.user_id) or devB(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) or devB(msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true, false, false, false, reply_markup)  
 return false
 end
-local ban = bot.getUser(Remsg.sender_id.user_id)
+local ban = bot.getUser(Remsg.sender.user_id)
 if ban.first_name then
 news = ""..ban.first_name..""
 else
 news = " لا يوجد"
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local Cname = redis:get(bot_id.."in_company:name:"..msg.sender_id.user_id) or 0
-redis:srem(bot_id.."company:mem:"..Cname, msg.sender_id.user_id)
-redis:srem(bot_id.."in_company:", msg.sender_id.user_id)
-redis:del(bot_id.."in_company:name:"..msg.sender_id.user_id, Cname)
-ccccc = redis:get(bot_id.."boobb"..Remsg.sender_id.user_id)
-uuuuu = redis:get(bot_id.."bbobb"..Remsg.sender_id.user_id)
-ppppp = redis:get(bot_id.."rrfff"..Remsg.sender_id.user_id) or 0
-ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local Cname = redis:get(bot_id.."in_company:name:"..msg.sender.user_id) or 0
+redis:srem(bot_id.."company:mem:"..Cname, msg.sender.user_id)
+redis:srem(bot_id.."in_company:", msg.sender.user_id)
+redis:del(bot_id.."in_company:name:"..msg.sender.user_id, Cname)
+ccccc = redis:get(bot_id.."boobb"..Remsg.sender.user_id)
+uuuuu = redis:get(bot_id.."bbobb"..Remsg.sender.user_id)
+ppppp = redis:get(bot_id.."rrfff"..Remsg.sender.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballanceed)
-redis:srem(bot_id.."booob", Remsg.sender_id.user_id)
-redis:srem(bot_id.."taza", Remsg.sender_id.user_id)
-redis:del(bot_id.."boob"..Remsg.sender_id.user_id)
-redis:del(bot_id.."boobb"..Remsg.sender_id.user_id)
-redis:del(bot_id.."rrfff"..Remsg.sender_id.user_id)
-redis:del(bot_id.."numattack"..Remsg.sender_id.user_id)
-redis:srem(bot_id.."rrfffid", Remsg.sender_id.user_id)
-redis:srem(bot_id.."roogg1", Remsg.sender_id.user_id)
-redis:srem(bot_id.."roogga1", Remsg.sender_id.user_id)
-redis:del(bot_id.."roog1"..Remsg.sender_id.user_id)
-redis:del(bot_id.."rooga1"..Remsg.sender_id.user_id)
-redis:del(bot_id.."rahr1"..Remsg.sender_id.user_id)
-redis:del(bot_id.."rahrr1"..Remsg.sender_id.user_id)
-redis:del(bot_id.."tabbroat"..Remsg.sender_id.user_id)
-redis:del(bot_id.."shkse"..Remsg.sender_id.user_id)
-redis:del(bot_id.."ratbinc"..Remsg.sender_id.user_id)
-redis:del(bot_id.."ratbtrans"..Remsg.sender_id.user_id)
-redis:del(bot_id.."mgrmasname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."mgrmasnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."mgrkldname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."mgrkldnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."mgrswrname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."mgrswrnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."mgrktmname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."mgrktmnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."akrksrname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."akrksrnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."akrfelname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."akrfelnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."akrmnzname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."akrmnznum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."airshbhname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."airshbhnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."airsfarname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."airsfarnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."airkhasname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."airkhasnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carrangname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carrangnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."caraccename"..Remsg.sender_id.user_id)
-redis:del(bot_id.."caraccenum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carcamrname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carcamrnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."caralntrname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."caralntrnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carhilxname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carhilxnum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carsonaname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carsonanum"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carcoroname"..Remsg.sender_id.user_id)
-redis:del(bot_id.."carcoronum"..Remsg.sender_id.user_id)
+redis:srem(bot_id.."booob", Remsg.sender.user_id)
+redis:srem(bot_id.."taza", Remsg.sender.user_id)
+redis:del(bot_id.."boob"..Remsg.sender.user_id)
+redis:del(bot_id.."boobb"..Remsg.sender.user_id)
+redis:del(bot_id.."rrfff"..Remsg.sender.user_id)
+redis:del(bot_id.."numattack"..Remsg.sender.user_id)
+redis:srem(bot_id.."rrfffid", Remsg.sender.user_id)
+redis:srem(bot_id.."roogg1", Remsg.sender.user_id)
+redis:srem(bot_id.."roogga1", Remsg.sender.user_id)
+redis:del(bot_id.."roog1"..Remsg.sender.user_id)
+redis:del(bot_id.."rooga1"..Remsg.sender.user_id)
+redis:del(bot_id.."rahr1"..Remsg.sender.user_id)
+redis:del(bot_id.."rahrr1"..Remsg.sender.user_id)
+redis:del(bot_id.."tabbroat"..Remsg.sender.user_id)
+redis:del(bot_id.."shkse"..Remsg.sender.user_id)
+redis:del(bot_id.."ratbinc"..Remsg.sender.user_id)
+redis:del(bot_id.."ratbtrans"..Remsg.sender.user_id)
+redis:del(bot_id.."mgrmasname"..Remsg.sender.user_id)
+redis:del(bot_id.."mgrmasnum"..Remsg.sender.user_id)
+redis:del(bot_id.."mgrkldname"..Remsg.sender.user_id)
+redis:del(bot_id.."mgrkldnum"..Remsg.sender.user_id)
+redis:del(bot_id.."mgrswrname"..Remsg.sender.user_id)
+redis:del(bot_id.."mgrswrnum"..Remsg.sender.user_id)
+redis:del(bot_id.."mgrktmname"..Remsg.sender.user_id)
+redis:del(bot_id.."mgrktmnum"..Remsg.sender.user_id)
+redis:del(bot_id.."akrksrname"..Remsg.sender.user_id)
+redis:del(bot_id.."akrksrnum"..Remsg.sender.user_id)
+redis:del(bot_id.."akrfelname"..Remsg.sender.user_id)
+redis:del(bot_id.."akrfelnum"..Remsg.sender.user_id)
+redis:del(bot_id.."akrmnzname"..Remsg.sender.user_id)
+redis:del(bot_id.."akrmnznum"..Remsg.sender.user_id)
+redis:del(bot_id.."airshbhname"..Remsg.sender.user_id)
+redis:del(bot_id.."airshbhnum"..Remsg.sender.user_id)
+redis:del(bot_id.."airsfarname"..Remsg.sender.user_id)
+redis:del(bot_id.."airsfarnum"..Remsg.sender.user_id)
+redis:del(bot_id.."airkhasname"..Remsg.sender.user_id)
+redis:del(bot_id.."airkhasnum"..Remsg.sender.user_id)
+redis:del(bot_id.."carrangname"..Remsg.sender.user_id)
+redis:del(bot_id.."carrangnum"..Remsg.sender.user_id)
+redis:del(bot_id.."caraccename"..Remsg.sender.user_id)
+redis:del(bot_id.."caraccenum"..Remsg.sender.user_id)
+redis:del(bot_id.."carcamrname"..Remsg.sender.user_id)
+redis:del(bot_id.."carcamrnum"..Remsg.sender.user_id)
+redis:del(bot_id.."caralntrname"..Remsg.sender.user_id)
+redis:del(bot_id.."caralntrnum"..Remsg.sender.user_id)
+redis:del(bot_id.."carhilxname"..Remsg.sender.user_id)
+redis:del(bot_id.."carhilxnum"..Remsg.sender.user_id)
+redis:del(bot_id.."carsonaname"..Remsg.sender.user_id)
+redis:del(bot_id.."carsonanum"..Remsg.sender.user_id)
+redis:del(bot_id.."carcoroname"..Remsg.sender.user_id)
+redis:del(bot_id.."carcoronum"..Remsg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id, "⌁ : الاسم ↢ "..news.."\n⌁ : الحساب ↢ `"..ccccc.."`\n⌁ : بنك ↢ ( لاري  )\n⌁ : نوع ↢ ( "..uuuuu.." )\n⌁ : الرصيد ↢ ( "..convert_mony.." دينار ?? )\n⌁ : الزرف ↢ ( "..math.floor(ppppp).." دينار 💵 )\n⌁ : مسكين مسحت حسابه \n","md",true, false, false, false, reply_markup)
 else
 local reply_markup = bot.replyMarkup{
@@ -8437,28 +8437,28 @@ type = 'inline',data = {
 }
 }
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true, false, false, false, reply_markup)  
 return false
 end
-local ban = bot.getUser(Remsg.sender_id.user_id)
+local ban = bot.getUser(Remsg.sender.user_id)
 if ban.first_name then
 news = ""..ban.first_name..""
 else
 news = " لا يوجد"
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ccccc = redis:get(bot_id.."boobb"..Remsg.sender_id.user_id)
-uuuuu = redis:get(bot_id.."bbobb"..Remsg.sender_id.user_id)
-ppppp = redis:get(bot_id.."rrfff"..Remsg.sender_id.user_id) or 0
-ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
-shkse = redis:get(bot_id.."shkse"..Remsg.sender_id.user_id)
+ccccc = redis:get(bot_id.."boobb"..Remsg.sender.user_id)
+uuuuu = redis:get(bot_id.."bbobb"..Remsg.sender.user_id)
+ppppp = redis:get(bot_id.."rrfff"..Remsg.sender.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
+shkse = redis:get(bot_id.."shkse"..Remsg.sender.user_id)
 local convert_mony = string.format("%.0f",ballanceed)
 if shkse == "طيبة" then
 shkseemg = "طيبة 😇"
@@ -8476,7 +8476,7 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعنده حساب بنكي ","md",tr
 end
 end
 if text and text:match('^مسح حساب (.*)$') or text and text:match('^مسح حسابه (.*)$') then
-if devS(msg.sender_id.user_id) or devB(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) or devB(msg.sender.user_id) then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
@@ -8589,9 +8589,9 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:ttl(bot_id.."iiooooo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iiooooo" .. msg.sender_id.user_id) / 60
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:ttl(bot_id.."iiooooo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iiooooo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ماتكدر تضارب هسه\n⌁ : تعال بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`مضاربه` المبلغ","md",true, false, false, false, reply_markup)
@@ -8602,15 +8602,15 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local UserName = text:match('^مضاربه (.*)$') or text:match('^مضاربة (.*)$')
 local coniss = coin(UserName)
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."iiooooo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iiooooo" .. msg.sender_id.user_id) / 60
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."iiooooo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iiooooo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ماتكدر تضارب هسه\n⌁ : تعال بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(coniss) < 99 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح هو 100 دينار 💵\n","md",true, false, false, false, reply_markup)
 end
@@ -8625,16 +8625,16 @@ ballanceekku = coniss / 100 * modarbaa
 ballanceekkku = ballancee - ballanceekku
 local convert_mony = string.format("%.0f",ballanceekku)
 local convert_mony1 = string.format("%.0f",ballanceekkku)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ballanceekkku))
-redis:setex(bot_id.."iiooooo" .. msg.sender_id.user_id,920, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ballanceekkku))
+redis:setex(bot_id.."iiooooo" .. msg.sender.user_id,920, true)
 bot.sendText(msg.chat_id,msg.id, "⌁ : مضاربة فاشلة 📉\n⌁ : نسبة الخسارة ↢ "..modarbaa.."%\n⌁ : المبلغ الذي خسرته ↢ ( "..convert_mony.." دينار 💵 )\n⌁ : فلوسك رفعهت ↢ ( "..convert_mony1.." دينار 💵 )\n","md",true, false, false, false, reply_markup)
 else
 ballanceekku = coniss / 100 * modarbaa
 ballanceekkku = ballancee + ballanceekku
 local convert_mony = string.format("%.0f",ballanceekku)
 local convert_mony1 = string.format("%.0f",ballanceekkku)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ballanceekkku))
-redis:setex(bot_id.."iiooooo" .. msg.sender_id.user_id,920, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ballanceekkku))
+redis:setex(bot_id.."iiooooo" .. msg.sender.user_id,920, true)
 bot.sendText(msg.chat_id,msg.id, "⌁ : مضاربة ناجحة 📈\n⌁ : نسبة الربح ↢ "..modarbaa.."%\n⌁ : المبلغ الذي ربحته ↢ ( "..convert_mony.." دينار 💵 )\n⌁ : فلوسك رفعهت ↢ ( "..convert_mony1.." دينار 💵 )\n","md",true, false, false, false, reply_markup)
 end
 else
@@ -8652,9 +8652,9 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:ttl(bot_id.."iioooo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iioooo" .. msg.sender_id.user_id) / 60
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:ttl(bot_id.."iioooo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iioooo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ماتكدر تستثمر هسه\n⌁ : تعال بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`استثمار` المبلغ","md",true, false, false, false, reply_markup)
@@ -8665,15 +8665,15 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local UserName = text:match('^استثمار (.*)$')
 local coniss = coin(UserName)
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."iioooo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iioooo" .. msg.sender_id.user_id) / 60
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."iioooo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iioooo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ماتكدر تستثمر هسه\n⌁ : تعال بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(coniss) < 99 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح هو 100 دينار 💵\n","md",true, false, false, false, reply_markup)
 end
@@ -8686,8 +8686,8 @@ ballanceekk = coniss / 100 * hadddd
 ballanceekkk = ballancee + ballanceekk
 local convert_mony = string.format("%.0f",ballanceekk)
 local convert_mony1 = string.format("%.0f",ballanceekkk)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ballanceekkk))
-redis:setex(bot_id.."iioooo" .. msg.sender_id.user_id,1220, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ballanceekkk))
+redis:setex(bot_id.."iioooo" .. msg.sender.user_id,1220, true)
 bot.sendText(msg.chat_id,msg.id, "⌁ : استثمار ناجح 💰\n⌁ : نسبة الربح ↢ "..hadddd.."%\n⌁ : مبلغ الربح ↢ ( "..convert_mony.." دينار 💵 )\n⌁ : فلوسك رفعهت ↢ ( "..convert_mony1.." دينار 💵 )\n","md",true, false, false, false, reply_markup)
 else
 local hadddd = math.random(1,9);
@@ -8695,8 +8695,8 @@ ballanceekk = coniss / 100 * hadddd
 ballanceekkk = ballancee + ballanceekk
 local convert_mony = string.format("%.0f",ballanceekk)
 local convert_mony1 = string.format("%.0f",ballanceekkk)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ballanceekkk))
-redis:setex(bot_id.."iioooo" .. msg.sender_id.user_id,1220, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ballanceekkk))
+redis:setex(bot_id.."iioooo" .. msg.sender.user_id,1220, true)
 bot.sendText(msg.chat_id,msg.id, "⌁ : استثمار ناجح 💰\n⌁ : نسبة الربح ↢ "..hadddd.."%\n⌁ : مبلغ الربح ↢ ( "..convert_mony.." دينار 💵 )\n⌁ : فلوسك رفعهت ↢ ( "..convert_mony1.." دينار 💵 )\n","md",true, false, false, false, reply_markup)
 end
 else
@@ -8709,9 +8709,9 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:ttl(bot_id.."iiooo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iiooo" .. msg.sender_id.user_id) / 60
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:ttl(bot_id.."iiooo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iiooo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ماتكدر تلعب حظ هسه\n⌁ : تعال بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`حظ` المبلغ","md",true, false, false, false, reply_markup)
@@ -8722,15 +8722,15 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local UserName = text:match('^حظ (.*)$')
 local coniss = coin(UserName)
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."iiooo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iiooo" .. msg.sender_id.user_id) / 60
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."iiooo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iiooo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ماتكدر تلعب حظ هسه\n⌁ : تعال بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(coniss) < 99 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح هو 100 دينار 💵\n","md",true, false, false, false, reply_markup)
 end
@@ -8743,15 +8743,15 @@ if haddd == "1" then
 local ballanceek = ballancee + coniss
 local convert_mony = string.format("%.0f",ballancee)
 local convert_mony1 = string.format("%.0f",ballanceek)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ballanceek))
-redis:setex(bot_id.."iiooo" .. msg.sender_id.user_id,920, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ballanceek))
+redis:setex(bot_id.."iiooo" .. msg.sender.user_id,920, true)
 bot.sendText(msg.chat_id,msg.id, "⌁ : مبروك فزت بالحظ ??\n⌁ : فلوسك قبل ↢ ( "..convert_mony.." دينار 💵 )\n⌁ : رصيدك الان ↢ ( "..convert_mony1.." دينار 💵 )\n","md",true, false, false, false, reply_markup)
 else
 local ballanceekk = ballancee - coniss
 local convert_mony = string.format("%.0f",ballancee)
 local convert_mony1 = string.format("%.0f",ballanceekk)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ballanceekk))
-redis:setex(bot_id.."iiooo" .. msg.sender_id.user_id,920, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ballanceekk))
+redis:setex(bot_id.."iiooo" .. msg.sender.user_id,920, true)
 bot.sendText(msg.chat_id,msg.id, "⌁ : للاسف خسرت بالحظ ??\n⌁ : فلوسك قبل ↢ ( "..convert_mony.." دينار 💵 )\n⌁ : رصيدك الان ↢ ( "..convert_mony1.." دينار 💵 )\n","md",true, false, false, false, reply_markup)
 end
 else
@@ -8761,10 +8761,10 @@ end
 if text == "مسح تخزين البوت" or text == "مسح تخزين البوت" then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
-{{text = 'اخفاء', data = msg.sender_id.user_id..'/delAmr'}},
+{{text = 'اخفاء', data = msg.sender.user_id..'/delAmr'}},
 }
 }
-if tonumber(msg.sender_id.user_id) == tonumber(6022589060) then 
+if tonumber(msg.sender.user_id) == tonumber(6022589060) then 
 local keys = redis:keys(bot_id..'*')
 for i = 1, #keys do
 redis:del(keys[i])
@@ -8786,16 +8786,16 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local UserName = text:match('^تحويل (.*)$')
 local coniss = coin(UserName)
-if not redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if not redis:sismember(bot_id.."booob",msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ","md",true, false, false, false, reply_markup)
 end
 if tonumber(coniss) < 100 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح به هو 100 دينار \n","md",true, false, false, false, reply_markup)
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 100 then
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
@@ -8812,8 +8812,8 @@ type = 'inline',data = {
 }
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي\n","md",true, false, false, false, reply_markup)
 end
-redis:set(bot_id.."transn"..msg.sender_id.user_id,coniss)
-redis:setex(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender_id.user_id,60, true)
+redis:set(bot_id.."transn"..msg.sender.user_id,coniss)
+redis:setex(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender.user_id,60, true)
 bot.sendText(msg.chat_id,msg.id,[[
 ⌁ : ارسل هسه رقم الحساب البنكي الي تبي تحول له
 
@@ -8822,17 +8822,17 @@ bot.sendText(msg.chat_id,msg.id,[[
 ]],"md",true, false, false, false, reply_markup)  
 return false
 end
-if redis:get(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender_id.user_id) then
-cccc = redis:get(bot_id.."boobb"..msg.sender_id.user_id)
-uuuu = redis:get(bot_id.."bbobb"..msg.sender_id.user_id)
+if redis:get(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender.user_id) then
+cccc = redis:get(bot_id.."boobb"..msg.sender.user_id)
+uuuu = redis:get(bot_id.."bbobb"..msg.sender.user_id)
 if text ~= text:match('^(%d+)$') then
-redis:del(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender_id.user_id) 
-redis:del(bot_id.."transn" .. msg.sender_id.user_id)
+redis:del(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender.user_id) 
+redis:del(bot_id.."transn" .. msg.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل رقم حساب بنكي ","md",true, false, false, false, reply_markup)
 end
 if text == cccc then
-redis:del(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender_id.user_id) 
-redis:del(bot_id.."transn" .. msg.sender_id.user_id)
+redis:del(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender.user_id) 
+redis:del(bot_id.."transn" .. msg.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ماتكدر تحول لنفسك ","md",true, false, false, false, reply_markup)
 end
 if redis:get(bot_id.."boballcc"..text) then
@@ -8841,8 +8841,8 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-local UserNamey = redis:get(bot_id.."transn"..msg.sender_id.user_id)
-local ban = bot.getUser(msg.sender_id.user_id)
+local UserNamey = redis:get(bot_id.."transn"..msg.sender.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = "["..ban.first_name.."](tg://user?id="..ban.id..")"
 else
@@ -8859,25 +8859,25 @@ local fsvhh = redis:get(bot_id.."boballban"..text)
 UserNameyr = UserNamey / 10
 UserNameyy = UserNamey - UserNameyr
 local convert_mony = string.format("%.0f",UserNameyy)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 deccde = ballancee - UserNamey
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(deccde))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(deccde))
 decdecb = redis:get(bot_id.."boob"..fsvhhh) or 0
 deccde2 = decdecb + UserNameyy
 redis:set(bot_id.."boob"..fsvhhh , math.floor(deccde2))
 
 bot.sendText(msg.chat_id,msg.id, "⌁ : حوالة صادرة من بنك لاري \n\n⌁ : المرسل : "..news.."\n⌁ : الحساب رقم : `"..cccc.."`\n⌁ : نوع البطاقة : "..uuuu.."\n⌁ : المستلم : "..newss.."\n⌁ : الحساب رقم : `"..text.."`\n⌁ : نوع البطاقة : "..fsvhh.."\n⌁ : خصمت 10% رسوم تحويل\n⌁ : المبلغ : "..convert_mony.." دينار 💵","md",true, false, false, false, reply_markup)
 bot.sendText(fsvhhh,0, "⌁ : حوالة واردة من بنك لاري \n\n⌁ : المرسل : "..news.."\n⌁ : الحساب رقم : `"..cccc.."`\n⌁ : نوع البطاقة : "..uuuu.."\n⌁ : المبلغ : "..convert_mony.." دينار ??","md",true, false, false, false, reply_markup)
-redis:del(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender_id.user_id) 
-redis:del(bot_id.."transn" .. msg.sender_id.user_id)
+redis:del(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender.user_id) 
+redis:del(bot_id.."transn" .. msg.sender.user_id)
 else
 bot.sendText(msg.chat_id,msg.id, "⌁ : مافيه حساب بنكي كذا","md",true)
-redis:del(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender_id.user_id) 
-redis:del(bot_id.."transn" .. msg.sender_id.user_id)
+redis:del(bot_id.."trans" .. msg.chat_id .. ":" .. msg.sender.user_id) 
+redis:del(bot_id.."transn" .. msg.sender.user_id)
 end
 end
 if text == "ترتيبي" then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local bank_users = redis:smembers(bot_id.."booob")
 my_num_in_bank = {}
 for k,v in pairs(bank_users) do
@@ -8886,7 +8886,7 @@ table.insert(my_num_in_bank, {math.floor(tonumber(mony)) , v})
 end
 table.sort(my_num_in_bank, function(a, b) return a[1] > b[1] end)
 for k,v in pairs(my_num_in_bank) do
-if tonumber(v[2]) == tonumber(msg.sender_id.user_id) then
+if tonumber(v[2]) == tonumber(msg.sender.user_id) then
 local mony = v[1]
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ترتيبك ( "..k.." )","md",true)
 end
@@ -8897,12 +8897,12 @@ end
 end
 if text == "ترتيبه" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
 local bank_users = redis:smembers(bot_id.."booob")
 my_num_in_bank = {}
 for k,v in pairs(bank_users) do
@@ -8911,7 +8911,7 @@ table.insert(my_num_in_bank, {math.floor(tonumber(mony)) , v})
 end
 table.sort(my_num_in_bank, function(a, b) return a[1] > b[1] end)
 for k,v in pairs(my_num_in_bank) do
-if tonumber(v[2]) == tonumber(Remsg.sender_id.user_id) then
+if tonumber(v[2]) == tonumber(Remsg.sender.user_id) then
 local mony = v[1]
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ترتيبه ( "..k.." )","md",true)
 end
@@ -8926,13 +8926,13 @@ local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = 'الزرف', data = msg.sender_id.user_id..'/topzrf'},{text = 'الفلوس', data = msg.sender_id.user_id..'/topmon'},{text = 'زواجات', data = msg.sender_id.user_id..'/zoztee'},
+{text = 'الزرف', data = msg.sender.user_id..'/topzrf'},{text = 'الفلوس', data = msg.sender.user_id..'/topmon'},{text = 'زواجات', data = msg.sender.user_id..'/zoztee'},
 },
 {
-{text = 'المتبرعين', data = msg.sender_id.user_id..'/motbra'},{text = 'الشركات', data = msg.sender_id.user_id..'/shrkatt'},
+{text = 'المتبرعين', data = msg.sender.user_id..'/motbra'},{text = 'الشركات', data = msg.sender.user_id..'/shrkatt'},
 },
 {
-{text = '‹ اخفاء ›', data = msg.sender_id.user_id..'/delAmr'}, 
+{text = '‹ اخفاء ›', data = msg.sender.user_id..'/delAmr'}, 
 },
 {
 {text = '⌁ : LARrY TEaM .', url="t.me/EEEFBB"},
@@ -8942,13 +8942,13 @@ data = {
 return bot.sendText(msg.chat_id,msg.id,toptop,"md",false, false, false, false, reply_markup)
 end
 if text == "توب فلوس" or text == "توب الفلوس" then
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = "["..ban.first_name.."]("..ban.first_name..")"
 else
 news = " لا يوجد"
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local bank_users = redis:smembers(bot_id.."booob")
 if #bank_users == 0 then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : لا يوجد حسابات في البنك","md",true)
@@ -8994,7 +8994,7 @@ emoji ={
 "30)"
 }
 for k,v in pairs(mony_list) do
-if tonumber(msg.sender_id.user_id) == tonumber(v[2]) then
+if tonumber(msg.sender.user_id) == tonumber(v[2]) then
 YRank = k
 end
 if num <= 30 then
@@ -9021,13 +9021,13 @@ data = {
 return bot.sendText(msg.chat_id,msg.id,top_mony..gg,"md",false, false, false, false, reply_markup)
 end
 if text == "توب الحراميه" or text == "توب الحرامية" or text == "توب حراميه" or text == "توب الزرف" or text == "توب زرف" then
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = "["..ban.first_name.."]("..ban.first_name..")"
 else
 news = " لا يوجد"
 end
-zrfee = redis:get(bot_id.."rrfff"..msg.sender_id.user_id) or 0
+zrfee = redis:get(bot_id.."rrfff"..msg.sender.user_id) or 0
 local ty_users = redis:smembers(bot_id.."rrfffid")
 if #ty_users == 0 then
 return bot.sendText(chat_id,msg_id,"⌁ : لا يوجد احد","md",true)
@@ -9087,17 +9087,17 @@ data = {
 return bot.sendText(msg.chat_id,msg.id,ty_anubis..gg,"md",false, false, false, false, reply_markup)
 end
 if text == 'رشوة' or text == 'رشوه' or text == 'رشوى' or text == 'رشوا' then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."iioo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iioo" .. msg.sender_id.user_id) / 60
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."iioo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iioo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : من شوي اخذت رشوة استنى "..math.floor(hours).." دقيقة","md",true)
 end
-if redis:ttl(bot_id.."polrsho" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."polrsho" .. msg.sender_id.user_id) / 60
+if redis:ttl(bot_id.."polrsho" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."polrsho" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : انتا بالسجن 🏤\n⌁ : استنى "..math.floor(hours).." دقيقة\n","md",true)
 end
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
 if shkse == "طيبة" then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : شخصيتك طيبة ماتكدر تاخذ رشوة","md",true)
 end
@@ -9105,13 +9105,13 @@ local daddd = {"1", "2", "3", "4",}
 local haddd = daddd[math.random(#daddd)]
 if haddd == "1" or haddd == "2" or haddd == "3" then
 local jjjo = math.random(200,7000);
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 bakigcj = ballanceed + jjjo
-redis:set(bot_id.."boob"..msg.sender_id.user_id , bakigcj)
+redis:set(bot_id.."boob"..msg.sender.user_id , bakigcj)
 bot.sendText(msg.chat_id,msg.id,"⌁ : هذه رشوة بطل زرف "..jjjo.." دينار 💵","md",true)
-redis:setex(bot_id.."iioo" .. msg.sender_id.user_id,620, true)
+redis:setex(bot_id.."iioo" .. msg.sender.user_id,620, true)
 else
-redis:setex(bot_id.."polrsho" .. msg.sender_id.user_id,320, true)
+redis:setex(bot_id.."polrsho" .. msg.sender.user_id,320, true)
 bot.sendText(msg.chat_id,msg.id, "⌁ : مسكتك الشرطة وانتا ترتشي 🚔\n","md",true)
 end
 else
@@ -9124,22 +9124,22 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."iioo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iioo" .. msg.sender_id.user_id) / 60
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."iioo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iioo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : من شوي اخذت بخشيش استنى "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
 if shkse == "شريرة" then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : شخصيتك شريرة ماتكدر تاخذ بخشيش","md",true, false, false, false, reply_markup)
 end
 local jjjo = math.random(200,5000);
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 bakigcj = ballanceed + jjjo
-redis:set(bot_id.."boob"..msg.sender_id.user_id , bakigcj)
+redis:set(bot_id.."boob"..msg.sender.user_id , bakigcj)
 bot.sendText(msg.chat_id,msg.id,"⌁ : تكرم وهي بخشيش "..jjjo.." دينار 💵","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."iioo" .. msg.sender_id.user_id,620, true)
+redis:setex(bot_id.."iioo" .. msg.sender.user_id,620, true)
 else
 bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل ↢ ( `انشاء حساب بنكي` )","md",true, false, false, false, reply_markup)
 end
@@ -9150,7 +9150,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`زرف` بالرد","md",true, false, false, false, reply_markup)
 return false
 end
@@ -9163,75 +9163,75 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
 if shkse == "طيبة" then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : شخصيتك طيبة ماتكدر تزرف العالم","md",true, false, false, false, reply_markup)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true, false, false, false, reply_markup)
 return false
 end
-if Remsg.sender_id.user_id == msg.sender_id.user_id then
+if Remsg.sender.user_id == msg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : بدك تزرف نفسك 🤡*","md",true, false, false, false, reply_markup)  
 return false
 end
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-if redis:ttl(bot_id.."polic" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."polic" .. msg.sender_id.user_id) / 60
+if redis:ttl(bot_id.."polic" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."polic" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : انتا بالسجن 🏤 استنى "..math.floor(hours).." دقائق\n","md",true, false, false, false, reply_markup)
 end
-if redis:ttl(bot_id.."hrame" .. Remsg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."hrame" .. Remsg.sender_id.user_id) / 60
+if redis:ttl(bot_id.."hrame" .. Remsg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."hrame" .. Remsg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : ذا المسكين مزروف قبل شوي\n⌁ : يمديك تزرفه بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
 if tonumber(ballanceed) < 199 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تزرفه فلوسه اقل من 200 دينار 💵","md",true, false, false, false, reply_markup)
 end
-shkseto = redis:get(bot_id.."shkse"..Remsg.sender_id.user_id)
+shkseto = redis:get(bot_id.."shkse"..Remsg.sender.user_id)
 if shkseto == "طيبة" then
 local hrame = math.floor(math.random() * 200) + 1;
-local ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
-local ballancope = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
+local ballancope = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 zrfne = ballanceed - hrame
 zrfnee = ballancope + hrame
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(zrfnee))
-redis:set(bot_id.."boob"..Remsg.sender_id.user_id , math.floor(zrfne))
-redis:setex(bot_id.."hrame" .. Remsg.sender_id.user_id,620, true)
-local zoropeo = redis:get(bot_id.."rrfff"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(zrfnee))
+redis:set(bot_id.."boob"..Remsg.sender.user_id , math.floor(zrfne))
+redis:setex(bot_id.."hrame" .. Remsg.sender.user_id,620, true)
+local zoropeo = redis:get(bot_id.."rrfff"..msg.sender.user_id) or 0
 zoroprod = zoropeo + hrame
-redis:set(bot_id.."rrfff"..msg.sender_id.user_id,zoroprod)
-redis:sadd(bot_id.."rrfffid",msg.sender_id.user_id)
-local ban = bot.getUser(Remsg.sender_id.user_id)
+redis:set(bot_id.."rrfff"..msg.sender.user_id,zoroprod)
+redis:sadd(bot_id.."rrfffid",msg.sender.user_id)
+local ban = bot.getUser(Remsg.sender.user_id)
 if ban.first_name then
 news = "["..ban.first_name.."](tg://user?id="..ban.id..")"
 else
 news = " لا يوجد اسم"
 end
-redis:set(bot_id.."msrokid"..msg.chat_id..Remsg.sender_id.user_id,Remsg.sender_id.user_id)
-redis:set(bot_id.."hrameid"..msg.chat_id..Remsg.sender_id.user_id,msg.sender_id.user_id)
-redis:set(bot_id.."balcmsrok"..msg.chat_id..Remsg.sender_id.user_id,hrame)
-redis:setex(bot_id.."timehrame"..msg.chat_id..msg.sender_id.user_id,30, true)
+redis:set(bot_id.."msrokid"..msg.chat_id..Remsg.sender.user_id,Remsg.sender.user_id)
+redis:set(bot_id.."hrameid"..msg.chat_id..Remsg.sender.user_id,msg.sender.user_id)
+redis:set(bot_id.."balcmsrok"..msg.chat_id..Remsg.sender.user_id,hrame)
+redis:setex(bot_id.."timehrame"..msg.chat_id..msg.sender.user_id,30, true)
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 bot.sendText(msg.chat_id,0, "⌁ : "..news.." في حرامي زرفك "..hrame.." دينار 💵\n⌁ : رد عليه بكلمة ( شرطه )\n⌁ : معك 30 ثانية\n","md",true, false, false, false, reply_markup)
 else
 local hrame = math.floor(math.random() * 200) + 1;
-local ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
-local ballancope = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
+local ballancope = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 zrfne = ballanceed - hrame
 zrfnee = ballancope + hrame
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(zrfnee))
-redis:set(bot_id.."boob"..Remsg.sender_id.user_id , math.floor(zrfne))
-redis:setex(bot_id.."hrame" .. Remsg.sender_id.user_id,620, true)
-local zoropeo = redis:get(bot_id.."rrfff"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(zrfnee))
+redis:set(bot_id.."boob"..Remsg.sender.user_id , math.floor(zrfne))
+redis:setex(bot_id.."hrame" .. Remsg.sender.user_id,620, true)
+local zoropeo = redis:get(bot_id.."rrfff"..msg.sender.user_id) or 0
 zoroprod = zoropeo + hrame
-redis:set(bot_id.."rrfff"..msg.sender_id.user_id,zoroprod)
-redis:sadd(bot_id.."rrfffid",msg.sender_id.user_id)
+redis:set(bot_id.."rrfff"..msg.sender.user_id,zoroprod)
+redis:sadd(bot_id.."rrfffid",msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id, "⌁ : خذ يالحرامي زرفته "..hrame.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 else
@@ -9252,18 +9252,18 @@ local UserInfo = bot.getUser(UserId_Info.id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : هذا بوت 🤡 ","md",true)  
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local hrameid = redis:get(bot_id.."hrameid"..msg.chat_id..msg.sender_id.user_id)
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local hrameid = redis:get(bot_id.."hrameid"..msg.chat_id..msg.sender.user_id)
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
 if shkse == "شريرة" then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : شخصيتك شريرة ماتكدر تطلب الشرطة","md",true)
 end
 if redis:get(bot_id.."timehrame" .. hrameid) then
 local hours = redis:ttl(bot_id.."timehrame" .. hrameid)
-local msrokid = redis:get(bot_id.."msrokid"..msg.chat_id..msg.sender_id.user_id)
-local hrameid = redis:get(bot_id.."hrameid"..msg.chat_id..msg.sender_id.user_id)
-local balcmsrok = redis:get(bot_id.."balcmsrok"..msg.chat_id..msg.sender_id.user_id) or 0
-if tonumber(hrameid) == UserId_Info.id and tonumber(msrokid) == msg.sender_id.user_id then
+local msrokid = redis:get(bot_id.."msrokid"..msg.chat_id..msg.sender.user_id)
+local hrameid = redis:get(bot_id.."hrameid"..msg.chat_id..msg.sender.user_id)
+local balcmsrok = redis:get(bot_id.."balcmsrok"..msg.chat_id..msg.sender.user_id) or 0
+if tonumber(hrameid) == UserId_Info.id and tonumber(msrokid) == msg.sender.user_id then
 local ballancehrame = redis:get(bot_id.."boob"..hrameid) or 0
 local ballancmsrok = redis:get(bot_id.."boob"..msrokid) or 0
 ballancehramenow = tonumber(ballancehrame) - tonumber(balcmsrok)
@@ -9277,10 +9277,10 @@ else
 news = " لا يوجد اسم"
 end
 redis:setex(bot_id.."polic" .. hrameid,620, true)
-redis:del(bot_id.."msrokid" ..msg.chat_id..msg.sender_id.user_id) 
-redis:del(bot_id.."hrameid" ..msg.chat_id..msg.sender_id.user_id) 
-redis:del(bot_id.."balcmsrok" ..msg.chat_id..msg.sender_id.user_id)
-redis:del(bot_id.."timehrame" ..msg.chat_id..msg.sender_id.user_id)
+redis:del(bot_id.."msrokid" ..msg.chat_id..msg.sender.user_id) 
+redis:del(bot_id.."hrameid" ..msg.chat_id..msg.sender.user_id) 
+redis:del(bot_id.."balcmsrok" ..msg.chat_id..msg.sender.user_id)
+redis:del(bot_id.."timehrame" ..msg.chat_id..msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id,"⌁ : كفو مسكته الشرطة 👨‍✈️\n⌁ : الحرامي : "..news.."\n⌁ : تم اعادة فلوسك : "..tonumber(balcmsrok).." دينار 💵\n⌁ : سيتم سجن الحرامي\n","md",true)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : تم التحقيق معه وتبين مو هو الحرامي\n⌁ : باقي معك "..math.floor(hours).." ثانية\n","md",true)
@@ -9292,24 +9292,24 @@ end
 end
 
 if text == 'شرطه' or text == 'الشرطه' or text == 'شرطة' and tonumber(msg.reply_to_message_id) ~= 0 then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true)
 return false
 end
-local hrameid = redis:get(bot_id.."hrameid"..msg.chat_id..msg.sender_id.user_id)
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
+local hrameid = redis:get(bot_id.."hrameid"..msg.chat_id..msg.sender.user_id)
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
 if shkse == "شريرة" then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : شخصيتك شريرة ماتكدر تطلب الشرطة","md",true)
 end
 if redis:get(bot_id.."timehrame" .. hrameid) then
 local hours = redis:ttl(bot_id.."timehrame" .. hrameid)
-local msrokid = redis:get(bot_id.."msrokid"..msg.chat_id..msg.sender_id.user_id)
-local hrameid = redis:get(bot_id.."hrameid"..msg.chat_id..msg.sender_id.user_id)
-local balcmsrok = redis:get(bot_id.."balcmsrok"..msg.chat_id..msg.sender_id.user_id) or 0
-if tonumber(hrameid) == Remsg.sender_id.user_id and tonumber(msrokid) == msg.sender_id.user_id then
+local msrokid = redis:get(bot_id.."msrokid"..msg.chat_id..msg.sender.user_id)
+local hrameid = redis:get(bot_id.."hrameid"..msg.chat_id..msg.sender.user_id)
+local balcmsrok = redis:get(bot_id.."balcmsrok"..msg.chat_id..msg.sender.user_id) or 0
+if tonumber(hrameid) == Remsg.sender.user_id and tonumber(msrokid) == msg.sender.user_id then
 local ballancehrame = redis:get(bot_id.."boob"..hrameid) or 0
 local ballancmsrok = redis:get(bot_id.."boob"..msrokid) or 0
 ballancehramenow = tonumber(ballancehrame) - tonumber(balcmsrok)
@@ -9323,10 +9323,10 @@ else
 news = " لا يوجد اسم"
 end
 redis:setex(bot_id.."polic" .. hrameid,620, true)
-redis:del(bot_id.."msrokid" ..msg.chat_id..msg.sender_id.user_id) 
-redis:del(bot_id.."hrameid" ..msg.chat_id..msg.sender_id.user_id) 
-redis:del(bot_id.."balcmsrok" ..msg.chat_id..msg.sender_id.user_id) 
-redis:del(bot_id.."timehrame" ..msg.chat_id..msg.sender_id.user_id)
+redis:del(bot_id.."msrokid" ..msg.chat_id..msg.sender.user_id) 
+redis:del(bot_id.."hrameid" ..msg.chat_id..msg.sender.user_id) 
+redis:del(bot_id.."balcmsrok" ..msg.chat_id..msg.sender.user_id) 
+redis:del(bot_id.."timehrame" ..msg.chat_id..msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id,"⌁ : كفو مسكته الشرطة 👨‍✈️\n⌁ : الحرامي : "..news.."\n⌁ : تم اعادة فلوسك : "..tonumber(balcmsrok).." دينار 💵\n⌁ : سيتم سجن الحرامي\n","md",true)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : تم التحقيق معه وتبين مو هو الحرامي\n⌁ : باقي معك "..math.floor(hours).." ثانية\n","md",true)
@@ -9342,159 +9342,159 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."iiioo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."iiioo" .. msg.sender_id.user_id) / 60
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."iiioo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."iiioo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : راتبك بينزل بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 neews = "["..ban.first_name.."](tg://user?id="..ban.id..")"
 else
 neews = " لا يوجد "
 end
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id) or 1
-ratbtrans = redis:get(bot_id.."ratbtrans"..msg.sender_id.user_id) or 1
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id) or 1
+ratbtrans = redis:get(bot_id.."ratbtrans"..msg.sender.user_id) or 1
 if shkse == "طيبة" then
 if tonumber(ratbinc) >= 270 and tonumber(ratbtrans) == 10 then
 local ratpep = ballancee + 500000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 300 or tonumber(ratbinc) == 301 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 500000 دينار 💵\n⌁ : وظيفتك : ملك 👑\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,300)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,300)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 500000 دينار 💵\n⌁ : وظيفتك : ملك 👑\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 240 and tonumber(ratbtrans) == 9 then
 local ratpep = ballancee + 200000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id) or 0
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id) or 0
 if tonumber(ratbinc) == 270 or tonumber(ratbinc) == 271 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 200000 دينار 💵\n⌁ : وظيفتك : امير 🤵‍♂️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,270)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,270)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 200000 دينار ??\n⌁ : وظيفتك : امير 🤵‍♂️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 210 and tonumber(ratbtrans) == 8 then
 local ratpep = ballancee + 100000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 240 or tonumber(ratbinc) == 241 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 100000 دينار 💵\n⌁ : وظيفتك : وزير 🤵‍♂️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,240)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,240)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 100000 دينار 💵\n⌁ : وظيفتك : وزير 🤵‍♂️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 180 and tonumber(ratbtrans) == 7 then
 local ratpep = ballancee + 70000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 210 or tonumber(ratbinc) == 211 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 70000 دينار 💵\n⌁ : وظيفتك : بزنس مان كبير 💸\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,210)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,210)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 70000 دينار 💵\n⌁ : وظيفتك : بزنس مان كبير 💸\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 150 and tonumber(ratbtrans) == 6 then
 local ratpep = ballancee + 40000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 180 or tonumber(ratbinc) == 181 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 40000 دينار 💵\n⌁ : وظيفتك : تاجر صغير 💰\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,180)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,180)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 40000 دينار 💵\n⌁ : وظيفتك : تاجر صغير 💰\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 120 and tonumber(ratbtrans) == 5 then
 local ratpep = ballancee + 25000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 150 or tonumber(ratbinc) == 151 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 25000 دينار 💵\n⌁ : وظيفتك : طيار 👨‍✈️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,150)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,150)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 25000 دينار 💵\n⌁ : وظيفتك : طيار 👨‍✈️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 90 and tonumber(ratbtrans) == 4 then
 local ratpep = ballancee + 18000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 120 or tonumber(ratbinc) == 121 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 18000 دينار 💵\n⌁ : وظيفتك : دكتور 👨‍⚕️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,120)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,120)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 18000 دينار 💵\n⌁ : وظيفتك : دكتور 👨‍⚕️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 60 and tonumber(ratbtrans) == 3 then
 local ratpep = ballancee + 9000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 90 or tonumber(ratbinc) == 91 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 9000 دينار 💵\n⌁ : وظيفتك : صيدلي 👨‍??\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,90)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,90)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 9000 دينار 💵\n⌁ : وظيفتك : صيدلي 👨‍🔬\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 30 and tonumber(ratbtrans) == 2 then
 local ratpep = ballancee + 2500
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 60 or tonumber(ratbinc) == 61 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 2500 دينار 💵\n⌁ : وظيفتك : نجار 👨‍🔧\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,60)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,60)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 2500 دينار 💵\n⌁ : وظيفتك : نجار 👨‍🔧\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 1 and tonumber(ratbtrans) == 1 then
 local ratpep = ballancee + 500
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 30 or tonumber(ratbinc) == 31 then
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,30)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,30)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 500 دينار 💵\n⌁ : وظيفتك : قروي 👨‍🌾\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 500 دينار 💵\n⌁ : وظيفتك : قروي 👨‍🌾\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
@@ -9503,140 +9503,140 @@ end
 else
 if tonumber(ratbinc) >= 270 and tonumber(ratbtrans) == 10 then
 local ratpep = ballancee + 500000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 300 or tonumber(ratbinc) == 301 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 500000 دينار 💵\n⌁ : وظيفتك : ال تشابو 🧛‍♂️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,300)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,300)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 500000 دينار 💵\n⌁ : وظيفتك : ال تشابو 🧛‍♂️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 240 and tonumber(ratbtrans) == 9 then
 local ratpep = ballancee + 200000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 270 or tonumber(ratbinc) == 271 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 200000 دينار 💵\n⌁ : وظيفتك : بائع ممنوعات دولي 🎩\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,270)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,270)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 200000 دينار 💵\n⌁ : وظيفتك : بائع ممنوعات دولي 🎩\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 210 and tonumber(ratbtrans) == 8 then
 local ratpep = ballancee + 100000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 240 or tonumber(ratbinc) == 241 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 100000 دينار 💵\n⌁ : وظيفتك : تاجر ممنوعات 🧔‍♂️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,240)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,240)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 100000 دينار 💵\n⌁ : وظيفتك : تاجر ممنوعات 🧔‍♂️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 180 and tonumber(ratbtrans) == 7 then
 local ratpep = ballancee + 70000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 210 or tonumber(ratbinc) == 211 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 70000 دينار 💵\n⌁ : وظيفتك : بق بوس العصابة 🗣\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,210)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,210)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 70000 دينار 💵\n⌁ : وظيفتك : بق بوس العصابة 🗣\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 150 and tonumber(ratbtrans) == 6 then
 local ratpep = ballancee + 40000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 180 or tonumber(ratbinc) == 181 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 40000 دينار 💵\n⌁ : وظيفتك : مساعد رئيس العصابة 🦹‍♀️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,180)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,180)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 40000 دينار 💵\n⌁ : وظيفتك : مساعد رئيس العصابة 🦹‍♀️\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 120 and tonumber(ratbtrans) == 5 then
 local ratpep = ballancee + 25000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 150 or tonumber(ratbinc) == 151 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 25000 دينار 💵\n⌁ : وظيفتك : عضو عصابة 🙍\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,150)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,150)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 25000 دينار 💵\n⌁ : وظيفتك : عضو عصابة 🙍\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 90 and tonumber(ratbtrans) == 4 then
 local ratpep = ballancee + 18000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 120 or tonumber(ratbinc) == 121 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 18000 دينار 💵\n⌁ : وظيفتك : قاتل مأجور 🔫\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,120)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,120)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 18000 دينار 💵\n⌁ : وظيفتك : قاتل مأجور 🔫\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 60 and tonumber(ratbtrans) == 3 then
 local ratpep = ballancee + 9000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 90 or tonumber(ratbinc) == 91 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 9000 دينار 💵\n⌁ : وظيفتك : قاتل 🕴\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,90)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,90)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 9000 دينار 💵\n⌁ : وظيفتك : قاتل 🕴\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 30 and tonumber(ratbtrans) == 2 then
 local ratpep = ballancee + 2500
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 60 or tonumber(ratbinc) == 61 then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 2500 دينار 💵\n⌁ : وظيفتك : سارق 🥷\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,60)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,60)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 2500 دينار 💵\n⌁ : وظيفتك : سارق 🥷\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
 end
 elseif tonumber(ratbinc) >= 0 and tonumber(ratbtrans) == 1 then
 local ratpep = ballancee + 500
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ratpep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ratpep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
-redis:setex(bot_id.."iiioo" .. msg.sender_id.user_id,620, true)
-redis:incrby(bot_id.."ratbinc"..msg.sender_id.user_id,1)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id)
+redis:setex(bot_id.."iiioo" .. msg.sender.user_id,620, true)
+redis:incrby(bot_id.."ratbinc"..msg.sender.user_id,1)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id)
 if tonumber(ratbinc) == 30 or tonumber(ratbinc) == 31 then
-redis:set(bot_id.."ratbinc"..msg.sender_id.user_id,30)
+redis:set(bot_id.."ratbinc"..msg.sender.user_id,30)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 500 دينار 💵\n⌁ : وظيفتك : مشرد 👣\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n\nتستطيع الان تطوير راتبك ارسل ( `تطوير راتب` )\n","md",true, false, false, false, reply_markup)
 else
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار ايداع "..neews.."\n\n⌁ : المبلغ : 500 دينار 💵\n⌁ : وظيفتك : مشرد 👣\n⌁ : نوع العملية : اضافة راتب\n⌁ : تطوير الراتب : "..tonumber(ratbinc).."\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
@@ -9648,101 +9648,101 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل 
 end
 end
 if text == 'تطوير راتب' or text == 'تطوير الراتب' or text == 'تطوير راتبي' then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
-ratbinc = redis:get(bot_id.."ratbinc"..msg.sender_id.user_id) or 0
-ratbtrans = redis:get(bot_id.."ratbtrans"..msg.sender_id.user_id) or 1
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
+ratbinc = redis:get(bot_id.."ratbinc"..msg.sender.user_id) or 0
+ratbtrans = redis:get(bot_id.."ratbtrans"..msg.sender.user_id) or 1
 if shkse == "طيبة" then
 if tonumber(ratbinc) == 270 then
 if tonumber(ballanceed) < 1000000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 1000000000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,10)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,10)
 nowbalc = tonumber(ballancee) - 1000000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 1000000000 دينار 💵\n⌁ : اصبحت وظيفتك : ملك 👑\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 240 then
 if tonumber(ballanceed) < 200000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 200000000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,9)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,9)
 nowbalc = tonumber(ballancee) - 200000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 200000000 دينار 💵\n⌁ : اصبحت وظيفتك : امير 🤵\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 210 then
 if tonumber(ballanceed) < 30000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 30000000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,8)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,8)
 nowbalc = tonumber(ballancee) - 30000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 30000000 دينار 💵\n⌁ : اصبحت وظيفتك : وزير 🤵\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 180 then
 if tonumber(ballanceed) < 1000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 1000000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,7)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,7)
 nowbalc = tonumber(ballancee) - 1000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 1000000 دينار 💵\n⌁ : اصبحت وظيفتك : بزنس مان كبير 💸\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 150 then
 if tonumber(ballanceed) < 300000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 300000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,6)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,6)
 nowbalc = tonumber(ballancee) - 300000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 300000 دينار 💵\n⌁ : اصبحت وظيفتك : تاجر صغير 💰\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 120 then
 if tonumber(ballanceed) < 120000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 120000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,5)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,5)
 nowbalc = tonumber(ballancee) - 120000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 120000 دينار 💵\n⌁ : اصبحت وظيفتك : طيار 👨\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 90 then
 if tonumber(ballanceed) < 80000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 80000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,4)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,4)
 nowbalc = tonumber(ballancee) - 80000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 80000 دينار 💵\n⌁ : اصبحت وظيفتك : دكتور 👨\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 60 then
 if tonumber(ballanceed) < 30000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 30000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,3)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,3)
 nowbalc = tonumber(ballancee) - 30000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 30000 دينار 💵\n⌁ : اصبحت وظيفتك : صيدلي ‍👨\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 30 then
 if tonumber(ballanceed) < 3000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 3000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,2)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,2)
 nowbalc = tonumber(ballancee) - 3000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 3000 دينار 💵\n⌁ : اصبحت وظيفتك : نجار 👨\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 else
@@ -9753,90 +9753,90 @@ if tonumber(ratbinc) == 270 then
 if tonumber(ballanceed) < 1000000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 1000000000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,10)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,10)
 nowbalc = tonumber(ballancee) - 1000000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 1000000000 دينار 💵\n⌁ : اصبحت وظيفتك : ال تشابو 🧛\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 240 then
 if tonumber(ballanceed) < 200000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 200000000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,9)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,9)
 nowbalc = tonumber(ballancee) - 200000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 200000000 دينار 💵\n⌁ : اصبحت وظيفتك : بائع ممنوعات دولي 🎩\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 210 then
 if tonumber(ballanceed) < 30000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 30000000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,8)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,8)
 nowbalc = tonumber(ballancee) - 30000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 30000000 دينار 💵\n⌁ : اصبحت وظيفتك : تاجر ممنوعات 🧔‍♂️\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 180 then
 if tonumber(ballanceed) < 1000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 1000000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,7)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,7)
 nowbalc = tonumber(ballancee) - 1000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 1000000 دينار 💵\n⌁ : اصبحت وظيفتك : بق بوس العصابة 🗣\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 150 then
 if tonumber(ballanceed) < 300000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 300000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,6)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,6)
 nowbalc = tonumber(ballancee) - 300000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 300000 دينار 💵\n⌁ : اصبحت وظيفتك : مساعد رئيس العصابة 🦹\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 120 then
 if tonumber(ballanceed) < 120000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 120000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,5)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,5)
 nowbalc = tonumber(ballancee) - 120000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 120000 دينار 💵\n⌁ : اصبحت وظيفتك : عضو عصابة 🙍\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 90 then
 if tonumber(ballanceed) < 80000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 80000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,4)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,4)
 nowbalc = tonumber(ballancee) - 80000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 80000 دينار 💵\n⌁ : اصبحت وظيفتك : قاتل مأجور 🔫\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 60 then
 if tonumber(ballanceed) < 30000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 30000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,3)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,3)
 nowbalc = tonumber(ballancee) - 30000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 30000 دينار 💵\n⌁ : اصبحت وظيفتك : قاتل 🕴\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 elseif tonumber(ratbinc) == 30 then
 if tonumber(ballanceed) < 3000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تطور راتبك تحتاج مبلغ 3000 دينار 💵","md",true)
 end
-redis:del(bot_id.."ratbtrans"..msg.sender_id.user_id)
-redis:set(bot_id.."ratbtrans"..msg.sender_id.user_id,2)
+redis:del(bot_id.."ratbtrans"..msg.sender.user_id)
+redis:set(bot_id.."ratbtrans"..msg.sender.user_id,2)
 nowbalc = tonumber(ballancee) - 3000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(nowbalc))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(nowbalc))
 local convert_mony = string.format("%.0f",nowbalc)
 bot.sendText(msg.chat_id,msg.id,"⌁ : اشعار تطوير راتب\n\n⌁ : المبلغ : 3000 دينار 💵\n⌁ : اصبحت وظيفتك : سارق 🥷\n⌁ : رصيدك الان : "..convert_mony.." دينار 💵\n","md",true)
 else
@@ -9856,29 +9856,29 @@ end
 if text and text:match('^هجوم (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^هجوم (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true)  
 return false
 end
-if Remsg.sender_id.user_id == msg.sender_id.user_id then
+if Remsg.sender.user_id == msg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهاجم نفسك 🤡*","md",true)  
 return false
 end
-if redis:ttl(bot_id.."attack" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."attack" .. msg.sender_id.user_id) / 60
+if redis:ttl(bot_id.."attack" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."attack" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : خسرت بأخر معركة استنى "..math.floor(hours).." دقيقة","md",true)
 end
-if redis:ttl(bot_id.."defen" .. Remsg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."defen" .. Remsg.sender_id.user_id) / 60
+if redis:ttl(bot_id.."defen" .. Remsg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."defen" .. Remsg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : الخصم خسر بأخر معركة\n⌁ : يمديك تهاجمه بعد "..math.floor(hours).." دقيقة","md",true)
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-ballancope = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+ballancope = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
 if tonumber(ballancope) < 100000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تهجم فلوسك اقل من 100000 دينار 💵","md",true)
 end
@@ -9896,35 +9896,35 @@ return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسه ماتكفي","md",tru
 end
 local Textinggt = {"1", "2", "3", "4", "5", "6", "7", "8",}
 local Descriptioont = Textinggt[math.random(#Textinggt)]
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 neews = "["..ban.first_name.."](tg://user?id="..ban.id..")"
 else
 neews = " لا يوجد اسم "
 end
-local bann = bot.getUser(Remsg.sender_id.user_id)
+local bann = bot.getUser(Remsg.sender.user_id)
 if bann.first_name then
 neewss = "["..bann.first_name.."](tg://user?id="..bann.id..")"
 else
 neewss = " لا يوجد اسم"
 end
 if Descriptioont == "1" or Descriptioont == "3" then
-local ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
-local ballancope = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
+local ballancope = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 zrfne = ballancope - coniss
 drebattack = tonumber(coniss) / 100 * 25
 drebattackk = tonumber(coniss) - math.floor(drebattack)
 zrfnee = ballanceed + math.floor(drebattackk)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(zrfne))
-redis:set(bot_id.."boob"..Remsg.sender_id.user_id , math.floor(zrfnee))
-redis:setex(bot_id.."attack" .. msg.sender_id.user_id,600, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(zrfne))
+redis:set(bot_id.."boob"..Remsg.sender.user_id , math.floor(zrfnee))
+redis:setex(bot_id.."attack" .. msg.sender.user_id,600, true)
 local convert_mony = string.format("%.0f",drebattackk)
 local convert_monyy = string.format("%.0f",drebattack)
 bot.sendText(msg.chat_id,msg.id, "⌁ : لقد خسرت في المعركة "..neews.." 🛡\n⌁ : الفائز : "..neewss.."\n⌁ : الخاسر : "..neews.."\n⌁ : الجائزة : "..convert_mony.." دينار 💵\n⌁ : الضريبة : "..convert_monyy.." دينار 💵\n","md",true)
 elseif Descriptioont == "2" or Descriptioont == "4" or Descriptioont == "5" or  Descriptioont == "6" or Descriptioont == "8" then
-local ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
-local ballancope = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-begaatt = redis:get(bot_id.."numattack"..msg.sender_id.user_id) or 1000
+local ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
+local ballancope = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+begaatt = redis:get(bot_id.."numattack"..msg.sender.user_id) or 1000
 numattackk = tonumber(begaatt) - 1
 if numattackk == 0 then
 numattackk = 1
@@ -9932,21 +9932,21 @@ end
 attack = coniss / numattackk
 zrfne = ballancope + math.floor(attack)
 zrfnee = ballanceed - math.floor(attack)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(zrfne))
-redis:set(bot_id.."boob"..Remsg.sender_id.user_id , math.floor(zrfnee))
-redis:setex(bot_id.."defen" .. Remsg.sender_id.user_id,1800, true)
-redis:set(bot_id.."numattack"..msg.sender_id.user_id , math.floor(numattackk))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(zrfne))
+redis:set(bot_id.."boob"..Remsg.sender.user_id , math.floor(zrfnee))
+redis:setex(bot_id.."defen" .. Remsg.sender.user_id,1800, true)
+redis:set(bot_id.."numattack"..msg.sender.user_id , math.floor(numattackk))
 local convert_mony = string.format("%.0f",math.floor(attack))
 bot.sendText(msg.chat_id,msg.id, "⌁ : لقد فزت في المعركة\n⌁ : ودمرت قلعة "..neewss.." 🏰\n⌁ : الفائز : "..neews.."\n⌁ : الخاسر : "..neewss.."\n⌁ : الجائزة : "..convert_mony.." دينار 💵\n⌁ : نسبة قوة المهاجم اصبحت "..numattackk.." 🩸\n","md",true)
 elseif Descriptioont == "7" then
-local ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
-local ballancope = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
+local ballancope = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 halfzrf = coniss / 2
 zrfne = ballancope - halfzrf
 zrfnee = ballanceed + halfzrf
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(zrfne))
-redis:set(bot_id.."boob"..Remsg.sender_id.user_id , math.floor(zrfnee))
-redis:setex(bot_id.."attack" .. msg.sender_id.user_id,600, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(zrfne))
+redis:set(bot_id.."boob"..Remsg.sender.user_id , math.floor(zrfnee))
+redis:setex(bot_id.."attack" .. msg.sender.user_id,600, true)
 local convert_mony = string.format("%.0f",math.floor(halfzrf))
 bot.sendText(msg.chat_id,msg.id, "⌁ : لقد خسرت في المعركة "..neews.." 🛡\n⌁ : ولكن استطعت اعادة نصف الموارد\n⌁ : الفائز : "..neewss.."\n⌁ : الخاسر : "..neews.."\n⌁ : الجائزة : "..convert_mony.." دينار 💵\n","md",true)
 end
@@ -9958,7 +9958,7 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل 
 end
 end
 if text == "المعرض" or text == "معرض" then
-redis:setex(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id,60, true)
+redis:setex(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id,60, true)
 bot.sendText(msg.chat_id,msg.id,[[
 – اهلين فيك بمعرض لاري 
 - يتوفر لدينا حالياً :
@@ -9974,8 +9974,8 @@ bot.sendText(msg.chat_id,msg.id,[[
 ]],"md",true)  
 return false
 end
-if text == "سيارات" and redis:get(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id) then
-redis:del(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id) 
+if text == "سيارات" and redis:get(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id) then
+redis:del(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id) 
 bot.sendText(msg.chat_id,msg.id,[[
 – السيارات المتوفرة لدينا حالياً :
 
@@ -9994,8 +9994,8 @@ bot.sendText(msg.chat_id,msg.id,[[
 ]],"md",true)  
 return false
 end
-if text == "طيارات" and redis:get(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id) then
-redis:del(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id) 
+if text == "طيارات" and redis:get(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id) then
+redis:del(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id) 
 bot.sendText(msg.chat_id,msg.id,[[
 – الطيارات المتوفرة لدينا حالياً :
 
@@ -10010,8 +10010,8 @@ bot.sendText(msg.chat_id,msg.id,[[
 ]],"md",true)  
 return false
 end
-if text == "عقارات" and redis:get(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id) then
-redis:del(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id) 
+if text == "عقارات" and redis:get(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id) then
+redis:del(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id) 
 bot.sendText(msg.chat_id,msg.id,[[
 – العقارات المتوفرة لدينا حالياً :
 
@@ -10026,8 +10026,8 @@ bot.sendText(msg.chat_id,msg.id,[[
 ]],"md",true)  
 return false
 end
-if text == "مجوهرات" and redis:get(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id) then
-redis:del(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender_id.user_id) 
+if text == "مجوهرات" and redis:get(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id) then
+redis:del(bot_id.."marad" .. msg.chat_id .. ":" .. msg.sender.user_id) 
 bot.sendText(msg.chat_id,msg.id,[[
 – المجوهرات المتوفرة لدينا حالياً :
 
@@ -10046,26 +10046,26 @@ end
 if text and text:match('^شراء ماسه (.*)$') or text and text:match('^شراء ماسة (.*)$') then
 local UserName = text:match('^شراء ماسه (.*)$') or text:match('^شراء ماسة (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار ماسه بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 masmgr = tonumber(coniss) * 1000000
 if tonumber(ballance) < tonumber(masmgr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local mgrmasname = redis:get(bot_id.."mgrmasname"..msg.sender_id.user_id)
-local mgrmasprice = redis:get(bot_id.."mgrmasprice"..msg.sender_id.user_id) or 0
-local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender_id.user_id) or 0
+local mgrmasname = redis:get(bot_id.."mgrmasname"..msg.sender.user_id)
+local mgrmasprice = redis:get(bot_id.."mgrmasprice"..msg.sender.user_id) or 0
+local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender.user_id) or 0
 local mgrmasnow = tonumber(mgrmasnum) + tonumber(coniss)
-redis:set(bot_id.."mgrmasnum"..msg.sender_id.user_id , mgrmasnow)
+redis:set(bot_id.."mgrmasnum"..msg.sender.user_id , mgrmasnow)
 masnamed = "ماسه"
-redis:set(bot_id.."mgrmasname"..msg.sender_id.user_id , masnamed)
-redis:set(bot_id.."mgrmasprice"..msg.sender_id.user_id , 1000000)
+redis:set(bot_id.."mgrmasname"..msg.sender.user_id , masnamed)
+redis:set(bot_id.."mgrmasprice"..msg.sender.user_id , 1000000)
 totalypalice = tonumber(ballance) - tonumber(masmgr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(masmgr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء مجوهرات\nالنوع : ماسه \nاجمالي السعر : "..convert_monyy.." 💵\nعدد ماساتك : `"..mgrmasnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10076,26 +10076,26 @@ end
 if text and text:match('^شراء قلاده (.*)$') or text and text:match('^شراء قلادة (.*)$') then
 local UserName = text:match('^شراء قلاده (.*)$') or text:match('^شراء قلادة (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار قلاده بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 kldmgr = tonumber(coniss) * 500000
 if tonumber(ballance) < tonumber(kldmgr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local mgrkldname = redis:get(bot_id.."mgrkldname"..msg.sender_id.user_id)
-local mgrkldprice = redis:get(bot_id.."mgrkldprice"..msg.sender_id.user_id) or 0
-local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender_id.user_id) or 0
+local mgrkldname = redis:get(bot_id.."mgrkldname"..msg.sender.user_id)
+local mgrkldprice = redis:get(bot_id.."mgrkldprice"..msg.sender.user_id) or 0
+local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender.user_id) or 0
 local mgrkldnow = tonumber(mgrkldnum) + tonumber(coniss)
-redis:set(bot_id.."mgrkldnum"..msg.sender_id.user_id , mgrkldnow)
+redis:set(bot_id.."mgrkldnum"..msg.sender.user_id , mgrkldnow)
 kldnamed = "قلاده"
-redis:set(bot_id.."mgrkldname"..msg.sender_id.user_id , kldnamed)
-redis:set(bot_id.."mgrkldprice"..msg.sender_id.user_id , 500000)
+redis:set(bot_id.."mgrkldname"..msg.sender.user_id , kldnamed)
+redis:set(bot_id.."mgrkldprice"..msg.sender.user_id , 500000)
 totalypalice = tonumber(ballance) - tonumber(kldmgr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(kldmgr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء مجوهرات\nالنوع : قلاده \nاجمالي السعر : "..convert_monyy.." 💵\nعدد قلاداتك : `"..mgrkldnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10106,27 +10106,27 @@ end
 if text and text:match('^شراء سوار (.*)$') then
 local UserName = text:match('^شراء سوار (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار سوار بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 swrmgr = tonumber(coniss) * 200000
 if tonumber(ballance) < tonumber(swrmgr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local mgrswrname = redis:get(bot_id.."mgrswrname"..msg.sender_id.user_id)
-local mgrswrprice = redis:get(bot_id.."mgrswrprice"..msg.sender_id.user_id) or 0
-local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender_id.user_id) or 0
+local mgrswrname = redis:get(bot_id.."mgrswrname"..msg.sender.user_id)
+local mgrswrprice = redis:get(bot_id.."mgrswrprice"..msg.sender.user_id) or 0
+local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender.user_id) or 0
 local mgrswrnow = tonumber(mgrswrnum) + tonumber(coniss)
-redis:set(bot_id.."mgrswrnum"..msg.sender_id.user_id , mgrswrnow)
+redis:set(bot_id.."mgrswrnum"..msg.sender.user_id , mgrswrnow)
 swrnamed = "سوار"
-redis:set(bot_id.."mgrswrname"..msg.sender_id.user_id , swrnamed)
-redis:set(bot_id.."mgrswrprice"..msg.sender_id.user_id , 200000)
+redis:set(bot_id.."mgrswrname"..msg.sender.user_id , swrnamed)
+redis:set(bot_id.."mgrswrprice"..msg.sender.user_id , 200000)
 totalypalice = tonumber(ballance) - tonumber(swrmgr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(swrmgr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء مجوهرات\nالنوع : سوار \nاجمالي السعر : "..convert_monyy.." 💵\nعدد اساورك : `"..mgrswrnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10137,27 +10137,27 @@ end
 if text and text:match('^شراء خاتم (.*)$') then
 local UserName = text:match('^شراء خاتم (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار خاتم بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 ktmmgr = tonumber(coniss) * 50000
 if tonumber(ballance) < tonumber(ktmmgr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local mgrktmname = redis:get(bot_id.."mgrktmname"..msg.sender_id.user_id)
-local mgrktmprice = redis:get(bot_id.."mgrktmprice"..msg.sender_id.user_id) or 0
-local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender_id.user_id) or 0
+local mgrktmname = redis:get(bot_id.."mgrktmname"..msg.sender.user_id)
+local mgrktmprice = redis:get(bot_id.."mgrktmprice"..msg.sender.user_id) or 0
+local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender.user_id) or 0
 local mgrktmnow = tonumber(mgrktmnum) + tonumber(coniss)
-redis:set(bot_id.."mgrktmnum"..msg.sender_id.user_id , mgrktmnow)
+redis:set(bot_id.."mgrktmnum"..msg.sender.user_id , mgrktmnow)
 ktmnamed = "خاتم"
-redis:set(bot_id.."mgrktmname"..msg.sender_id.user_id , ktmnamed)
-redis:set(bot_id.."mgrktmprice"..msg.sender_id.user_id , 50000)
+redis:set(bot_id.."mgrktmname"..msg.sender.user_id , ktmnamed)
+redis:set(bot_id.."mgrktmprice"..msg.sender.user_id , 50000)
 totalypalice = tonumber(ballance) - tonumber(ktmmgr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(ktmmgr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء مجوهرات\nالنوع : خاتم \nاجمالي السعر : "..convert_monyy.." 💵\nعدد خواتمك : `"..mgrktmnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10168,29 +10168,29 @@ end
 if text and text:match('^بيع ماسه (.*)$') then
 local UserName = text:match('^بيع ماسه (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender_id.user_id) or 0
+local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender.user_id) or 0
 if tonumber(mgrmasnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك ماسات ","md",true)
 end
 if tonumber(mgrmasnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." ماسه","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local mgrmasname = redis:get(bot_id.."mgrmasname"..msg.sender_id.user_id)
-local mgrmasprice = redis:get(bot_id.."mgrmasprice"..msg.sender_id.user_id) or 0
-local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local mgrmasname = redis:get(bot_id.."mgrmasname"..msg.sender.user_id)
+local mgrmasprice = redis:get(bot_id.."mgrmasprice"..msg.sender.user_id) or 0
+local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender.user_id) or 0
 local mgrmasnow = tonumber(mgrmasnum) - tonumber(coniss)
-redis:set(bot_id.."mgrmasnum"..msg.sender_id.user_id , mgrmasnow)
+redis:set(bot_id.."mgrmasnum"..msg.sender.user_id , mgrmasnow)
 sellmgr = tonumber(coniss) * 900000
 totalypalice = tonumber(ballanceed) + sellmgr
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender_id.user_id) or 0
+local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender.user_id) or 0
 if tonumber(mgrmasnum) == 0 then
-redis:del(bot_id.."mgrmasname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrmasnum"..msg.sender_id.user_id)
+redis:del(bot_id.."mgrmasname"..msg.sender.user_id)
+redis:del(bot_id.."mgrmasnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع مجوهرات\nالنوع : ماسه \nالعدد : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellmgr).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10200,29 +10200,29 @@ end
 if text and text:match('^بيع قلاده (.*)$') or text and text:match('^شراء قلادة (.*)$') then
 local UserName = text:match('^بيع قلاده (.*)$') or text:match('^شراء قلادة (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender_id.user_id) or 0
+local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender.user_id) or 0
 if tonumber(mgrkldnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك قلادات ","md",true)
 end
 if tonumber(mgrkldnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." قلاده ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local mgrkldname = redis:get(bot_id.."mgrkldname"..msg.sender_id.user_id)
-local mgrkldprice = redis:get(bot_id.."mgrkldprice"..msg.sender_id.user_id) or 0
-local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local mgrkldname = redis:get(bot_id.."mgrkldname"..msg.sender.user_id)
+local mgrkldprice = redis:get(bot_id.."mgrkldprice"..msg.sender.user_id) or 0
+local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender.user_id) or 0
 local mgrkldnow = tonumber(mgrkldnum) - tonumber(coniss)
-redis:set(bot_id.."mgrkldnum"..msg.sender_id.user_id , mgrkldnow)
+redis:set(bot_id.."mgrkldnum"..msg.sender.user_id , mgrkldnow)
 sellkld = tonumber(coniss) * 400000
 totalypalice = tonumber(ballanceed) + sellkld
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender_id.user_id) or 0
+local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender.user_id) or 0
 if tonumber(mgrkldnum) == 0 then
-redis:del(bot_id.."mgrkldname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrkldnum"..msg.sender_id.user_id)
+redis:del(bot_id.."mgrkldname"..msg.sender.user_id)
+redis:del(bot_id.."mgrkldnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع مجوهرات\nالنوع : قلاده \nالعدد : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellkld).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10232,29 +10232,29 @@ end
 if text and text:match('^بيع سوار (.*)$') then
 local UserName = text:match('^بيع سوار (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender_id.user_id) or 0
+local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender.user_id) or 0
 if tonumber(mgrswrnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك اساور ","md",true)
 end
 if tonumber(mgrswrnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سوار ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local mgrswrname = redis:get(bot_id.."mgrswrname"..msg.sender_id.user_id)
-local mgrswrprice = redis:get(bot_id.."mgrswrprice"..msg.sender_id.user_id) or 0
-local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local mgrswrname = redis:get(bot_id.."mgrswrname"..msg.sender.user_id)
+local mgrswrprice = redis:get(bot_id.."mgrswrprice"..msg.sender.user_id) or 0
+local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender.user_id) or 0
 local mgrswrnow = tonumber(mgrswrnum) - tonumber(coniss)
-redis:set(bot_id.."mgrswrnum"..msg.sender_id.user_id , mgrswrnow)
+redis:set(bot_id.."mgrswrnum"..msg.sender.user_id , mgrswrnow)
 sellswr = tonumber(coniss) * 150000
 totalypalice = tonumber(ballanceed) + sellswr
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender_id.user_id) or 0
+local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender.user_id) or 0
 if tonumber(mgrswrnum) == 0 then
-redis:del(bot_id.."mgrswrname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrswrnum"..msg.sender_id.user_id)
+redis:del(bot_id.."mgrswrname"..msg.sender.user_id)
+redis:del(bot_id.."mgrswrnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع مجوهرات\nالنوع : سوار \nالعدد : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellswr).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10264,29 +10264,29 @@ end
 if text and text:match('^بيع خاتم (.*)$') then
 local UserName = text:match('^بيع خاتم (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender_id.user_id) or 0
+local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender.user_id) or 0
 if tonumber(mgrktmnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك خواتم ","md",true)
 end
 if tonumber(mgrktmnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." خاتم ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local mgrktmname = redis:get(bot_id.."mgrktmname"..msg.sender_id.user_id)
-local mgrktmprice = redis:get(bot_id.."mgrktmprice"..msg.sender_id.user_id) or 0
-local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local mgrktmname = redis:get(bot_id.."mgrktmname"..msg.sender.user_id)
+local mgrktmprice = redis:get(bot_id.."mgrktmprice"..msg.sender.user_id) or 0
+local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender.user_id) or 0
 local mgrktmnow = tonumber(mgrktmnum) - tonumber(coniss)
-redis:set(bot_id.."mgrktmnum"..msg.sender_id.user_id , mgrktmnow)
+redis:set(bot_id.."mgrktmnum"..msg.sender.user_id , mgrktmnow)
 sellktm = tonumber(coniss) * 40000
 totalypalice = tonumber(ballanceed) + sellktm
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender_id.user_id) or 0
+local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender.user_id) or 0
 if tonumber(mgrktmnum) == 0 then
-redis:del(bot_id.."mgrktmname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrktmnum"..msg.sender_id.user_id)
+redis:del(bot_id.."mgrktmname"..msg.sender.user_id)
+redis:del(bot_id.."mgrktmnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع مجوهرات\nالنوع : خاتم \nالعدد : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellktm).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10296,9 +10296,9 @@ end
 if text and text:match('^اهداء ماسه (.*)$') or text and text:match('^اهداء ماسة (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء ماسه (.*)$') or text:match('^اهداء ماسة (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender_id.user_id) or 0
+local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender.user_id) or 0
 if tonumber(mgrmasnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك ماسات ","md",true)
 end
@@ -10306,24 +10306,24 @@ if tonumber(mgrmasnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." ماسه ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender.user_id) or 0
 local mgrmasnow = tonumber(mgrmasnum) - tonumber(coniss)
-redis:set(bot_id.."mgrmasnum"..msg.sender_id.user_id , mgrmasnow)
-local mgrmasnumm = redis:get(bot_id.."mgrmasnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."mgrmasnum"..msg.sender.user_id , mgrmasnow)
+local mgrmasnumm = redis:get(bot_id.."mgrmasnum"..Remsg.sender.user_id) or 0
 local mgrmasnoww = tonumber(mgrmasnumm) + tonumber(coniss)
-redis:set(bot_id.."mgrmasnum"..Remsg.sender_id.user_id , mgrmasnoww)
+redis:set(bot_id.."mgrmasnum"..Remsg.sender.user_id , mgrmasnoww)
 masnamed = "ماسه"
-redis:set(bot_id.."mgrmasname"..Remsg.sender_id.user_id,masnamed)
-local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."mgrmasname"..Remsg.sender.user_id,masnamed)
+local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender.user_id) or 0
 if tonumber(mgrmasnum) == 0 then
-redis:del(bot_id.."mgrmasname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrmasnum"..msg.sender_id.user_id)
+redis:del(bot_id.."mgrmasname"..msg.sender.user_id)
+redis:del(bot_id.."mgrmasnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) ماسه\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10336,9 +10336,9 @@ end
 if text and text:match('^اهداء قلاده (.*)$') or text and text:match('^اهداء قلادة (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء قلاده (.*)$') or text:match('^اهداء قلادة (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender_id.user_id) or 0
+local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender.user_id) or 0
 if tonumber(mgrkldnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك قلادات ","md",true)
 end
@@ -10346,24 +10346,24 @@ if tonumber(mgrkldnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." قلاده ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender.user_id) or 0
 local mgrkldnow = tonumber(mgrkldnum) - tonumber(coniss)
-redis:set(bot_id.."mgrkldnum"..msg.sender_id.user_id , mgrkldnow)
-local mgrkldnumm = redis:get(bot_id.."mgrkldnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."mgrkldnum"..msg.sender.user_id , mgrkldnow)
+local mgrkldnumm = redis:get(bot_id.."mgrkldnum"..Remsg.sender.user_id) or 0
 local mgrkldnoww = tonumber(mgrkldnumm) + tonumber(coniss)
-redis:set(bot_id.."mgrkldnum"..Remsg.sender_id.user_id , mgrkldnoww)
+redis:set(bot_id.."mgrkldnum"..Remsg.sender.user_id , mgrkldnoww)
 kldnamed = "قلاده"
-redis:set(bot_id.."mgrkldname"..Remsg.sender_id.user_id,kldnamed)
-local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."mgrkldname"..Remsg.sender.user_id,kldnamed)
+local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender.user_id) or 0
 if tonumber(mgrkldnum) == 0 then
-redis:del(bot_id.."mgrkldname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrkldnum"..msg.sender_id.user_id)
+redis:del(bot_id.."mgrkldname"..msg.sender.user_id)
+redis:del(bot_id.."mgrkldnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) قلاده\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10376,9 +10376,9 @@ end
 if text and text:match('^اهداء سوار (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء سوار (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender_id.user_id) or 0
+local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender.user_id) or 0
 if tonumber(mgrswrnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك اساور ","md",true)
 end
@@ -10386,24 +10386,24 @@ if tonumber(mgrswrnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سوار","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender.user_id) or 0
 local mgrswrnow = tonumber(mgrswrnum) - tonumber(coniss)
-redis:set(bot_id.."mgrswrnum"..msg.sender_id.user_id , mgrswrnow)
-local mgrswrnumm = redis:get(bot_id.."mgrswrnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."mgrswrnum"..msg.sender.user_id , mgrswrnow)
+local mgrswrnumm = redis:get(bot_id.."mgrswrnum"..Remsg.sender.user_id) or 0
 local mgrswrnoww = tonumber(mgrswrnumm) + tonumber(coniss)
-redis:set(bot_id.."mgrswrnum"..Remsg.sender_id.user_id , mgrswrnoww)
+redis:set(bot_id.."mgrswrnum"..Remsg.sender.user_id , mgrswrnoww)
 swrnamed = "سوار"
-redis:set(bot_id.."mgrswrname"..Remsg.sender_id.user_id,swrnamed)
-local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."mgrswrname"..Remsg.sender.user_id,swrnamed)
+local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender.user_id) or 0
 if tonumber(mgrswrnum) == 0 then
-redis:del(bot_id.."mgrswrname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrswrnum"..msg.sender_id.user_id)
+redis:del(bot_id.."mgrswrname"..msg.sender.user_id)
+redis:del(bot_id.."mgrswrnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) سوار\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10416,9 +10416,9 @@ end
 if text and text:match('^اهداء خاتم (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء خاتم (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender_id.user_id) or 0
+local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender.user_id) or 0
 if tonumber(mgrktmnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك خواتم ","md",true)
 end
@@ -10426,24 +10426,24 @@ if tonumber(mgrktmnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." خاتم","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender.user_id) or 0
 local mgrktmnow = tonumber(mgrktmnum) - tonumber(coniss)
-redis:set(bot_id.."mgrktmnum"..msg.sender_id.user_id , mgrktmnow)
-local mgrktmnumm = redis:get(bot_id.."mgrktmnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."mgrktmnum"..msg.sender.user_id , mgrktmnow)
+local mgrktmnumm = redis:get(bot_id.."mgrktmnum"..Remsg.sender.user_id) or 0
 local mgrktmnoww = tonumber(mgrktmnumm) + tonumber(coniss)
-redis:set(bot_id.."mgrktmnum"..Remsg.sender_id.user_id , mgrktmnoww)
+redis:set(bot_id.."mgrktmnum"..Remsg.sender.user_id , mgrktmnoww)
 ktmnamed = "خاتم"
-redis:set(bot_id.."mgrktmname"..Remsg.sender_id.user_id,ktmnamed)
-local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."mgrktmname"..Remsg.sender.user_id,ktmnamed)
+local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender.user_id) or 0
 if tonumber(mgrktmnum) == 0 then
-redis:del(bot_id.."mgrktmname"..msg.sender_id.user_id)
-redis:del(bot_id.."mgrktmnum"..msg.sender_id.user_id)
+redis:del(bot_id.."mgrktmname"..msg.sender.user_id)
+redis:del(bot_id.."mgrktmnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) خاتم\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10456,27 +10456,27 @@ end
 if text and text:match('^شراء قصر (.*)$') then
 local UserName = text:match('^شراء قصر (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار قصر بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 ksrakr = tonumber(coniss) * 1000000
 if tonumber(ballance) < tonumber(ksrakr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local akrksrname = redis:get(bot_id.."akrksrname"..msg.sender_id.user_id)
-local akrksrprice = redis:get(bot_id.."akrksrprice"..msg.sender_id.user_id) or 0
-local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender_id.user_id) or 0
+local akrksrname = redis:get(bot_id.."akrksrname"..msg.sender.user_id)
+local akrksrprice = redis:get(bot_id.."akrksrprice"..msg.sender.user_id) or 0
+local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender.user_id) or 0
 local akrksrnow = tonumber(akrksrnum) + tonumber(coniss)
-redis:set(bot_id.."akrksrnum"..msg.sender_id.user_id , akrksrnow)
+redis:set(bot_id.."akrksrnum"..msg.sender.user_id , akrksrnow)
 ksrnamed = "قصر"
-redis:set(bot_id.."akrksrname"..msg.sender_id.user_id , ksrnamed)
-redis:set(bot_id.."akrksrprice"..msg.sender_id.user_id , 1000000)
+redis:set(bot_id.."akrksrname"..msg.sender.user_id , ksrnamed)
+redis:set(bot_id.."akrksrprice"..msg.sender.user_id , 1000000)
 totalypalice = tonumber(ballance) - tonumber(ksrakr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(ksrakr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء عقار\nنوع العقار : قصر \nاجمالي السعر : "..convert_monyy.." 💵\nعدد قصورك : `"..akrksrnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10487,27 +10487,27 @@ end
 if text and text:match('^شراء فيلا (.*)$') then
 local UserName = text:match('^شراء فيلا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار فيلا بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 felakr = tonumber(coniss) * 500000
 if tonumber(ballance) < tonumber(felakr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local akrfelname = redis:get(bot_id.."akrfelname"..msg.sender_id.user_id)
-local akrfelprice = redis:get(bot_id.."akrfelprice"..msg.sender_id.user_id) or 0
-local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender_id.user_id) or 0
+local akrfelname = redis:get(bot_id.."akrfelname"..msg.sender.user_id)
+local akrfelprice = redis:get(bot_id.."akrfelprice"..msg.sender.user_id) or 0
+local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender.user_id) or 0
 local akrfelnow = tonumber(akrfelnum) + tonumber(coniss)
-redis:set(bot_id.."akrfelnum"..msg.sender_id.user_id , akrfelnow)
+redis:set(bot_id.."akrfelnum"..msg.sender.user_id , akrfelnow)
 felnamed = "فيلا"
-redis:set(bot_id.."akrfelname"..msg.sender_id.user_id , felnamed)
-redis:set(bot_id.."akrfelprice"..msg.sender_id.user_id , 500000)
+redis:set(bot_id.."akrfelname"..msg.sender.user_id , felnamed)
+redis:set(bot_id.."akrfelprice"..msg.sender.user_id , 500000)
 totalypalice = tonumber(ballance) - tonumber(felakr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(felakr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء عقار\nنوع العقار : قصر \nاجمالي السعر : "..convert_monyy.." 💵\nعدد فيلاتك : `"..akrfelnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10518,27 +10518,27 @@ end
 if text and text:match('^شراء منزل (.*)$') then
 local UserName = text:match('^شراء منزل (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار منزل بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 mnzakr = tonumber(coniss) * 200000
 if tonumber(ballance) < tonumber(mnzakr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local akrmnzname = redis:get(bot_id.."akrmnzname"..msg.sender_id.user_id)
-local akrmnzprice = redis:get(bot_id.."akrmnzprice"..msg.sender_id.user_id) or 0
-local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender_id.user_id) or 0
+local akrmnzname = redis:get(bot_id.."akrmnzname"..msg.sender.user_id)
+local akrmnzprice = redis:get(bot_id.."akrmnzprice"..msg.sender.user_id) or 0
+local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender.user_id) or 0
 local akrmnznow = tonumber(akrmnznum) + tonumber(coniss)
-redis:set(bot_id.."akrmnznum"..msg.sender_id.user_id , akrmnznow)
+redis:set(bot_id.."akrmnznum"..msg.sender.user_id , akrmnznow)
 mnznamed = "منزل"
-redis:set(bot_id.."akrmnzname"..msg.sender_id.user_id , mnznamed)
-redis:set(bot_id.."akrmnzprice"..msg.sender_id.user_id , 200000)
+redis:set(bot_id.."akrmnzname"..msg.sender.user_id , mnznamed)
+redis:set(bot_id.."akrmnzprice"..msg.sender.user_id , 200000)
 totalypalice = tonumber(ballance) - tonumber(mnzakr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(mnzakr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء عقار\nنوع العقار : منزل \nاجمالي السعر : "..convert_monyy.." 💵\nعدد منازلك : `"..akrmnznow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10549,29 +10549,29 @@ end
 if text and text:match('^بيع قصر (.*)$') then
 local UserName = text:match('^بيع قصر (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender_id.user_id) or 0
+local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender.user_id) or 0
 if tonumber(akrksrnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك قصور ","md",true)
 end
 if tonumber(akrksrnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." قصر","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local akrksrname = redis:get(bot_id.."akrksrname"..msg.sender_id.user_id)
-local akrksrprice = redis:get(bot_id.."akrksrprice"..msg.sender_id.user_id) or 0
-local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local akrksrname = redis:get(bot_id.."akrksrname"..msg.sender.user_id)
+local akrksrprice = redis:get(bot_id.."akrksrprice"..msg.sender.user_id) or 0
+local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender.user_id) or 0
 local akrksrnow = tonumber(akrksrnum) - tonumber(coniss)
-redis:set(bot_id.."akrksrnum"..msg.sender_id.user_id , akrksrnow)
+redis:set(bot_id.."akrksrnum"..msg.sender.user_id , akrksrnow)
 sellakr = tonumber(coniss) * 900000
 totalypalice = tonumber(ballanceed) + sellakr
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender_id.user_id) or 0
+local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender.user_id) or 0
 if tonumber(akrksrnum) == 0 then
-redis:del(bot_id.."akrksrname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrksrnum"..msg.sender_id.user_id)
+redis:del(bot_id.."akrksrname"..msg.sender.user_id)
+redis:del(bot_id.."akrksrnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع عقار\nنوع العقار : قصر \nالعدد : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellakr).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10581,29 +10581,29 @@ end
 if text and text:match('^بيع فيلا (.*)$') then
 local UserName = text:match('^بيع فيلا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender_id.user_id) or 0
+local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender.user_id) or 0
 if tonumber(akrfelnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك فيلات ","md",true)
 end
 if tonumber(akrfelnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." فيلا ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local akrfelname = redis:get(bot_id.."akrfelname"..msg.sender_id.user_id)
-local akrfelprice = redis:get(bot_id.."akrfelprice"..msg.sender_id.user_id) or 0
-local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local akrfelname = redis:get(bot_id.."akrfelname"..msg.sender.user_id)
+local akrfelprice = redis:get(bot_id.."akrfelprice"..msg.sender.user_id) or 0
+local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender.user_id) or 0
 local akrfelnow = tonumber(akrfelnum) - tonumber(coniss)
-redis:set(bot_id.."akrfelnum"..msg.sender_id.user_id , akrfelnow)
+redis:set(bot_id.."akrfelnum"..msg.sender.user_id , akrfelnow)
 felakr = tonumber(coniss) * 400000
 totalypalice = tonumber(ballanceed) + felakr
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender_id.user_id) or 0
+local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender.user_id) or 0
 if tonumber(akrfelnum) == 0 then
-redis:del(bot_id.."akrfelname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrfelnum"..msg.sender_id.user_id)
+redis:del(bot_id.."akrfelname"..msg.sender.user_id)
+redis:del(bot_id.."akrfelnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع عقار\nنوع العقار : فيلا \nالعدد : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(felakr).." ??\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10613,29 +10613,29 @@ end
 if text and text:match('^بيع منزل (.*)$') then
 local UserName = text:match('^بيع منزل (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender_id.user_id) or 0
+local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender.user_id) or 0
 if tonumber(akrmnznum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك منازل ","md",true)
 end
 if tonumber(akrmnznum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." منزل ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local akrmnzname = redis:get(bot_id.."akrmnzname"..msg.sender_id.user_id)
-local akrmnzprice = redis:get(bot_id.."akrmnzprice"..msg.sender_id.user_id) or 0
-local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local akrmnzname = redis:get(bot_id.."akrmnzname"..msg.sender.user_id)
+local akrmnzprice = redis:get(bot_id.."akrmnzprice"..msg.sender.user_id) or 0
+local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender.user_id) or 0
 local akrmnznow = tonumber(akrmnznum) - tonumber(coniss)
-redis:set(bot_id.."akrmnznum"..msg.sender_id.user_id , akrmnznow)
+redis:set(bot_id.."akrmnznum"..msg.sender.user_id , akrmnznow)
 mnzakr = tonumber(coniss) * 90000
 totalypalice = tonumber(ballanceed) + mnzakr
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender_id.user_id) or 0
+local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender.user_id) or 0
 if tonumber(akrmnznum) == 0 then
-redis:del(bot_id.."akrmnzname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrmnznum"..msg.sender_id.user_id)
+redis:del(bot_id.."akrmnzname"..msg.sender.user_id)
+redis:del(bot_id.."akrmnznum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع عقار\nنوع العقار : منزل \nالعدد : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(mnzakr).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10645,9 +10645,9 @@ end
 if text and text:match('^اهداء قصر (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء قصر (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender_id.user_id) or 0
+local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender.user_id) or 0
 if tonumber(akrksrnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك قصور ","md",true)
 end
@@ -10655,24 +10655,24 @@ if tonumber(akrksrnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." قصر ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender.user_id) or 0
 local akrksrnow = tonumber(akrksrnum) - tonumber(coniss)
-redis:set(bot_id.."akrksrnum"..msg.sender_id.user_id , akrksrnow)
-local akrksrnumm = redis:get(bot_id.."akrksrnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."akrksrnum"..msg.sender.user_id , akrksrnow)
+local akrksrnumm = redis:get(bot_id.."akrksrnum"..Remsg.sender.user_id) or 0
 local akrksrnoww = tonumber(akrksrnumm) + tonumber(coniss)
-redis:set(bot_id.."akrksrnum"..Remsg.sender_id.user_id , akrksrnoww)
+redis:set(bot_id.."akrksrnum"..Remsg.sender.user_id , akrksrnoww)
 ksrnamed = "قصر"
-redis:set(bot_id.."akrksrname"..Remsg.sender_id.user_id,ksrnamed)
-local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."akrksrname"..Remsg.sender.user_id,ksrnamed)
+local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender.user_id) or 0
 if tonumber(akrksrnum) == 0 then
-redis:del(bot_id.."akrksrname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrksrnum"..msg.sender_id.user_id)
+redis:del(bot_id.."akrksrname"..msg.sender.user_id)
+redis:del(bot_id.."akrksrnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) قصر\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10685,9 +10685,9 @@ end
 if text and text:match('^اهداء فيلا (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء فيلا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender_id.user_id) or 0
+local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender.user_id) or 0
 if tonumber(akrfelnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك فيلات ","md",true)
 end
@@ -10695,24 +10695,24 @@ if tonumber(akrfelnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." فيلا ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender.user_id) or 0
 local akrfelnow = tonumber(akrfelnum) - tonumber(coniss)
-redis:set(bot_id.."akrfelnum"..msg.sender_id.user_id , akrfelnow)
-local akrfelnumm = redis:get(bot_id.."akrfelnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."akrfelnum"..msg.sender.user_id , akrfelnow)
+local akrfelnumm = redis:get(bot_id.."akrfelnum"..Remsg.sender.user_id) or 0
 local akrfelnoww = tonumber(akrfelnumm) + tonumber(coniss)
-redis:set(bot_id.."akrfelnum"..Remsg.sender_id.user_id , akrfelnoww)
+redis:set(bot_id.."akrfelnum"..Remsg.sender.user_id , akrfelnoww)
 felnamed = "فيلا"
-redis:set(bot_id.."akrfelname"..Remsg.sender_id.user_id,felnamed)
-local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."akrfelname"..Remsg.sender.user_id,felnamed)
+local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender.user_id) or 0
 if tonumber(akrfelnum) == 0 then
-redis:del(bot_id.."akrfelname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrfelnum"..msg.sender_id.user_id)
+redis:del(bot_id.."akrfelname"..msg.sender.user_id)
+redis:del(bot_id.."akrfelnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) فيلا\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10725,9 +10725,9 @@ end
 if text and text:match('^اهداء منزل (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء منزل (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender_id.user_id) or 0
+local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender.user_id) or 0
 if tonumber(akrmnznum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك منازل ","md",true)
 end
@@ -10735,24 +10735,24 @@ if tonumber(akrmnznum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." منزل","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender.user_id) or 0
 local akrmnznow = tonumber(akrmnznum) - tonumber(coniss)
-redis:set(bot_id.."akrmnznum"..msg.sender_id.user_id , akrmnznow)
-local akrmnznumm = redis:get(bot_id.."akrmnznum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."akrmnznum"..msg.sender.user_id , akrmnznow)
+local akrmnznumm = redis:get(bot_id.."akrmnznum"..Remsg.sender.user_id) or 0
 local akrmnznoww = tonumber(akrmnznumm) + tonumber(coniss)
-redis:set(bot_id.."akrmnznum"..Remsg.sender_id.user_id , akrmnznoww)
+redis:set(bot_id.."akrmnznum"..Remsg.sender.user_id , akrmnznoww)
 mnznamed = "منزل"
-redis:set(bot_id.."akrmnzname"..Remsg.sender_id.user_id,mnznamed)
-local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."akrmnzname"..Remsg.sender.user_id,mnznamed)
+local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender.user_id) or 0
 if tonumber(akrmnznum) == 0 then
-redis:del(bot_id.."akrmnzname"..msg.sender_id.user_id)
-redis:del(bot_id.."akrmnznum"..msg.sender_id.user_id)
+redis:del(bot_id.."akrmnzname"..msg.sender.user_id)
+redis:del(bot_id.."akrmnznum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) منزل\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10765,27 +10765,27 @@ end
 if text and text:match('^شراء طياره شبح (.*)$') or text and text:match('^شراء طيارة شبح (.*)$') then
 local UserName = text:match('^شراء طياره شبح (.*)$') or text:match('^شراء طيارة شبح (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار طياره شبح بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 shbhair = tonumber(coniss) * 1000000000
 if tonumber(ballance) < tonumber(shbhair) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local airshbhname = redis:get(bot_id.."airshbhname"..msg.sender_id.user_id)
-local airshbhprice = redis:get(bot_id.."airshbhprice"..msg.sender_id.user_id) or 0
-local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender_id.user_id) or 0
+local airshbhname = redis:get(bot_id.."airshbhname"..msg.sender.user_id)
+local airshbhprice = redis:get(bot_id.."airshbhprice"..msg.sender.user_id) or 0
+local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender.user_id) or 0
 local airshbhnow = tonumber(airshbhnum) + tonumber(coniss)
-redis:set(bot_id.."airshbhnum"..msg.sender_id.user_id , airshbhnow)
+redis:set(bot_id.."airshbhnum"..msg.sender.user_id , airshbhnow)
 shbhnamed = "شبح"
-redis:set(bot_id.."airshbhname"..msg.sender_id.user_id , shbhnamed)
-redis:set(bot_id.."airshbhprice"..msg.sender_id.user_id , 1000000000)
+redis:set(bot_id.."airshbhname"..msg.sender.user_id , shbhnamed)
+redis:set(bot_id.."airshbhprice"..msg.sender.user_id , 1000000000)
 totalypalice = tonumber(ballance) - tonumber(shbhair)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(shbhair))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء طائرة\nنوع الطائرة : شبح \nاجمالي السعر : "..convert_monyy.." 💵\nعدد طائراتك الشبح : `"..airshbhnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10796,27 +10796,27 @@ end
 if text and text:match('^شراء طياره سفر (.*)$') or text and text:match('^شراء طيارة سفر (.*)$') then
 local UserName = text:match('^شراء طياره سفر (.*)$') or text:match('^شراء طيارة سفر (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار طياره سفر بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 sfarair = tonumber(coniss) * 500000000
 if tonumber(ballance) < tonumber(sfarair) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local airsfarname = redis:get(bot_id.."airsfarname"..msg.sender_id.user_id)
-local airsfarprice = redis:get(bot_id.."airsfarprice"..msg.sender_id.user_id) or 0
-local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender_id.user_id) or 0
+local airsfarname = redis:get(bot_id.."airsfarname"..msg.sender.user_id)
+local airsfarprice = redis:get(bot_id.."airsfarprice"..msg.sender.user_id) or 0
+local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender.user_id) or 0
 local airsfarnow = tonumber(airsfarnum) + tonumber(coniss)
-redis:set(bot_id.."airsfarnum"..msg.sender_id.user_id , airsfarnow)
+redis:set(bot_id.."airsfarnum"..msg.sender.user_id , airsfarnow)
 sfarnamed = "سفر"
-redis:set(bot_id.."airsfarname"..msg.sender_id.user_id , sfarnamed)
-redis:set(bot_id.."airsfarprice"..msg.sender_id.user_id , 500000000)
+redis:set(bot_id.."airsfarname"..msg.sender.user_id , sfarnamed)
+redis:set(bot_id.."airsfarprice"..msg.sender.user_id , 500000000)
 totalypalice = tonumber(ballance) - tonumber(sfarair)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(sfarair))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء طائرة\nنوع الطائرة : سفر \nاجمالي السعر : "..convert_monyy.." 💵\nعدد طائراتك السفر : `"..airsfarnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10827,27 +10827,27 @@ end
 if text and text:match('^شراء طياره خاصه (.*)$') or text and text:match('^شراء طيارة خاصه (.*)$') then
 local UserName = text:match('^شراء طياره خاصه (.*)$') or text:match('^شراء طيارة خاصه (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار طياره خاصه بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 khasair = tonumber(coniss) * 200000000
 if tonumber(ballance) < tonumber(khasair) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local airkhasname = redis:get(bot_id.."airkhasname"..msg.sender_id.user_id)
-local airkhasprice = redis:get(bot_id.."airkhasprice"..msg.sender_id.user_id) or 0
-local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender_id.user_id) or 0
+local airkhasname = redis:get(bot_id.."airkhasname"..msg.sender.user_id)
+local airkhasprice = redis:get(bot_id.."airkhasprice"..msg.sender.user_id) or 0
+local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender.user_id) or 0
 local airkhasnow = tonumber(airkhasnum) + tonumber(coniss)
-redis:set(bot_id.."airkhasnum"..msg.sender_id.user_id , airkhasnow)
+redis:set(bot_id.."airkhasnum"..msg.sender.user_id , airkhasnow)
 khasnamed = "خاصه"
-redis:set(bot_id.."airkhasname"..msg.sender_id.user_id , khasnamed)
-redis:set(bot_id.."airkhasprice"..msg.sender_id.user_id , 200000000)
+redis:set(bot_id.."airkhasname"..msg.sender.user_id , khasnamed)
+redis:set(bot_id.."airkhasprice"..msg.sender.user_id , 200000000)
 totalypalice = tonumber(ballance) - tonumber(khasair)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(khasair))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء طائرة\nنوع الطائرة : خاصه \nاجمالي السعر : "..convert_monyy.." 💵\nعدد طائراتك الخاصه : `"..airkhasnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -10858,29 +10858,29 @@ end
 if text and text:match('^بيع طياره شبح (.*)$') or text and text:match('^بيع طيارة شبح (.*)$') then
 local UserName = text:match('^بيع طياره شبح (.*)$') or text:match('^بيع طيارة شبح (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender_id.user_id) or 0
+local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender.user_id) or 0
 if tonumber(airshbhnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك طائرات شبح ","md",true)
 end
 if tonumber(airshbhnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." طيارة شبح ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local airshbhname = redis:get(bot_id.."airshbhname"..msg.sender_id.user_id)
-local airshbhprice = redis:get(bot_id.."airshbhprice"..msg.sender_id.user_id) or 0
-local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local airshbhname = redis:get(bot_id.."airshbhname"..msg.sender.user_id)
+local airshbhprice = redis:get(bot_id.."airshbhprice"..msg.sender.user_id) or 0
+local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender.user_id) or 0
 local airshbhnow = tonumber(airshbhnum) - tonumber(coniss)
-redis:set(bot_id.."airshbhnum"..msg.sender_id.user_id , airshbhnow)
+redis:set(bot_id.."airshbhnum"..msg.sender.user_id , airshbhnow)
 sellair = tonumber(coniss) * 900000000
 totalypalice = tonumber(ballanceed) + sellair
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender_id.user_id) or 0
+local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender.user_id) or 0
 if tonumber(airshbhnum) == 0 then
-redis:del(bot_id.."airshbhname"..msg.sender_id.user_id)
-redis:del(bot_id.."airshbhnum"..msg.sender_id.user_id)
+redis:del(bot_id.."airshbhname"..msg.sender.user_id)
+redis:del(bot_id.."airshbhnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع طائرة\nنوع الطائرة : شبح \nعدد الطائرات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellair).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10890,29 +10890,29 @@ end
 if text and text:match('^بيع طياره سفر (.*)$') or text and text:match('^بيع طيارة سفر (.*)$') then
 local UserName = text:match('^بيع طياره سفر (.*)$') or text:match('^بيع طيارة سفر (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender_id.user_id) or 0
+local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender.user_id) or 0
 if tonumber(airsfarnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك طائرات سفر ","md",true)
 end
 if tonumber(airsfarnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." طيارة سفر ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local airsfarname = redis:get(bot_id.."airsfarname"..msg.sender_id.user_id)
-local airsfarprice = redis:get(bot_id.."airsfarprice"..msg.sender_id.user_id) or 0
-local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local airsfarname = redis:get(bot_id.."airsfarname"..msg.sender.user_id)
+local airsfarprice = redis:get(bot_id.."airsfarprice"..msg.sender.user_id) or 0
+local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender.user_id) or 0
 local airsfarnow = tonumber(airsfarnum) - tonumber(coniss)
-redis:set(bot_id.."airsfarnum"..msg.sender_id.user_id , airsfarnow)
+redis:set(bot_id.."airsfarnum"..msg.sender.user_id , airsfarnow)
 sellair = tonumber(coniss) * 400000000
 totalypalice = tonumber(ballanceed) + sellair
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender_id.user_id) or 0
+local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender.user_id) or 0
 if tonumber(airsfarnum) == 0 then
-redis:del(bot_id.."airsfarname"..msg.sender_id.user_id)
-redis:del(bot_id.."airsfarnum"..msg.sender_id.user_id)
+redis:del(bot_id.."airsfarname"..msg.sender.user_id)
+redis:del(bot_id.."airsfarnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع طائرة\nنوع الطائرة : سفر \nعدد الطائرات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellair).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10922,29 +10922,29 @@ end
 if text and text:match('^بيع طياره خاصه (.*)$') or text and text:match('^بيع طيارة خاصه (.*)$') then
 local UserName = text:match('^بيع طياره خاصه (.*)$') or text:match('^بيع طيارة خاصه (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender_id.user_id) or 0
+local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender.user_id) or 0
 if tonumber(airkhasnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك طائرات خاصه ","md",true)
 end
 if tonumber(airkhasnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." طيارة خاصه ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local airkhasname = redis:get(bot_id.."airkhasname"..msg.sender_id.user_id)
-local airkhasprice = redis:get(bot_id.."airkhasprice"..msg.sender_id.user_id) or 0
-local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local airkhasname = redis:get(bot_id.."airkhasname"..msg.sender.user_id)
+local airkhasprice = redis:get(bot_id.."airkhasprice"..msg.sender.user_id) or 0
+local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender.user_id) or 0
 local airkhasnow = tonumber(airkhasnum) - tonumber(coniss)
-redis:set(bot_id.."airkhasnum"..msg.sender_id.user_id , airkhasnow)
+redis:set(bot_id.."airkhasnum"..msg.sender.user_id , airkhasnow)
 sellair = tonumber(coniss) * 150000000
 totalypalice = tonumber(ballanceed) + sellair
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender_id.user_id) or 0
+local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender.user_id) or 0
 if tonumber(airkhasnum) == 0 then
-redis:del(bot_id.."airkhasname"..msg.sender_id.user_id)
-redis:del(bot_id.."airkhasnum"..msg.sender_id.user_id)
+redis:del(bot_id.."airkhasname"..msg.sender.user_id)
+redis:del(bot_id.."airkhasnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع طائرة\nنوع الطائرة : خاصه \nعدد الطائرات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellair).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10954,9 +10954,9 @@ end
 if text and text:match('^اهداء طائره شبح (.*)$') or text and text:match('^اهداء طائرة شبح (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء طائره شبح (.*)$') or text:match('^اهداء طائرة شبح (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender_id.user_id) or 0
+local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender.user_id) or 0
 if tonumber(airshbhnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك طائرات شبح ","md",true)
 end
@@ -10964,24 +10964,24 @@ if tonumber(airshbhnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." طائرة شبح ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender.user_id) or 0
 local airshbhnow = tonumber(airshbhnum) - tonumber(coniss)
-redis:set(bot_id.."airshbhnum"..msg.sender_id.user_id , airshbhnow)
-local airshbhnumm = redis:get(bot_id.."airshbhnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."airshbhnum"..msg.sender.user_id , airshbhnow)
+local airshbhnumm = redis:get(bot_id.."airshbhnum"..Remsg.sender.user_id) or 0
 local airshbhnoww = tonumber(airshbhnumm) + tonumber(coniss)
-redis:set(bot_id.."airshbhnum"..Remsg.sender_id.user_id , airshbhnoww)
+redis:set(bot_id.."airshbhnum"..Remsg.sender.user_id , airshbhnoww)
 shbhnamed = "شبح"
-redis:set(bot_id.."airshbhname"..Remsg.sender_id.user_id,shbhnamed)
-local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."airshbhname"..Remsg.sender.user_id,shbhnamed)
+local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender.user_id) or 0
 if tonumber(airshbhnum) == 0 then
-redis:del(bot_id.."airshbhname"..msg.sender_id.user_id)
-redis:del(bot_id.."airshbhnum"..msg.sender_id.user_id)
+redis:del(bot_id.."airshbhname"..msg.sender.user_id)
+redis:del(bot_id.."airshbhnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) طائرة شبح\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -10994,9 +10994,9 @@ end
 if text and text:match('^اهداء طائره سفر (.*)$') or text and text:match('^اهداء طائرة سفر (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء طائره سفر (.*)$') or text:match('^اهداء طائرة سفر (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender_id.user_id) or 0
+local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender.user_id) or 0
 if tonumber(airsfarnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك طائرات سفر ","md",true)
 end
@@ -11004,24 +11004,24 @@ if tonumber(airsfarnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." طائرة سفر ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender.user_id) or 0
 local airsfarnow = tonumber(airsfarnum) - tonumber(coniss)
-redis:set(bot_id.."airsfarnum"..msg.sender_id.user_id , airsfarnow)
-local airsfarnumm = redis:get(bot_id.."airsfarnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."airsfarnum"..msg.sender.user_id , airsfarnow)
+local airsfarnumm = redis:get(bot_id.."airsfarnum"..Remsg.sender.user_id) or 0
 local airsfarnoww = tonumber(airsfarnumm) + tonumber(coniss)
-redis:set(bot_id.."airsfarnum"..Remsg.sender_id.user_id , airsfarnoww)
+redis:set(bot_id.."airsfarnum"..Remsg.sender.user_id , airsfarnoww)
 sfarnamed = "سفر"
-redis:set(bot_id.."airsfarname"..Remsg.sender_id.user_id,sfarnamed)
-local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."airsfarname"..Remsg.sender.user_id,sfarnamed)
+local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender.user_id) or 0
 if tonumber(airsfarnum) == 0 then
-redis:del(bot_id.."airsfarname"..msg.sender_id.user_id)
-redis:del(bot_id.."airsfarnum"..msg.sender_id.user_id)
+redis:del(bot_id.."airsfarname"..msg.sender.user_id)
+redis:del(bot_id.."airsfarnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) طائرة سفر\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11034,9 +11034,9 @@ end
 if text and text:match('^اهداء طائره خاصه (.*)$') or text and text:match('^اهداء طائرة خاصه (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء طائره خاصه (.*)$') or text:match('^اهداء طائرة خاصه (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender_id.user_id) or 0
+local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender.user_id) or 0
 if tonumber(airkhasnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك طائرات خاصه ","md",true)
 end
@@ -11044,24 +11044,24 @@ if tonumber(airkhasnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." طائرة خاصه ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender.user_id) or 0
 local airkhasnow = tonumber(airkhasnum) - tonumber(coniss)
-redis:set(bot_id.."airkhasnum"..msg.sender_id.user_id , airkhasnow)
-local airkhasnumm = redis:get(bot_id.."airkhasnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."airkhasnum"..msg.sender.user_id , airkhasnow)
+local airkhasnumm = redis:get(bot_id.."airkhasnum"..Remsg.sender.user_id) or 0
 local airkhasnoww = tonumber(airkhasnumm) + tonumber(coniss)
-redis:set(bot_id.."airkhasnum"..Remsg.sender_id.user_id , airkhasnoww)
+redis:set(bot_id.."airkhasnum"..Remsg.sender.user_id , airkhasnoww)
 khasnamed = "خاصه"
-redis:set(bot_id.."airkhasname"..Remsg.sender_id.user_id,khasnamed)
-local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."airkhasname"..Remsg.sender.user_id,khasnamed)
+local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender.user_id) or 0
 if tonumber(airkhasnum) == 0 then
-redis:del(bot_id.."airkhasname"..msg.sender_id.user_id)
-redis:del(bot_id.."airkhasnum"..msg.sender_id.user_id)
+redis:del(bot_id.."airkhasname"..msg.sender.user_id)
+redis:del(bot_id.."airkhasnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) طائرة خاصه\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11074,27 +11074,27 @@ end
 if text and text:match('^شراء سياره فيلار (.*)$') or text and text:match('^شراء سيارة فيلار (.*)$') then
 local UserName = text:match('^شراء سياره فيلار (.*)$') or text:match('^شراء سيارة فيلار (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار سياره فيلار بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 rangpr = tonumber(coniss) * 10000000
 if tonumber(ballance) < tonumber(rangpr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local carrangname = redis:get(bot_id.."carrangname"..msg.sender_id.user_id)
-local carrangprice = redis:get(bot_id.."carrangprice"..msg.sender_id.user_id) or 0
-local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender_id.user_id) or 0
+local carrangname = redis:get(bot_id.."carrangname"..msg.sender.user_id)
+local carrangprice = redis:get(bot_id.."carrangprice"..msg.sender.user_id) or 0
+local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender.user_id) or 0
 local carrangnow = tonumber(carrangnum) + tonumber(coniss)
-redis:set(bot_id.."carrangnum"..msg.sender_id.user_id , carrangnow)
+redis:set(bot_id.."carrangnum"..msg.sender.user_id , carrangnow)
 rangnamed = "فيلار"
-redis:set(bot_id.."carrangname"..msg.sender_id.user_id , rangnamed)
-redis:set(bot_id.."carrangprice"..msg.sender_id.user_id , 10000000)
+redis:set(bot_id.."carrangname"..msg.sender.user_id , rangnamed)
+redis:set(bot_id.."carrangprice"..msg.sender.user_id , 10000000)
 totalypalice = tonumber(ballance) - tonumber(rangpr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(rangpr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء سيارة\nنوع السيارة : فيلار \nاجمالي السعر : "..convert_monyy.." 💵\nعدد سياراتك الفيلار : `"..carrangnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11105,27 +11105,27 @@ end
 if text and text:match('^شراء سياره اكسنت (.*)$') or text and text:match('^شراء سيارة اكسنت (.*)$') then
 local UserName = text:match('^شراء سياره اكسنت (.*)$') or text:match('^شراء سيارة اكسنت (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار سياره اكسنت بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 accepr = tonumber(coniss) * 9000000
 if tonumber(ballance) < tonumber(accepr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local caraccename = redis:get(bot_id.."caraccename"..msg.sender_id.user_id)
-local caracceprice = redis:get(bot_id.."caracceprice"..msg.sender_id.user_id) or 0
-local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender_id.user_id) or 0
+local caraccename = redis:get(bot_id.."caraccename"..msg.sender.user_id)
+local caracceprice = redis:get(bot_id.."caracceprice"..msg.sender.user_id) or 0
+local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender.user_id) or 0
 local caraccenow = tonumber(caraccenum) + tonumber(coniss)
-redis:set(bot_id.."caraccenum"..msg.sender_id.user_id , caraccenow)
+redis:set(bot_id.."caraccenum"..msg.sender.user_id , caraccenow)
 accenamed = "اكسنت"
-redis:set(bot_id.."caraccename"..msg.sender_id.user_id , accenamed)
-redis:set(bot_id.."caracceprice"..msg.sender_id.user_id , 9000000)
+redis:set(bot_id.."caraccename"..msg.sender.user_id , accenamed)
+redis:set(bot_id.."caracceprice"..msg.sender.user_id , 9000000)
 totalypalice = tonumber(ballance) - tonumber(accepr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(accepr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء سيارة\nنوع السيارة : اكسنت \nاجمالي السعر : "..convert_monyy.." 💵\nعدد سياراتك الاكسنت : `"..caraccenow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11136,27 +11136,27 @@ end
 if text and text:match('^شراء سياره كامري (.*)$') or text and text:match('^شراء سيارة كامري (.*)$') then
 local UserName = text:match('^شراء سياره كامري (.*)$') or text:match('^شراء سيارة كامري (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار سياره كامري بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 camrpr = tonumber(coniss) * 8000000
 if tonumber(ballance) < tonumber(camrpr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local carcamrname = redis:get(bot_id.."carcamrname"..msg.sender_id.user_id)
-local carcamrprice = redis:get(bot_id.."carcamrprice"..msg.sender_id.user_id) or 0
-local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender_id.user_id) or 0
+local carcamrname = redis:get(bot_id.."carcamrname"..msg.sender.user_id)
+local carcamrprice = redis:get(bot_id.."carcamrprice"..msg.sender.user_id) or 0
+local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender.user_id) or 0
 local carcamrnow = tonumber(carcamrnum) + tonumber(coniss)
-redis:set(bot_id.."carcamrnum"..msg.sender_id.user_id , carcamrnow)
+redis:set(bot_id.."carcamrnum"..msg.sender.user_id , carcamrnow)
 camrnamed = "كامري"
-redis:set(bot_id.."carcamrname"..msg.sender_id.user_id , camrnamed)
-redis:set(bot_id.."carcamrprice"..msg.sender_id.user_id , 8000000)
+redis:set(bot_id.."carcamrname"..msg.sender.user_id , camrnamed)
+redis:set(bot_id.."carcamrprice"..msg.sender.user_id , 8000000)
 totalypalice = tonumber(ballance) - tonumber(camrpr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(camrpr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء سيارة\nنوع السيارة : كامري \nاجمالي السعر : "..convert_monyy.." 💵\nعدد سياراتك الكامري : `"..carcamrnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11167,27 +11167,27 @@ end
 if text and text:match('^شراء سياره النترا (.*)$') or text and text:match('^شراء سيارة النترا (.*)$') then
 local UserName = text:match('^شراء سياره النترا (.*)$') or text:match('^شراء سيارة النترا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار سياره النترا بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 alntrpr = tonumber(coniss) * 7000000
 if tonumber(ballance) < tonumber(alntrpr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local caralntrname = redis:get(bot_id.."caralntrname"..msg.sender_id.user_id)
-local caralntrprice = redis:get(bot_id.."caralntrprice"..msg.sender_id.user_id) or 0
-local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender_id.user_id) or 0
+local caralntrname = redis:get(bot_id.."caralntrname"..msg.sender.user_id)
+local caralntrprice = redis:get(bot_id.."caralntrprice"..msg.sender.user_id) or 0
+local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender.user_id) or 0
 local caralntrnow = tonumber(caralntrnum) + tonumber(coniss)
-redis:set(bot_id.."caralntrnum"..msg.sender_id.user_id , caralntrnow)
+redis:set(bot_id.."caralntrnum"..msg.sender.user_id , caralntrnow)
 alntrnamed = "النترا"
-redis:set(bot_id.."caralntrname"..msg.sender_id.user_id , alntrnamed)
-redis:set(bot_id.."caralntrprice"..msg.sender_id.user_id , 7000000)
+redis:set(bot_id.."caralntrname"..msg.sender.user_id , alntrnamed)
+redis:set(bot_id.."caralntrprice"..msg.sender.user_id , 7000000)
 totalypalice = tonumber(ballance) - tonumber(alntrpr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(alntrpr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء سيارة\nنوع السيارة : النترا \nاجمالي السعر : "..convert_monyy.." 💵\nعدد سياراتك الالنترا : `"..caralntrnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11198,27 +11198,27 @@ end
 if text and text:match('^شراء سياره هايلكس (.*)$') or text and text:match('^شراء سيارة هايلكس (.*)$') then
 local UserName = text:match('^شراء سياره هايلكس (.*)$') or text:match('^شراء سيارة هايلكس (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار سياره هايلكس بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 hilxpr = tonumber(coniss) * 6000000
 if tonumber(ballance) < tonumber(hilxpr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local carhilxname = redis:get(bot_id.."carhilxname"..msg.sender_id.user_id)
-local carhilxprice = redis:get(bot_id.."carhilxprice"..msg.sender_id.user_id) or 0
-local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender_id.user_id) or 0
+local carhilxname = redis:get(bot_id.."carhilxname"..msg.sender.user_id)
+local carhilxprice = redis:get(bot_id.."carhilxprice"..msg.sender.user_id) or 0
+local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender.user_id) or 0
 local carhilxnow = tonumber(carhilxnum) + tonumber(coniss)
-redis:set(bot_id.."carhilxnum"..msg.sender_id.user_id , carhilxnow)
+redis:set(bot_id.."carhilxnum"..msg.sender.user_id , carhilxnow)
 hilxnamed = "هايلكس"
-redis:set(bot_id.."carhilxname"..msg.sender_id.user_id , hilxnamed)
-redis:set(bot_id.."carhilxprice"..msg.sender_id.user_id , 6000000)
+redis:set(bot_id.."carhilxname"..msg.sender.user_id , hilxnamed)
+redis:set(bot_id.."carhilxprice"..msg.sender.user_id , 6000000)
 totalypalice = tonumber(ballance) - tonumber(hilxpr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(hilxpr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء سيارة\nنوع السيارة : هايلكس \nاجمالي السعر : "..convert_monyy.." 💵\nعدد سياراتك الهايلكس : `"..carhilxnow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11229,27 +11229,27 @@ end
 if text and text:match('^شراء سياره سوناتا (.*)$') or text and text:match('^شراء سيارة سوناتا (.*)$') then
 local UserName = text:match('^شراء سياره سوناتا (.*)$') or text:match('^شراء سيارة سوناتا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار سياره سوناتا بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 sonapr = tonumber(coniss) * 5000000
 if tonumber(ballance) < tonumber(sonapr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local carsonaname = redis:get(bot_id.."carsonaname"..msg.sender_id.user_id)
-local carsonaprice = redis:get(bot_id.."carsonaprice"..msg.sender_id.user_id) or 0
-local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender_id.user_id) or 0
+local carsonaname = redis:get(bot_id.."carsonaname"..msg.sender.user_id)
+local carsonaprice = redis:get(bot_id.."carsonaprice"..msg.sender.user_id) or 0
+local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender.user_id) or 0
 local carsonanow = tonumber(carsonanum) + tonumber(coniss)
-redis:set(bot_id.."carsonanum"..msg.sender_id.user_id , carsonanow)
+redis:set(bot_id.."carsonanum"..msg.sender.user_id , carsonanow)
 sonanamed = "سوناتا"
-redis:set(bot_id.."carsonaname"..msg.sender_id.user_id , sonanamed)
-redis:set(bot_id.."carsonaprice"..msg.sender_id.user_id , 5000000)
+redis:set(bot_id.."carsonaname"..msg.sender.user_id , sonanamed)
+redis:set(bot_id.."carsonaprice"..msg.sender.user_id , 5000000)
 totalypalice = tonumber(ballance) - tonumber(sonapr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(sonapr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء سيارة\nنوع السيارة : سوناتا \nاجمالي السعر : "..convert_monyy.." 💵\nعدد سياراتك السوناتا : `"..carsonanow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11260,27 +11260,27 @@ end
 if text and text:match('^شراء سياره كورولا (.*)$') or text and text:match('^شراء سيارة كورولا (.*)$') then
 local UserName = text:match('^شراء سياره كورولا (.*)$') or text:match('^شراء سيارة كورولا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if tonumber(coniss) > 1000000001 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري اكثر من مليار سياره كورولا بعملية وحدة\n","md",true)
 end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 coropr = tonumber(coniss) * 4000000
 if tonumber(ballance) < tonumber(coropr) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماتكدر تشتري فلوسك ماتكفي","md",true)
 end
-local carcoroname = redis:get(bot_id.."carcoroname"..msg.sender_id.user_id)
-local carcoroprice = redis:get(bot_id.."carcoroprice"..msg.sender_id.user_id) or 0
-local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender_id.user_id) or 0
+local carcoroname = redis:get(bot_id.."carcoroname"..msg.sender.user_id)
+local carcoroprice = redis:get(bot_id.."carcoroprice"..msg.sender.user_id) or 0
+local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender.user_id) or 0
 local carcoronow = tonumber(carcoronum) + tonumber(coniss)
-redis:set(bot_id.."carcoronum"..msg.sender_id.user_id , carcoronow)
+redis:set(bot_id.."carcoronum"..msg.sender.user_id , carcoronow)
 coronamed = "كورولا"
-redis:set(bot_id.."carcoroname"..msg.sender_id.user_id , coronamed)
-redis:set(bot_id.."carcoroprice"..msg.sender_id.user_id , 4000000)
+redis:set(bot_id.."carcoroname"..msg.sender.user_id , coronamed)
+redis:set(bot_id.."carcoroprice"..msg.sender.user_id , 4000000)
 totalypalice = tonumber(ballance) - tonumber(coropr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(totalypalice))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(totalypalice))
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 local convert_monyy = string.format("%.0f",math.floor(coropr))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل شراء سيارة\nنوع السيارة : كورولا \nاجمالي السعر : "..convert_monyy.." 💵\nعدد سياراتك الكورولا : `"..carcoronow.."`\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11291,29 +11291,29 @@ end
 if text and text:match('^بيع سياره فيلار (.*)$') or text and text:match('^بيع سيارة فيلار (.*)$') then
 local UserName = text:match('^بيع سياره فيلار (.*)$') or text:match('^بيع سيارة فيلار (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender_id.user_id) or 0
+local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender.user_id) or 0
 if tonumber(carrangnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات فيلار ","md",true)
 end
 if tonumber(carrangnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة فيلار ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local carrangname = redis:get(bot_id.."carrangname"..msg.sender_id.user_id)
-local carrangprice = redis:get(bot_id.."carrangprice"..msg.sender_id.user_id) or 0
-local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local carrangname = redis:get(bot_id.."carrangname"..msg.sender.user_id)
+local carrangprice = redis:get(bot_id.."carrangprice"..msg.sender.user_id) or 0
+local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender.user_id) or 0
 local carrangnow = tonumber(carrangnum) - tonumber(coniss)
-redis:set(bot_id.."carrangnum"..msg.sender_id.user_id , carrangnow)
+redis:set(bot_id.."carrangnum"..msg.sender.user_id , carrangnow)
 sellcar = tonumber(coniss) * 9000000
 totalypalice = tonumber(ballanceed) + sellcar
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
-local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender_id.user_id) or 0
+local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender.user_id) or 0
 if tonumber(carrangnum) == 0 then
-redis:del(bot_id.."carrangname"..msg.sender_id.user_id)
-redis:del(bot_id.."carrangnum"..msg.sender_id.user_id)
+redis:del(bot_id.."carrangname"..msg.sender.user_id)
+redis:del(bot_id.."carrangnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع سيارة\nنوع السيارة : فيلار \nعدد السيارات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellcar).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11323,28 +11323,28 @@ end
 if text and text:match('^بيع سياره اكسنت (.*)$') or text and text:match('^بيع سيارة اكسنت (.*)$') then
 local UserName = text:match('^بيع سياره اكسنت (.*)$') or text:match('^بيع سيارة اكسنت (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender_id.user_id) or 0
+local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender.user_id) or 0
 if tonumber(caraccenum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات اكسنت ","md",true)
 end
 if tonumber(caraccenum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة اكسنت ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local caraccename = redis:get(bot_id.."caraccename"..msg.sender_id.user_id)
-local caracceprice = redis:get(bot_id.."caracceprice"..msg.sender_id.user_id) or 0
-local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local caraccename = redis:get(bot_id.."caraccename"..msg.sender.user_id)
+local caracceprice = redis:get(bot_id.."caracceprice"..msg.sender.user_id) or 0
+local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender.user_id) or 0
 local caraccenow = tonumber(caraccenum) - tonumber(coniss)
-redis:set(bot_id.."caraccenum"..msg.sender_id.user_id , caraccenow)
+redis:set(bot_id.."caraccenum"..msg.sender.user_id , caraccenow)
 sellcar = tonumber(coniss) * 8000000
 totalypalice = tonumber(ballanceed) + sellcar
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
-local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
+local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender.user_id) or 0
 if tonumber(caraccenum) == 0 then
-redis:del(bot_id.."caraccename"..msg.sender_id.user_id)
-redis:del(bot_id.."caraccenum"..msg.sender_id.user_id)
+redis:del(bot_id.."caraccename"..msg.sender.user_id)
+redis:del(bot_id.."caraccenum"..msg.sender.user_id)
 end
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع سيارة\nنوع السيارة : اكسنت \nعدد السيارات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellcar).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11355,28 +11355,28 @@ end
 if text and text:match('^بيع سياره كامري (.*)$') or text and text:match('^بيع سيارة كامري (.*)$') then
 local UserName = text:match('^بيع سياره كامري (.*)$') or text:match('^بيع سيارة كامري (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender_id.user_id) or 0
+local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender.user_id) or 0
 if tonumber(carcamrnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات كامري ","md",true)
 end
 if tonumber(carcamrnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة كامري ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local carcamrname = redis:get(bot_id.."carcamrname"..msg.sender_id.user_id)
-local carcamrprice = redis:get(bot_id.."carcamrprice"..msg.sender_id.user_id) or 0
-local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local carcamrname = redis:get(bot_id.."carcamrname"..msg.sender.user_id)
+local carcamrprice = redis:get(bot_id.."carcamrprice"..msg.sender.user_id) or 0
+local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender.user_id) or 0
 local carcamrnow = tonumber(carcamrnum) - tonumber(coniss)
-redis:set(bot_id.."carcamrnum"..msg.sender_id.user_id , carcamrnow)
+redis:set(bot_id.."carcamrnum"..msg.sender.user_id , carcamrnow)
 sellcar = tonumber(coniss) * 7000000
 totalypalice = tonumber(ballanceed) + sellcar
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
-local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
+local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender.user_id) or 0
 if tonumber(carcamrnum) == 0 then
-redis:del(bot_id.."carcamrname"..msg.sender_id.user_id)
-redis:del(bot_id.."carcamrnum"..msg.sender_id.user_id)
+redis:del(bot_id.."carcamrname"..msg.sender.user_id)
+redis:del(bot_id.."carcamrnum"..msg.sender.user_id)
 end
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع سيارة\nنوع السيارة : كامري \nعدد السيارات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellcar).." ??\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11387,28 +11387,28 @@ end
 if text and text:match('^بيع سياره النترا (.*)$') or text and text:match('^بيع سيارة النترا (.*)$') then
 local UserName = text:match('^بيع سياره النترا (.*)$') or text:match('^بيع سيارة النترا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender_id.user_id) or 0
+local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender.user_id) or 0
 if tonumber(caralntrnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات النترا ","md",true)
 end
 if tonumber(caralntrnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة النترا ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local caralntrname = redis:get(bot_id.."caralntrname"..msg.sender_id.user_id)
-local caralntrprice = redis:get(bot_id.."caralntrprice"..msg.sender_id.user_id) or 0
-local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local caralntrname = redis:get(bot_id.."caralntrname"..msg.sender.user_id)
+local caralntrprice = redis:get(bot_id.."caralntrprice"..msg.sender.user_id) or 0
+local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender.user_id) or 0
 local caralntrnow = tonumber(caralntrnum) - tonumber(coniss)
-redis:set(bot_id.."caralntrnum"..msg.sender_id.user_id , caralntrnow)
+redis:set(bot_id.."caralntrnum"..msg.sender.user_id , caralntrnow)
 sellcar = tonumber(coniss) * 6000000
 totalypalice = tonumber(ballanceed) + sellcar
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
-local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
+local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender.user_id) or 0
 if tonumber(caralntrnum) == 0 then
-redis:del(bot_id.."caralntrname"..msg.sender_id.user_id)
-redis:del(bot_id.."caralntrnum"..msg.sender_id.user_id)
+redis:del(bot_id.."caralntrname"..msg.sender.user_id)
+redis:del(bot_id.."caralntrnum"..msg.sender.user_id)
 end
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع سيارة\nنوع السيارة : النترا \nعدد السيارات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellcar).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11419,28 +11419,28 @@ end
 if text and text:match('^بيع سياره هايلكس (.*)$') or text and text:match('^بيع سيارة هايلكس (.*)$') then
 local UserName = text:match('^بيع سياره هايلكس (.*)$') or text:match('^بيع سيارة هايلكس (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender_id.user_id) or 0
+local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender.user_id) or 0
 if tonumber(carhilxnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات هايلكس ","md",true)
 end
 if tonumber(carhilxnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة هايلكس ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local carhilxname = redis:get(bot_id.."carhilxname"..msg.sender_id.user_id)
-local carhilxprice = redis:get(bot_id.."carhilxprice"..msg.sender_id.user_id) or 0
-local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local carhilxname = redis:get(bot_id.."carhilxname"..msg.sender.user_id)
+local carhilxprice = redis:get(bot_id.."carhilxprice"..msg.sender.user_id) or 0
+local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender.user_id) or 0
 local carhilxnow = tonumber(carhilxnum) - tonumber(coniss)
-redis:set(bot_id.."carhilxnum"..msg.sender_id.user_id , carhilxnow)
+redis:set(bot_id.."carhilxnum"..msg.sender.user_id , carhilxnow)
 sellcar = tonumber(coniss) * 5000000
 totalypalice = tonumber(ballanceed) + sellcar
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
-local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
+local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender.user_id) or 0
 if tonumber(carhilxnum) == 0 then
-redis:del(bot_id.."carhilxname"..msg.sender_id.user_id)
-redis:del(bot_id.."carhilxnum"..msg.sender_id.user_id)
+redis:del(bot_id.."carhilxname"..msg.sender.user_id)
+redis:del(bot_id.."carhilxnum"..msg.sender.user_id)
 end
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع سيارة\nنوع السيارة : هايلكس \nعدد السيارات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellcar).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11451,28 +11451,28 @@ end
 if text and text:match('^بيع سياره سوناتا (.*)$') or text and text:match('^بيع سيارة سوناتا (.*)$') then
 local UserName = text:match('^بيع سياره سوناتا (.*)$') or text:match('^بيع سيارة سوناتا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender_id.user_id) or 0
+local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender.user_id) or 0
 if tonumber(carsonanum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات سوناتا ","md",true)
 end
 if tonumber(carsonanum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة سوناتا ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local carsonaname = redis:get(bot_id.."carsonaname"..msg.sender_id.user_id)
-local carsonaprice = redis:get(bot_id.."carsonaprice"..msg.sender_id.user_id) or 0
-local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local carsonaname = redis:get(bot_id.."carsonaname"..msg.sender.user_id)
+local carsonaprice = redis:get(bot_id.."carsonaprice"..msg.sender.user_id) or 0
+local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender.user_id) or 0
 local carsonanow = tonumber(carsonanum) - tonumber(coniss)
-redis:set(bot_id.."carsonanum"..msg.sender_id.user_id , carsonanow)
+redis:set(bot_id.."carsonanum"..msg.sender.user_id , carsonanow)
 sellcar = tonumber(coniss) * 4000000
 totalypalice = tonumber(ballanceed) + sellcar
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
-local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
+local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender.user_id) or 0
 if tonumber(carsonanum) == 0 then
-redis:del(bot_id.."carsonaname"..msg.sender_id.user_id)
-redis:del(bot_id.."carsonanum"..msg.sender_id.user_id)
+redis:del(bot_id.."carsonaname"..msg.sender.user_id)
+redis:del(bot_id.."carsonanum"..msg.sender.user_id)
 end
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع سيارة\nنوع السيارة : سوناتا \nعدد السيارات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellcar).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11483,28 +11483,28 @@ end
 if text and text:match('^بيع سياره كورولا (.*)$') or text and text:match('^بيع سيارة كورولا (.*)$') then
 local UserName = text:match('^بيع سياره كورولا (.*)$') or text:match('^بيع سيارة كورولا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender_id.user_id) or 0
+local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender.user_id) or 0
 if tonumber(carcoronum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات كورولا ","md",true)
 end
 if tonumber(carcoronum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة كورولا ","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local carcoroname = redis:get(bot_id.."carcoroname"..msg.sender_id.user_id)
-local carcoroprice = redis:get(bot_id.."carcoroprice"..msg.sender_id.user_id) or 0
-local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local carcoroname = redis:get(bot_id.."carcoroname"..msg.sender.user_id)
+local carcoroprice = redis:get(bot_id.."carcoroprice"..msg.sender.user_id) or 0
+local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender.user_id) or 0
 local carcoronow = tonumber(carcoronum) - tonumber(coniss)
-redis:set(bot_id.."carcoronum"..msg.sender_id.user_id , carcoronow)
+redis:set(bot_id.."carcoronum"..msg.sender.user_id , carcoronow)
 sellcar = tonumber(coniss) * 3000000
 totalypalice = tonumber(ballanceed) + sellcar
-redis:set(bot_id.."boob"..msg.sender_id.user_id , totalypalice)
-local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , totalypalice)
+local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender.user_id) or 0
 if tonumber(carcoronum) == 0 then
-redis:del(bot_id.."carcoroname"..msg.sender_id.user_id)
-redis:del(bot_id.."carcoronum"..msg.sender_id.user_id)
+redis:del(bot_id.."carcoroname"..msg.sender.user_id)
+redis:del(bot_id.."carcoronum"..msg.sender.user_id)
 end
 local convert_mony = string.format("%.0f",math.floor(totalypalice))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وصل بيع سيارة\nنوع السيارة : كورولا \nعدد السيارات : "..tonumber(coniss).."\nاجمالي السعر : "..tonumber(sellcar).." 💵\nرصيدك الان : "..convert_mony.."\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
@@ -11515,9 +11515,9 @@ end
 if text and text:match('^اهداء سياره فيلار (.*)$') or text and text:match('^اهداء سيارة فيلار (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء سياره فيلار (.*)$') or text:match('^اهداء سيارة فيلار (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender_id.user_id) or 0
+local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender.user_id) or 0
 if tonumber(carrangnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات فيلار ","md",true)
 end
@@ -11525,24 +11525,24 @@ if tonumber(carrangnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة فيلار ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender.user_id) or 0
 local carrangnow = tonumber(carrangnum) - tonumber(coniss)
-redis:set(bot_id.."carrangnum"..msg.sender_id.user_id , carrangnow)
-local carrangnumm = redis:get(bot_id.."carrangnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."carrangnum"..msg.sender.user_id , carrangnow)
+local carrangnumm = redis:get(bot_id.."carrangnum"..Remsg.sender.user_id) or 0
 local carrangnoww = tonumber(carrangnumm) + tonumber(coniss)
-redis:set(bot_id.."carrangnum"..Remsg.sender_id.user_id , carrangnoww)
+redis:set(bot_id.."carrangnum"..Remsg.sender.user_id , carrangnoww)
 rangnamed = "فيلار"
-redis:set(bot_id.."carrangname"..Remsg.sender_id.user_id,rangnamed)
-local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."carrangname"..Remsg.sender.user_id,rangnamed)
+local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender.user_id) or 0
 if tonumber(carrangnum) == 0 then
-redis:del(bot_id.."carrangname"..msg.sender_id.user_id)
-redis:del(bot_id.."carrangnum"..msg.sender_id.user_id)
+redis:del(bot_id.."carrangname"..msg.sender.user_id)
+redis:del(bot_id.."carrangnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) سيارة فيلار\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11555,9 +11555,9 @@ end
 if text and text:match('^اهداء سياره اكسنت (.*)$') or text and text:match('^اهداء سيارة اكسنت (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء سياره اكسنت (.*)$') or text:match('^اهداء سيارة اكسنت (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender_id.user_id) or 0
+local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender.user_id) or 0
 if tonumber(caraccenum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات اكسنت ","md",true)
 end
@@ -11565,24 +11565,24 @@ if tonumber(caraccenum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة اكسنت ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender.user_id) or 0
 local caraccenow = tonumber(caraccenum) - tonumber(coniss)
-redis:set(bot_id.."caraccenum"..msg.sender_id.user_id , caraccenow)
-local caraccenumm = redis:get(bot_id.."caraccenum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."caraccenum"..msg.sender.user_id , caraccenow)
+local caraccenumm = redis:get(bot_id.."caraccenum"..Remsg.sender.user_id) or 0
 local caraccenoww = tonumber(caraccenumm) + tonumber(coniss)
-redis:set(bot_id.."caraccenum"..Remsg.sender_id.user_id , caraccenoww)
+redis:set(bot_id.."caraccenum"..Remsg.sender.user_id , caraccenoww)
 accenamed = "اكسنت"
-redis:set(bot_id.."caraccename"..Remsg.sender_id.user_id,accenamed)
-local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."caraccename"..Remsg.sender.user_id,accenamed)
+local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender.user_id) or 0
 if tonumber(caraccenum) == 0 then
-redis:del(bot_id.."caraccename"..msg.sender_id.user_id)
-redis:del(bot_id.."caraccenum"..msg.sender_id.user_id)
+redis:del(bot_id.."caraccename"..msg.sender.user_id)
+redis:del(bot_id.."caraccenum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) سيارة اكسنت\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11595,9 +11595,9 @@ end
 if text and text:match('^اهداء سياره كامري (.*)$') or text and text:match('^اهداء سيارة كامري (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء سياره كامري (.*)$') or text:match('^اهداء سيارة كامري (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender_id.user_id) or 0
+local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender.user_id) or 0
 if tonumber(carcamrnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات كامري ","md",true)
 end
@@ -11605,24 +11605,24 @@ if tonumber(carcamrnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة كامري ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender.user_id) or 0
 local carcamrnow = tonumber(carcamrnum) - tonumber(coniss)
-redis:set(bot_id.."carcamrnum"..msg.sender_id.user_id , carcamrnow)
-local carcamrnumm = redis:get(bot_id.."carcamrnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."carcamrnum"..msg.sender.user_id , carcamrnow)
+local carcamrnumm = redis:get(bot_id.."carcamrnum"..Remsg.sender.user_id) or 0
 local carcamrnoww = tonumber(carcamrnumm) + tonumber(coniss)
-redis:set(bot_id.."carcamrnum"..Remsg.sender_id.user_id , carcamrnoww)
+redis:set(bot_id.."carcamrnum"..Remsg.sender.user_id , carcamrnoww)
 camrnamed = "كامري"
-redis:set(bot_id.."carcamrname"..Remsg.sender_id.user_id,camrnamed)
-local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."carcamrname"..Remsg.sender.user_id,camrnamed)
+local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender.user_id) or 0
 if tonumber(carcamrnum) == 0 then
-redis:del(bot_id.."carcamrname"..msg.sender_id.user_id)
-redis:del(bot_id.."carcamrnum"..msg.sender_id.user_id)
+redis:del(bot_id.."carcamrname"..msg.sender.user_id)
+redis:del(bot_id.."carcamrnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) سيارة كامري\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11635,9 +11635,9 @@ end
 if text and text:match('^اهداء سياره هايلكس (.*)$') or text and text:match('^اهداء سيارة هايلكس (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء سياره هايلكس (.*)$') or text:match('^اهداء سيارة هايلكس (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender_id.user_id) or 0
+local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender.user_id) or 0
 if tonumber(carhilxnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات هايلكس ","md",true)
 end
@@ -11645,24 +11645,24 @@ if tonumber(carhilxnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة هايلكس ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender.user_id) or 0
 local carhilxnow = tonumber(carhilxnum) - tonumber(coniss)
-redis:set(bot_id.."carhilxnum"..msg.sender_id.user_id , carhilxnow)
-local carhilxnumm = redis:get(bot_id.."carhilxnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."carhilxnum"..msg.sender.user_id , carhilxnow)
+local carhilxnumm = redis:get(bot_id.."carhilxnum"..Remsg.sender.user_id) or 0
 local carhilxnoww = tonumber(carhilxnumm) + tonumber(coniss)
-redis:set(bot_id.."carhilxnum"..Remsg.sender_id.user_id , carhilxnoww)
+redis:set(bot_id.."carhilxnum"..Remsg.sender.user_id , carhilxnoww)
 hilxnamed = "هايلكس"
-redis:set(bot_id.."carhilxname"..Remsg.sender_id.user_id,hilxnamed)
-local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."carhilxname"..Remsg.sender.user_id,hilxnamed)
+local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender.user_id) or 0
 if tonumber(carhilxnum) == 0 then
-redis:del(bot_id.."carhilxname"..msg.sender_id.user_id)
-redis:del(bot_id.."carhilxnum"..msg.sender_id.user_id)
+redis:del(bot_id.."carhilxname"..msg.sender.user_id)
+redis:del(bot_id.."carhilxnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) سيارة هايلكس\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11675,9 +11675,9 @@ end
 if text and text:match('^اهداء سياره النترا (.*)$') or text and text:match('^اهداء سيارة النترا (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء سياره النترا (.*)$') or text:match('^اهداء سيارة النترا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender_id.user_id) or 0
+local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender.user_id) or 0
 if tonumber(caralntrnum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات النترا ","md",true)
 end
@@ -11685,24 +11685,24 @@ if tonumber(caralntrnum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة النترا ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender.user_id) or 0
 local caralntrnow = tonumber(caralntrnum) - tonumber(coniss)
-redis:set(bot_id.."caralntrnum"..msg.sender_id.user_id , caralntrnow)
-local caralntrnumm = redis:get(bot_id.."caralntrnum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."caralntrnum"..msg.sender.user_id , caralntrnow)
+local caralntrnumm = redis:get(bot_id.."caralntrnum"..Remsg.sender.user_id) or 0
 local caralntrnoww = tonumber(caralntrnumm) + tonumber(coniss)
-redis:set(bot_id.."caralntrnum"..Remsg.sender_id.user_id , caralntrnoww)
+redis:set(bot_id.."caralntrnum"..Remsg.sender.user_id , caralntrnoww)
 alntrnamed = "النترا"
-redis:set(bot_id.."caralntrname"..Remsg.sender_id.user_id,alntrnamed)
-local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."caralntrname"..Remsg.sender.user_id,alntrnamed)
+local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender.user_id) or 0
 if tonumber(caralntrnum) == 0 then
-redis:del(bot_id.."caralntrname"..msg.sender_id.user_id)
-redis:del(bot_id.."caralntrnum"..msg.sender_id.user_id)
+redis:del(bot_id.."caralntrname"..msg.sender.user_id)
+redis:del(bot_id.."caralntrnum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) سيارة النترا\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11715,9 +11715,9 @@ end
 if text and text:match('^اهداء سياره سوناتا (.*)$') or text and text:match('^اهداء سيارة سوناتا (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء سياره سوناتا (.*)$') or text:match('^اهداء سيارة سوناتا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender_id.user_id) or 0
+local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender.user_id) or 0
 if tonumber(carsonanum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات سوناتا ","md",true)
 end
@@ -11725,24 +11725,24 @@ if tonumber(carsonanum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة سوناتا ","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender.user_id) or 0
 local carsonanow = tonumber(carsonanum) - tonumber(coniss)
-redis:set(bot_id.."carsonanum"..msg.sender_id.user_id , carsonanow)
-local carsonanumm = redis:get(bot_id.."carsonanum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."carsonanum"..msg.sender.user_id , carsonanow)
+local carsonanumm = redis:get(bot_id.."carsonanum"..Remsg.sender.user_id) or 0
 local carsonanoww = tonumber(carsonanumm) + tonumber(coniss)
-redis:set(bot_id.."carsonanum"..Remsg.sender_id.user_id , carsonanoww)
+redis:set(bot_id.."carsonanum"..Remsg.sender.user_id , carsonanoww)
 sonanamed = "سوناتا"
-redis:set(bot_id.."carsonaname"..Remsg.sender_id.user_id,sonanamed)
-local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."carsonaname"..Remsg.sender.user_id,sonanamed)
+local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender.user_id) or 0
 if tonumber(carsonanum) == 0 then
-redis:del(bot_id.."carsonaname"..msg.sender_id.user_id)
-redis:del(bot_id.."carsonanum"..msg.sender_id.user_id)
+redis:del(bot_id.."carsonaname"..msg.sender.user_id)
+redis:del(bot_id.."carsonanum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) سيارة سوناتا\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11755,9 +11755,9 @@ end
 if text and text:match('^اهداء سياره كورولا (.*)$') or text and text:match('^اهداء سيارة كورولا (.*)$') and tonumber(msg.reply_to_message_id) ~= 0 then
 local UserName = text:match('^اهداء سياره كورولا (.*)$') or text:match('^اهداء سيارة كورولا (.*)$')
 local coniss = coin(UserName)
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender_id.user_id) or 0
+local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender.user_id) or 0
 if tonumber(carcoronum) == 0 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك سيارات كورولا ","md",true)
 end
@@ -11765,24 +11765,24 @@ if tonumber(carcoronum) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك "..tonumber(coniss).." سيارة كورولا","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : تهدي نفسك 🤡*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender.user_id) or 0
 local carcoronow = tonumber(carcoronum) - tonumber(coniss)
-redis:set(bot_id.."carcoronum"..msg.sender_id.user_id , carcoronow)
-local carcoronumm = redis:get(bot_id.."carcoronum"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."carcoronum"..msg.sender.user_id , carcoronow)
+local carcoronumm = redis:get(bot_id.."carcoronum"..Remsg.sender.user_id) or 0
 local carcoronoww = tonumber(carcoronumm) + tonumber(coniss)
-redis:set(bot_id.."carcoronum"..Remsg.sender_id.user_id , carcoronoww)
+redis:set(bot_id.."carcoronum"..Remsg.sender.user_id , carcoronoww)
 coronamed = "كورولا"
-redis:set(bot_id.."carcoroname"..Remsg.sender_id.user_id,coronamed)
-local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."carcoroname"..Remsg.sender.user_id,coronamed)
+local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender.user_id) or 0
 if tonumber(carcoronum) == 0 then
-redis:del(bot_id.."carcoroname"..msg.sender_id.user_id)
-redis:del(bot_id.."carcoronum"..msg.sender_id.user_id)
+redis:del(bot_id.."carcoroname"..msg.sender.user_id)
+redis:del(bot_id.."carcoronum"..msg.sender.user_id)
 end
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم اهديته ( "..tonumber(coniss).." ) سيارة كورولا\n\n⌁ : اكتب `ممتلكاتي` لعرض جميع ممتلكاتك \n","md",true)
 else
@@ -11794,121 +11794,121 @@ end
 end
 ----------
 if text == "ممتلكاتي" or text == "ممتلكات" then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local mgrmasname = redis:get(bot_id.."mgrmasname"..msg.sender_id.user_id)
-local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local mgrmasname = redis:get(bot_id.."mgrmasname"..msg.sender.user_id)
+local mgrmasnum = redis:get(bot_id.."mgrmasnum"..msg.sender.user_id) or 0
 if mgrmasname then
 mgrmasnamee = "- "..mgrmasname.." : ( `"..mgrmasnum.."` ) \n"
 else
 mgrmasnamee = ""
 end
-local mgrkldname = redis:get(bot_id.."mgrkldname"..msg.sender_id.user_id)
-local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender_id.user_id) or 0
+local mgrkldname = redis:get(bot_id.."mgrkldname"..msg.sender.user_id)
+local mgrkldnum = redis:get(bot_id.."mgrkldnum"..msg.sender.user_id) or 0
 if mgrkldname then
 mgrkldnamee = "- "..mgrkldname.." : ( `"..mgrkldnum.."` ) \n"
 else
 mgrkldnamee = ""
 end
-local mgrswrname = redis:get(bot_id.."mgrswrname"..msg.sender_id.user_id)
-local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender_id.user_id) or 0
+local mgrswrname = redis:get(bot_id.."mgrswrname"..msg.sender.user_id)
+local mgrswrnum = redis:get(bot_id.."mgrswrnum"..msg.sender.user_id) or 0
 if mgrswrname then
 mgrswrnamee = "- "..mgrswrname.." : ( `"..mgrswrnum.."` ) \n"
 else
 mgrswrnamee = ""
 end
-local mgrktmname = redis:get(bot_id.."mgrktmname"..msg.sender_id.user_id)
-local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender_id.user_id) or 0
+local mgrktmname = redis:get(bot_id.."mgrktmname"..msg.sender.user_id)
+local mgrktmnum = redis:get(bot_id.."mgrktmnum"..msg.sender.user_id) or 0
 if mgrktmname then
 mgrktmnamee = "- "..mgrktmname.." : ( `"..mgrktmnum.."` ) \n"
 else
 mgrktmnamee = ""
 end
-local akrksrname = redis:get(bot_id.."akrksrname"..msg.sender_id.user_id)
-local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender_id.user_id) or 0
+local akrksrname = redis:get(bot_id.."akrksrname"..msg.sender.user_id)
+local akrksrnum = redis:get(bot_id.."akrksrnum"..msg.sender.user_id) or 0
 if akrksrname then
 akrksrnamee = "- "..akrksrname.." : ( `"..akrksrnum.."` ) \n"
 else
 akrksrnamee = ""
 end
-local akrfelname = redis:get(bot_id.."akrfelname"..msg.sender_id.user_id)
-local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender_id.user_id) or 0
+local akrfelname = redis:get(bot_id.."akrfelname"..msg.sender.user_id)
+local akrfelnum = redis:get(bot_id.."akrfelnum"..msg.sender.user_id) or 0
 if akrfelname then
 akrfelnamee = "- "..akrfelname.." : ( `"..akrfelnum.."` ) \n"
 else
 akrfelnamee = ""
 end
-local akrmnzname = redis:get(bot_id.."akrmnzname"..msg.sender_id.user_id)
-local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender_id.user_id) or 0
+local akrmnzname = redis:get(bot_id.."akrmnzname"..msg.sender.user_id)
+local akrmnznum = redis:get(bot_id.."akrmnznum"..msg.sender.user_id) or 0
 if akrmnzname then
 akrmnznamee = "- "..akrmnzname.." : ( `"..akrmnznum.."` ) \n"
 else
 akrmnznamee = ""
 end
-local airshbhname = redis:get(bot_id.."airshbhname"..msg.sender_id.user_id)
-local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender_id.user_id) or 0
+local airshbhname = redis:get(bot_id.."airshbhname"..msg.sender.user_id)
+local airshbhnum = redis:get(bot_id.."airshbhnum"..msg.sender.user_id) or 0
 if airshbhname then
 airshbhnamee = "- "..airshbhname.." : ( `"..airshbhnum.."` ) \n"
 else
 airshbhnamee = ""
 end
-local airsfarname = redis:get(bot_id.."airsfarname"..msg.sender_id.user_id)
-local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender_id.user_id) or 0
+local airsfarname = redis:get(bot_id.."airsfarname"..msg.sender.user_id)
+local airsfarnum = redis:get(bot_id.."airsfarnum"..msg.sender.user_id) or 0
 if airsfarname then
 airsfarnamee = "- "..airsfarname.." : ( `"..airsfarnum.."` ) \n"
 else
 airsfarnamee = ""
 end
-local airkhasname = redis:get(bot_id.."airkhasname"..msg.sender_id.user_id)
-local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender_id.user_id) or 0
+local airkhasname = redis:get(bot_id.."airkhasname"..msg.sender.user_id)
+local airkhasnum = redis:get(bot_id.."airkhasnum"..msg.sender.user_id) or 0
 if airkhasname then
 airkhasnamee = "- "..airkhasname.." : ( `"..airkhasnum.."` ) \n"
 else
 airkhasnamee = ""
 end
-local carrangname = redis:get(bot_id.."carrangname"..msg.sender_id.user_id)
-local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender_id.user_id) or 0
+local carrangname = redis:get(bot_id.."carrangname"..msg.sender.user_id)
+local carrangnum = redis:get(bot_id.."carrangnum"..msg.sender.user_id) or 0
 if carrangname then
 carrangnamee = "- "..carrangname.." : ( `"..carrangnum.."` ) \n"
 else
 carrangnamee = ""
 end
-local caraccename = redis:get(bot_id.."caraccename"..msg.sender_id.user_id)
-local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender_id.user_id) or 0
+local caraccename = redis:get(bot_id.."caraccename"..msg.sender.user_id)
+local caraccenum = redis:get(bot_id.."caraccenum"..msg.sender.user_id) or 0
 if caraccename then
 caraccenamee = "- "..caraccename.." : ( `"..caraccenum.."` ) \n"
 else
 caraccenamee = ""
 end
-local carcamrname = redis:get(bot_id.."carcamrname"..msg.sender_id.user_id)
-local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender_id.user_id) or 0
+local carcamrname = redis:get(bot_id.."carcamrname"..msg.sender.user_id)
+local carcamrnum = redis:get(bot_id.."carcamrnum"..msg.sender.user_id) or 0
 if carcamrname then
 carcamrnamee = "- "..carcamrname.." : ( `"..carcamrnum.."` ) \n"
 else
 carcamrnamee = ""
 end
-local caralntrname = redis:get(bot_id.."caralntrname"..msg.sender_id.user_id)
-local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender_id.user_id) or 0
+local caralntrname = redis:get(bot_id.."caralntrname"..msg.sender.user_id)
+local caralntrnum = redis:get(bot_id.."caralntrnum"..msg.sender.user_id) or 0
 if caralntrname then
 caralntrnamee = "- "..caralntrname.." : ( `"..caralntrnum.."` ) \n"
 else
 caralntrnamee = ""
 end
-local carhilxname = redis:get(bot_id.."carhilxname"..msg.sender_id.user_id)
-local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender_id.user_id) or 0
+local carhilxname = redis:get(bot_id.."carhilxname"..msg.sender.user_id)
+local carhilxnum = redis:get(bot_id.."carhilxnum"..msg.sender.user_id) or 0
 if carhilxname then
 carhilxnamee = "- "..carhilxname.." : ( `"..carhilxnum.."` ) \n"
 else
 carhilxnamee = ""
 end
-local carsonaname = redis:get(bot_id.."carsonaname"..msg.sender_id.user_id)
-local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender_id.user_id) or 0
+local carsonaname = redis:get(bot_id.."carsonaname"..msg.sender.user_id)
+local carsonanum = redis:get(bot_id.."carsonanum"..msg.sender.user_id) or 0
 if carsonaname then
 carsonanamee = "- "..carsonaname.." : ( `"..carsonanum.."` ) \n"
 else
 carsonanamee = ""
 end
-local carcoroname = redis:get(bot_id.."carcoroname"..msg.sender_id.user_id)
-local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender_id.user_id) or 0
+local carcoroname = redis:get(bot_id.."carcoroname"..msg.sender.user_id)
+local carcoronum = redis:get(bot_id.."carcoronum"..msg.sender.user_id) or 0
 if carcoroname then
 carcoronamee = "- "..carcoroname.." : ( `"..carcoronum.."` ) \n"
 else
@@ -11925,7 +11925,7 @@ end
 end
 ----------
 if text == 'مسح لعبه الزواج' then
-if devS(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) then
 local zwag_users = redis:smembers(bot_id.."roogg1")
 for k,v in pairs(zwag_users) do
 redis:del(bot_id.."roog1"..v)
@@ -11954,23 +11954,23 @@ if text and text:match("^زواج (%d+)$") and msg.reply_to_message_id == 0 then
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`زواج` المهر ( بالرد )","md",true)
 end
 if text and text:match("^زواج (.*)$") and msg.reply_to_message_id ~= 0 then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
 local UserName = text:match('^زواج (.*)$')
 local coniss = coin(UserName)
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+local UserInfo = bot.getUser(Remsg.sender.user_id)
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : زوجتك نفسي 🤣😒*","md",true)  
 return false
 end
-if redis:get(bot_id.."zwag_request:"..msg.sender_id.user_id) then 
+if redis:get(bot_id.."zwag_request:"..msg.sender.user_id) then 
 return bot.sendText(msg.chat_id,msg.id, "⌁ : في طلب باسمك انتظر قليلاً \n","md",true)
 end
 if tonumber(coniss) < 10000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح به هو 10000 دينار \n","md",true)
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 10000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي \n","md",true)
 end
@@ -11978,49 +11978,49 @@ if tonumber(coniss) > tonumber(ballancee) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي\n","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  مو للزواج 🤣*","md",true)  
 return false
 end
-if redis:get(bot_id.."roog1"..msg.sender_id.user_id) then
+if redis:get(bot_id.."roog1"..msg.sender.user_id) then
 bot.sendText(msg.chat_id,msg.id, "⌁ : ابك تراك متزوج !!","md",true)
 return false
 end
-if redis:get(bot_id.."rooga1"..msg.sender_id.user_id) then
+if redis:get(bot_id.."rooga1"..msg.sender.user_id) then
 bot.sendText(msg.chat_id,msg.id, "⌁ : ابك تراك متزوج !!","md",true)
 return false
 end
-if redis:get(bot_id.."roog1"..Remsg.sender_id.user_id) then
+if redis:get(bot_id.."roog1"..Remsg.sender.user_id) then
 bot.sendText(msg.chat_id,msg.id, "⌁ : ابعد بعيد لاتحوس وتدور حول المتزوجين","md",true)
 return false
 end
-if redis:get(bot_id.."rooga1"..Remsg.sender_id.user_id) then
+if redis:get(bot_id.."rooga1"..Remsg.sender.user_id) then
 bot.sendText(msg.chat_id,msg.id, "⌁ : ابعد بعيد لاتحوس وتدور حول المتزوجين","md",true)
 return false
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-local zwg = bot.getUser(msg.sender_id.user_id)
-local zwga = bot.getUser(Remsg.sender_id.user_id)
-local zwg_tag = '['..zwg.first_name.."](tg://user?id="..msg.sender_id.user_id..")"
-local zwga_tag = '['..zwga.first_name.."](tg://user?id="..Remsg.sender_id.user_id..")"
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+local zwg = bot.getUser(msg.sender.user_id)
+local zwga = bot.getUser(Remsg.sender.user_id)
+local zwg_tag = '['..zwg.first_name.."](tg://user?id="..msg.sender.user_id..")"
+local zwga_tag = '['..zwga.first_name.."](tg://user?id="..Remsg.sender.user_id..")"
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = 'موافقة', data =Remsg.sender_id.user_id.."/zwag_yes/"..msg.sender_id.user_id.."/mahr/"..coniss},{text = 'غير موافقة', data = Remsg.sender_id.user_id.."/zwag_no/"..msg.sender_id.user_id},
+{text = 'موافقة', data =Remsg.sender.user_id.."/zwag_yes/"..msg.sender.user_id.."/mahr/"..coniss},{text = 'غير موافقة', data = Remsg.sender.user_id.."/zwag_no/"..msg.sender.user_id},
 },
 }
 }
-redis:setex(bot_id.."zwag_request:"..msg.sender_id.user_id,60,true)
-redis:setex(bot_id.."zwag_request:"..Remsg.sender_id.user_id,60,true)
+redis:setex(bot_id.."zwag_request:"..msg.sender.user_id,60,true)
+redis:setex(bot_id.."zwag_request:"..Remsg.sender.user_id,60,true)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : الزوج : "..zwg_tag.."\n⌁ : الزوجة : "..zwga_tag.."\n⌁ : المهر : "..coniss.."\n⌁ : شو رايك معاكي دقيقه وينتهي الطلب ؟","md",false, false, false, false, reply_markup)
 else
 return bot.sendText(msg.chat_id,msg.reply_to_message_id, "⌁ : ماعندك حساب بنكي ارسل ↢ ( `انشاء حساب بنكي` )","md",true)
 end
 end
 if text == "زواجات غش" then
-if devS(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) then
   local zwag_users = redis:smembers(bot_id.."roogg1")
   if #zwag_users == 0 then
   return bot.sendText(msg.chat_id,msg.id,"⌁ : مافي زواجات حاليا","md",true)
@@ -12166,10 +12166,10 @@ data = {
 return bot.sendText(msg.chat_id,msg.id,top_zwag..gg,"md",false, false, false, false, reply_markup)
   end
 if text == 'زواجي' then
-if redis:sismember(bot_id.."roogg1",msg.sender_id.user_id) or redis:sismember(bot_id.."roogga1",msg.sender_id.user_id) then
-local zoog = redis:get(bot_id.."roog1"..msg.sender_id.user_id)
-local zooga = redis:get(bot_id.."rooga1"..msg.sender_id.user_id)
-local mahr = redis:get(bot_id.."rahr1"..msg.sender_id.user_id)
+if redis:sismember(bot_id.."roogg1",msg.sender.user_id) or redis:sismember(bot_id.."roogga1",msg.sender.user_id) then
+local zoog = redis:get(bot_id.."roog1"..msg.sender.user_id)
+local zooga = redis:get(bot_id.."rooga1"..msg.sender.user_id)
+local mahr = redis:get(bot_id.."rahr1"..msg.sender.user_id)
 local convert_mony = string.format("%.0f",mahr)
 local bandd = bot.getUser(zoog)
 if bandd.first_name then
@@ -12190,26 +12190,26 @@ end
 end
 if text == 'زوجها' or text == "زوجته" or text == "جوزها" or text == "زوجتو" or text == "زواجه" and msg.reply_to_message_id ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
-if msg.sender_id.user_id == Remsg.sender_id.user_id then
+local UserInfo = bot.getUser(Remsg.sender.user_id)
+if msg.sender.user_id == Remsg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لا تكشف نفسك وتخسر فلوس عالفاضي\n اكتب `زواجي`*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."roogg1",Remsg.sender_id.user_id) or redis:sismember(bot_id.."roogga1",Remsg.sender_id.user_id) then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."roogg1",Remsg.sender.user_id) or redis:sismember(bot_id.."roogga1",Remsg.sender.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 100 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي \n","md",true)
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  مو متزوجه 🤣*","md",true)  
 return false
 end
-local zoog = redis:get(bot_id.."roog1"..Remsg.sender_id.user_id)
-local zooga = redis:get(bot_id.."rooga1"..Remsg.sender_id.user_id)
-local mahr = redis:get(bot_id.."rahr1"..Remsg.sender_id.user_id)
+local zoog = redis:get(bot_id.."roog1"..Remsg.sender.user_id)
+local zooga = redis:get(bot_id.."rooga1"..Remsg.sender.user_id)
+local mahr = redis:get(bot_id.."rahr1"..Remsg.sender.user_id)
 local bandd = bot.getUser(zoog)
 if bandd.first_name then
 neews = "["..bandd.first_name.."](tg://user?id="..bandd.id..")"
@@ -12224,7 +12224,7 @@ newws = " لا يوجد"
 end
 local otheka = ballancee - 100
 local convert_mony = string.format("%.0f",mahr)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(otheka))
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(otheka))
 bot.sendText(msg.chat_id,msg.id, "⌁ : وثيقة الزواج حقته :\n\n⌁ : الزوج "..neews.." 🤵🏻\n⌁ : الزوجة "..newws.." 👰🏻‍♀️\n⌁ : المهر : "..convert_mony.." دينار 💵","md",true)
 else
 bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل ↢ ( `انشاء حساب بنكي` )","md",true)
@@ -12234,10 +12234,10 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : مسكين اعزب مو متزوج","md
 end
 end
 if text == 'طلاق' then
-if redis:sismember(bot_id.."roogg1",msg.sender_id.user_id) or redis:sismember(bot_id.."roogga1",msg.sender_id.user_id) then
-local zoog = redis:get(bot_id.."roog1"..msg.sender_id.user_id)
-local zooga = tonumber(redis:get(bot_id.."rooga1"..msg.sender_id.user_id))
-if tonumber(zoog) == msg.sender_id.user_id then
+if redis:sismember(bot_id.."roogg1",msg.sender.user_id) or redis:sismember(bot_id.."roogga1",msg.sender.user_id) then
+local zoog = redis:get(bot_id.."roog1"..msg.sender.user_id)
+local zooga = tonumber(redis:get(bot_id.."rooga1"..msg.sender.user_id))
+if tonumber(zoog) == msg.sender.user_id then
 local bandd = bot.getUser(zoog)
 if bandd.first_name then
 neews = "["..bandd.first_name.."](tg://user?id="..bandd.id..")"
@@ -12250,12 +12250,12 @@ newws = "["..ban.first_name.."](tg://user?id="..ban.id..")"
 else
 newws = " لا يوجد"
 end
-redis:srem(bot_id.."roogg1", msg.sender_id.user_id)
-redis:srem(bot_id.."roogga1", msg.sender_id.user_id)
-redis:del(bot_id.."roog1"..msg.sender_id.user_id)
-redis:del(bot_id.."rooga1"..msg.sender_id.user_id)
-redis:del(bot_id.."rahr1"..msg.sender_id.user_id)
-redis:del(bot_id.."rahrr1"..msg.sender_id.user_id)
+redis:srem(bot_id.."roogg1", msg.sender.user_id)
+redis:srem(bot_id.."roogga1", msg.sender.user_id)
+redis:del(bot_id.."roog1"..msg.sender.user_id)
+redis:del(bot_id.."rooga1"..msg.sender.user_id)
+redis:del(bot_id.."rahr1"..msg.sender.user_id)
+redis:del(bot_id.."rahrr1"..msg.sender.user_id)
 redis:srem(bot_id.."roogg1", zooga)
 redis:srem(bot_id.."roogga1", zooga)
 redis:del(bot_id.."roog1"..zooga)
@@ -12271,11 +12271,11 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : انت اعزب","md",true)
 end
 end
 if text == 'خلع' then
-if redis:sismember(bot_id.."roogg1",msg.sender_id.user_id) or redis:sismember(bot_id.."roogga1",msg.sender_id.user_id) then
-local zoog = redis:get(bot_id.."roog1"..msg.sender_id.user_id)
-local zooga = redis:get(bot_id.."rooga1"..msg.sender_id.user_id)
-if tonumber(zooga) == msg.sender_id.user_id then
-local mahrr = redis:get(bot_id.."rahrr1"..msg.sender_id.user_id)
+if redis:sismember(bot_id.."roogg1",msg.sender.user_id) or redis:sismember(bot_id.."roogga1",msg.sender.user_id) then
+local zoog = redis:get(bot_id.."roog1"..msg.sender.user_id)
+local zooga = redis:get(bot_id.."rooga1"..msg.sender.user_id)
+if tonumber(zooga) == msg.sender.user_id then
+local mahrr = redis:get(bot_id.."rahrr1"..msg.sender.user_id)
 local bandd = bot.getUser(zoog)
 if bandd.first_name then
 neews = "["..bandd.first_name.."](tg://user?id="..bandd.id..")"
@@ -12299,12 +12299,12 @@ redis:del(bot_id.."roog1"..zoog)
 redis:del(bot_id.."rooga1"..zoog)
 redis:del(bot_id.."rahr1"..zoog)
 redis:del(bot_id.."rahrr1"..zoog)
-redis:srem(bot_id.."roogg1", msg.sender_id.user_id)
-redis:srem(bot_id.."roogga1", msg.sender_id.user_id)
-redis:del(bot_id.."roog1"..msg.sender_id.user_id)
-redis:del(bot_id.."rooga1"..msg.sender_id.user_id)
-redis:del(bot_id.."rahr1"..msg.sender_id.user_id)
-redis:del(bot_id.."rahrr1"..msg.sender_id.user_id)
+redis:srem(bot_id.."roogg1", msg.sender.user_id)
+redis:srem(bot_id.."roogga1", msg.sender.user_id)
+redis:del(bot_id.."roog1"..msg.sender.user_id)
+redis:del(bot_id.."rooga1"..msg.sender.user_id)
+redis:del(bot_id.."rahr1"..msg.sender.user_id)
+redis:del(bot_id.."rahrr1"..msg.sender.user_id)
 else
 bot.sendText(msg.chat_id,msg.id, "⌁ : الخلع للزوجات فقط","md",true)
 end
@@ -12317,14 +12317,14 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."market"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل السوق *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل السوق *").by,"md",true)
 end
 if text == 'تعطيل السوق' or text == 'تعطيل سوق' or text == 'قفل سوق' or text == 'قفل السوق' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."market"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم قفل السوق *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم قفل السوق *").by,"md",true)
 end
 if text == "السوق" or text == "سوق" then
 if not redis:get(bot_id.."market"..msg.chat_id) then
@@ -12341,11 +12341,11 @@ data = {
 }
 return bot.sendText(msg.chat_id,msg.id,pricemarket,"md",false, false, false, false, reply_markup)
 end
-if text and text:match("^(.*)$") and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:setg") == "true" then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:setg","true1")
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:Text:rdg",text)
+if text and text:match("^(.*)$") and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:setg") == "true" then
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:setg","true1")
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:Text:rdg",text)
 redis:del(bot_id.."Rp:content:Textg"..msg.chat_id..":"..text)   
-redis:set(bot_id.."rdddtex"..msg.sender_id.user_id,text)
+redis:set(bot_id.."rdddtex"..msg.sender.user_id,text)
 redis:sadd(bot_id.."List:Rp:contentg"..msg.chat_id, text)
 bot.sendText(msg.chat_id,msg.id,[[
 ︙ ارسل لي الرد
@@ -12362,19 +12362,19 @@ bot.sendText(msg.chat_id,msg.id,[[
 return false
 end
 if text == "ضع رد" then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
 if not redis:get(bot_id.."market"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : السوق مقفل من قبل المشرفين","md",true)
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 10000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي \n","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-redis:set(bot_id.."rdddgr"..msg.sender_id.user_id,msg.chat_id)
-redis:set(bot_id.."rdddid"..msg.sender_id.user_id,msg.sender_id.user_id)
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Rp:setg",true)
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+redis:set(bot_id.."rdddgr"..msg.sender.user_id,msg.chat_id)
+redis:set(bot_id.."rdddid"..msg.sender.user_id,msg.sender.user_id)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Rp:setg",true)
 bot.sendText(msg.chat_id,msg.id, "⌁ : ارسل الان الكلمه لاضافتها في الردود\n\nملاحظة : الرد نص فقط لاتباع سياسة الاستخدام العادل","md",true)
 else
 bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل ↢ ( `انشاء حساب بنكي` )","md",true)
@@ -12398,19 +12398,19 @@ end
 bot.sendText(msg.chat_id,msg.id,ext,"md",true)  
 end
 if text == "منشن جماعي" then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
 if not redis:get(bot_id.."market"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : السوق مقفل من قبل المشرفين","md",true)
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 1000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي \n","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local Info = bot.searchChatMembers(msg.chat_id, "*", 200)
 local members = Info.members
-local bandd = bot.getUser(msg.sender_id.user_id)
+local bandd = bot.getUser(msg.sender.user_id)
 if bandd.first_name then
 neews = "["..bandd.first_name.."](tg://user?id="..bandd.id..")"
 else
@@ -12427,8 +12427,8 @@ end
 end
 bot.sendText(msg.chat_id,msg.id,ls,"md",true)
 mensen = ballancee - 1000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(mensen))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(mensen))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,"\n⌁ : اشعار دفع :\n\nالمنتج : منشن جماعي\nالسعر : 1000000 دينار\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true)  
 else
@@ -12442,27 +12442,27 @@ end
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`رتبه` مع اسمها\nمثال : رتبه جنرال","md",true)
 end
 if text and text:match("^رتبه (.*)$") then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
 if not redis:get(bot_id.."market"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : السوق مقفل من قبل المشرفين","md",true)
 end
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 5000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي \n","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 if text:match("مطور اساسي") or text:match("المطور الاساسي") or text:match("مطور الاساسي") or text:match("ثانوي") or text:match("مطور") then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : خطأ ، اختر رتبة اخرى ","md",true)
 end
 numcare = math.random(000000000001,999999999999);
-redis:set(bot_id.."rotpa"..msg.sender_id.user_id,numcare)
-redis:set(bot_id.."rotpagrid"..msg.sender_id.user_id,msg.chat_id)
-redis:set(bot_id.."rotpaid"..msg.sender_id.user_id,msg.sender_id.user_id)
-redis:set(bot_id..':SetRt'..msg.chat_id..':'..msg.sender_id.user_id,text:match('^رتبه (.*)$'))
+redis:set(bot_id.."rotpa"..msg.sender.user_id,numcare)
+redis:set(bot_id.."rotpagrid"..msg.sender.user_id,msg.chat_id)
+redis:set(bot_id.."rotpaid"..msg.sender.user_id,msg.sender.user_id)
+redis:set(bot_id..':SetRt'..msg.chat_id..':'..msg.sender.user_id,text:match('^رتبه (.*)$'))
 mensenn = ballancee - 5000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(mensenn))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(mensenn))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,"\n⌁ : اشعار دفع :\n\nالمنتج : رتبه "..text:match('^رتبه (.*)$').."\nالسعر : 5000000 دينار\nرصيدك الان : "..convert_mony.." دينار 💵\nرقم الوصل : `"..numcare.."`\n\nاحتفظ برقم الايصال لاسترداد المبلغ\n","md",true)  
 else
@@ -12473,7 +12473,7 @@ if text == 'استرداد مبلغ' or text == 'استرداد المبلغ' th
 if not redis:get(bot_id.."market"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : السوق مقفل من قبل المشرفين","md",true)
 end
-redis:setex(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender_id.user_id,60, true)
+redis:setex(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender.user_id,60, true)
 bot.sendText(msg.chat_id,msg.id,[[
 ⌁ : ارسل هسه رقم ايصال الدفع
 
@@ -12482,44 +12482,44 @@ bot.sendText(msg.chat_id,msg.id,[[
 ]],"md",true)  
 return false
 end
-if redis:get(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender_id.user_id) then
-numcare = tonumber(redis:get(bot_id.."rotpa"..msg.sender_id.user_id))
-gridrtp = redis:get(bot_id.."rotpagrid"..msg.sender_id.user_id)
-usridrtp = redis:get(bot_id.."rotpaid"..msg.sender_id.user_id)
-numrd = tonumber(redis:get(bot_id.."rddd"..msg.sender_id.user_id))
-gridrd = redis:get(bot_id.."rdddgr"..msg.sender_id.user_id)
-usridrd = redis:get(bot_id.."rdddid"..msg.sender_id.user_id)
-texrd = redis:get(bot_id.."rdddtex"..msg.sender_id.user_id)
+if redis:get(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender.user_id) then
+numcare = tonumber(redis:get(bot_id.."rotpa"..msg.sender.user_id))
+gridrtp = redis:get(bot_id.."rotpagrid"..msg.sender.user_id)
+usridrtp = redis:get(bot_id.."rotpaid"..msg.sender.user_id)
+numrd = tonumber(redis:get(bot_id.."rddd"..msg.sender.user_id))
+gridrd = redis:get(bot_id.."rdddgr"..msg.sender.user_id)
+usridrd = redis:get(bot_id.."rdddid"..msg.sender.user_id)
+texrd = redis:get(bot_id.."rdddtex"..msg.sender.user_id)
 if tonumber(text) == numcare then
-redis:del(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender_id.user_id)
+redis:del(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender.user_id)
 redis:del(bot_id..':SetRt'..gridrtp..':'..usridrtp)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 mensep = ballancee + 2500000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(mensep))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(mensep))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,"\n⌁ : تم استرداد نصف المبلغ :\n\nالمنتج : ضع رتبه\nالمبلغ : 2500000 دينار\nرصيدك الان : "..convert_mony.." دينار 💵\nرقم الوصل : `"..numcare.."`\n\nشكراً لاستخدامك سوق لاري \n","md",true)
-redis:del(bot_id.."rotpa"..msg.sender_id.user_id)
-redis:del(bot_id.."rotpagrid"..msg.sender_id.user_id)
-redis:del(bot_id.."rotpaid"..msg.sender_id.user_id)
+redis:del(bot_id.."rotpa"..msg.sender.user_id)
+redis:del(bot_id.."rotpagrid"..msg.sender.user_id)
+redis:del(bot_id.."rotpaid"..msg.sender.user_id)
 elseif tonumber(text) == numrd then
-redis:del(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender_id.user_id)
+redis:del(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender.user_id)
 redis:del(bot_id.."Rp:content:Textg"..gridrd..":"..texrd)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 mensepp = ballancee + 5000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(mensepp))
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(mensepp))
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,"\n⌁ : تم استرداد نصف المبلغ :\n\nالمنتج : ضع رد\nالمبلغ : 5000000 دينار\nرصيدك الان : "..convert_mony.." دينار 💵\nرقم الوصل : "..numrd.."\n\nشكراً لاستخدامك سوق لاري \n","md",true)
-redis:del(bot_id.."rddd"..msg.sender_id.user_id)
-redis:del(bot_id.."rdddgr"..msg.sender_id.user_id)
-redis:del(bot_id.."rdddid"..msg.sender_id.user_id)
-redis:del(bot_id.."rdddtex"..msg.sender_id.user_id)
+redis:del(bot_id.."rddd"..msg.sender.user_id)
+redis:del(bot_id.."rdddgr"..msg.sender.user_id)
+redis:del(bot_id.."rdddid"..msg.sender.user_id)
+redis:del(bot_id.."rdddtex"..msg.sender.user_id)
 else
-redis:del(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender_id.user_id)
+redis:del(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender.user_id)
 bot.sendText(msg.chat_id,msg.id,"\n⌁ : لا يوجد وصل دفع بهذا الرقم\n","md",true)
 end
-redis:del(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender_id.user_id)
+redis:del(bot_id.."recoballanc" .. msg.chat_id .. ":" .. msg.sender.user_id)
 end
 --------------------------------------------------------------------------------------------------------------
 if text == 'مراهنه' or text == 'مراهنة' then
@@ -12529,7 +12529,7 @@ if text and text:match('^مراهنه (.*)$') or text and text:match('^مراه�
 local UserName = text:match('^مراهنه (.*)$') or text:match('^مراهنة (.*)$')
 
 local coniss = coin(UserName)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(coniss) < 999 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح هو 1000 دينار 💵\n","md",true)
 end
@@ -12537,20 +12537,20 @@ if tonumber(ballancee) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي \n","md",true)
 end
 redis:del(bot_id..'List_rhan'..msg.chat_id)  
-redis:set(bot_id.."playerrhan"..msg.chat_id,msg.sender_id.user_id)
-redis:set(bot_id.."playercoins"..msg.chat_id..msg.sender_id.user_id,coniss)
-redis:set(bot_id.."raeahkam"..msg.chat_id,msg.sender_id.user_id)
-redis:sadd(bot_id..'List_rhan'..msg.chat_id,msg.sender_id.user_id)
+redis:set(bot_id.."playerrhan"..msg.chat_id,msg.sender.user_id)
+redis:set(bot_id.."playercoins"..msg.chat_id..msg.sender.user_id,coniss)
+redis:set(bot_id.."raeahkam"..msg.chat_id,msg.sender.user_id)
+redis:sadd(bot_id..'List_rhan'..msg.chat_id,msg.sender.user_id)
 redis:setex(bot_id.."Start_rhan"..msg.chat_id,3600,true)
 redis:set(bot_id.."allrhan"..msg.chat_id..12345 , coniss)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 rehan = tonumber(ballancee) - tonumber(coniss)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , rehan)
+redis:set(bot_id.."boob"..msg.sender.user_id , rehan)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : تم بدء المراهنة وتم تسجيلك \n⌁ : اللي بده يشارك يرسل ( انا والمبلغ ) .","md",true)
 end
 if text == 'نعم' and redis:get(bot_id.."Witting_Startrhan"..msg.chat_id) then
 rarahkam = redis:get(bot_id.."raeahkam"..msg.chat_id)
-if tonumber(rarahkam) == msg.sender_id.user_id then
+if tonumber(rarahkam) == msg.sender.user_id then
 local list = redis:smembers(bot_id..'List_rhan'..msg.chat_id) 
 if #list == 1 then 
 return bot.sendText(msg.chat_id,msg.id,"⌁ : عذراً لم يشارك احد بالرهان","md",true)  
@@ -12642,15 +12642,15 @@ end
 return bot.sendText(msg.chat_id,msg.id, msg_text ,"html",true)
 end
 if text == "حذف شركتي" or text == "مسح شركتي" then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:sismember(bot_id.."company_owners:",msg.sender_id.user_id) then
-local Cname = redis:get(bot_id.."companys_name:"..msg.sender_id.user_id)
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:sismember(bot_id.."company_owners:",msg.sender.user_id) then
+local Cname = redis:get(bot_id.."companys_name:"..msg.sender.user_id)
 for k,v in pairs(redis:smembers(bot_id.."company:mem:"..Cname)) do
 redis:srem(bot_id.."in_company:", v)
 end
-redis:srem(bot_id.."company_owners:", msg.sender_id.user_id)
+redis:srem(bot_id.."company_owners:", msg.sender.user_id)
 redis:srem(bot_id.."companys:", Cname)
-redis:del(bot_id.."companys_name:"..msg.sender_id.user_id)
+redis:del(bot_id.."companys_name:"..msg.sender.user_id)
 redis:del(bot_id.."companys_owner:"..Cname)
 redis:del(bot_id.."companys_id:"..Cname)
 redis:del(bot_id.."company:mem:"..Cname)
@@ -12664,16 +12664,16 @@ end
 end
 if text and text:match('انشاء شركه (.*)') or text and text:match('انشاء شركة (.*)') then
 local Cnamed = text:match('انشاء شركه (.*)') or text:match('انشاء شركة (.*)')
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."in_company:" , msg.sender_id.user_id) then
+if redis:sismember(bot_id.."in_company:" , msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : لديك شركة حاليا\n⌁ : تستطيع استخدام الامر ( `استقاله` )\n","md",true)
 end
-if redis:sismember(bot_id.."company_owners:",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."company_owners:",msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : لديك شركة مسبقاً","md",true)
 end
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 1000000 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي \n","md",true)
 end
@@ -12681,16 +12681,16 @@ if redis:sismember(bot_id.."companys:", Cnamed) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الاسم مأخوذ جرب اسم ثاني \n","md",true)
 end
 local shrkcoi = tonumber(ballancee) - 1000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , shrkcoi)
-redis:sadd(bot_id.."company_owners:", msg.sender_id.user_id)
+redis:set(bot_id.."boob"..msg.sender.user_id , shrkcoi)
+redis:sadd(bot_id.."company_owners:", msg.sender.user_id)
 local rand = math.random(1,99999999999999)
 redis:sadd(bot_id.."companys:", Cnamed)
-redis:set(bot_id.."companys_name:"..msg.sender_id.user_id, Cnamed)
-redis:set(bot_id.."companys_owner:"..Cnamed, msg.sender_id.user_id)
+redis:set(bot_id.."companys_name:"..msg.sender.user_id, Cnamed)
+redis:set(bot_id.."companys_owner:"..Cnamed, msg.sender.user_id)
 redis:set(bot_id.."companys_id:"..rand, Cnamed)
 redis:set(bot_id.."companys_id:"..Cnamed, rand)
-redis:sadd(bot_id.."company:mem:"..Cnamed, msg.sender_id.user_id)
-redis:sadd(bot_id.."in_company:", msg.sender_id.user_id)
+redis:sadd(bot_id.."company:mem:"..Cnamed, msg.sender.user_id)
+redis:sadd(bot_id.."in_company:", msg.sender.user_id)
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,"⌁ : تم انشاء شركتك\n⌁ : اسم الشركة : "..Cnamed.."\n⌁ : رصيد الشركة : "..convert_mony.." دينار 💵\n⌁ : تستطيع اضافة اعضاء معك بالشركة\n⌁ : ارسل الامر ( اضافه ) بالرد\n","md",true)
 else
@@ -12722,11 +12722,11 @@ local convert_mony = string.format("%.0f",Cmony)
 bot.sendText(msg.chat_id,msg.id,"⌁ : تم ايجاد الشركه بنجاح\n\n⌁ : صاحب الشركه : "..Cowner_tag.."\n⌁ : ايدي الشركه : "..Cid.."\n⌁ : فلوس الشركه : "..convert_mony.." دينار 💵\n"..mem_txt.."\n","md",true)
 end
 if text == "شركتي" then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if not redis:sismember(bot_id.."in_company:", msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if not redis:sismember(bot_id.."in_company:", msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : انت غير موظف في اي شركة","md",true)  
 end
-local Cname = redis:get(bot_id.."companys_name:"..msg.sender_id.user_id) or redis:get(bot_id.."in_company:name:"..msg.sender_id.user_id)
+local Cname = redis:get(bot_id.."companys_name:"..msg.sender.user_id) or redis:get(bot_id.."in_company:name:"..msg.sender.user_id)
 local owner_id = redis:get(bot_id.."companys_owner:"..Cname)
 local Cid = redis:get(bot_id.."companys_id:"..Cname)
 local Cmem = redis:smembers(bot_id.."company:mem:"..Cname)
@@ -12754,54 +12754,54 @@ end
 end
 --
 if (text == 'اضافه' or text == 'اضافة') and msg.reply_to_message_id == 0 then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`اضافه` بالرد","md",true)
 end
 if (text == 'طرد' or text == 'رفض') and msg.reply_to_message_id == 0 then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`طرد` بالرد","md",true)
 end
 
 if (text == 'اضافه' or text == 'اضافة' or text == "توظيف") and msg.reply_to_message_id ~= 0 then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true)
 return false
 end
-if Remsg.sender_id.user_id == msg.sender_id.user_id then
+if Remsg.sender.user_id == msg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : بدك تضيف نفسك 🤡*","md",true)  
 return false
 end
-if not redis:sismember(bot_id.."company_owners:", msg.sender_id.user_id) then
+if not redis:sismember(bot_id.."company_owners:", msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك شركه","md",true)  
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-if redis:sismember(bot_id.."in_company:" , Remsg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+if redis:sismember(bot_id.."in_company:" , Remsg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : لديه شركة مسبقاً","md",true)
 end
-local Cname = redis:get(bot_id.."companys_name:"..msg.sender_id.user_id)
+local Cname = redis:get(bot_id.."companys_name:"..msg.sender.user_id)
 local Cmem = redis:smembers(bot_id.."company:mem:"..Cname)
 if #Cmem == 5 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : لقد وصلت شركتك لاقصى عدد من الموظفين\n⌁ : تستطيع طرد الموظفين\n","md",true)
 end
-if redis:get(bot_id.."company_request:"..Remsg.sender_id.user_id) then
+if redis:get(bot_id.."company_request:"..Remsg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : اللاعب لديه طلب توظيف استنى يخلص مدته","md",true)
 end
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = 'موافق', data = Remsg.sender_id.user_id.."/company_yes/"..msg.sender_id.user_id},{text = 'غير موافق', data = Remsg.sender_id.user_id.."/company_no/"..msg.sender_id.user_id},
+{text = 'موافق', data = Remsg.sender.user_id.."/company_yes/"..msg.sender.user_id},{text = 'غير موافق', data = Remsg.sender.user_id.."/company_no/"..msg.sender.user_id},
 },
 }
 }
-redis:setex(bot_id.."company_request:"..Remsg.sender_id.user_id,60,true)
+redis:setex(bot_id.."company_request:"..Remsg.sender.user_id,60,true)
 return bot.sendText(msg.chat_id, msg.reply_to_message_id ,"⌁ : صاحب الشركة : "..Cname.."\n⌁ : طلب منك العمل معه بالشركة ؟","md",false, false, false, false, reply_markup)
 else
 bot.sendText(msg.chat_id,msg.id, "⌁ : ماعنده حساب بنكي ","md",true)
@@ -12811,30 +12811,30 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل 
 end
 end
 if (text == 'غيرموافقق' or text == 'رفض') and msg.reply_to_message_id ~= 0 then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true)
 return false
 end
-if Remsg.sender_id.user_id == msg.sender_id.user_id then
+if Remsg.sender.user_id == msg.sender.user_id then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : بدك تطرد نفسك 🤡*","md",true)  
 return false
 end
-if not redis:sismember(bot_id.."company_owners:", msg.sender_id.user_id) then
+if not redis:sismember(bot_id.."company_owners:", msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك شركه","md",true)  
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-local Cname = redis:get(bot_id.."companys_name:"..msg.sender_id.user_id)
-if not redis:sismember(bot_id.."company:mem:"..Cname, Remsg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+local Cname = redis:get(bot_id.."companys_name:"..msg.sender.user_id)
+if not redis:sismember(bot_id.."company:mem:"..Cname, Remsg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك في الشركة مشان تطرده","md",true)  
 end
-redis:srem(bot_id.."company:mem:"..Cname, Remsg.sender_id.user_id)
-redis:srem(bot_id.."in_company:", Remsg.sender_id.user_id)
-redis:del(bot_id.."in_company:name:"..Remsg.sender_id.user_id, Cname)
+redis:srem(bot_id.."company:mem:"..Cname, Remsg.sender.user_id)
+redis:srem(bot_id.."in_company:", Remsg.sender.user_id)
+redis:del(bot_id.."in_company:name:"..Remsg.sender.user_id, Cname)
 return bot.sendText(msg.chat_id,msg.id, "⌁ : تم طرده بنجاح . من الشركه ","md",true)
 else
 bot.sendText(msg.chat_id,msg.id, "⌁ : ماعنده حساب بنكي ","md",true)
@@ -12844,19 +12844,19 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل 
 end
 end
 if text == "استقاله" or text == "استقالة" then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if not redis:sismember(bot_id.."in_company:" , msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if not redis:sismember(bot_id.."in_company:" , msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ليس لديك شركة","md",true)
 end
-if redis:sismember(bot_id.."company_owners:", msg.sender_id.user_id) then
+if redis:sismember(bot_id.."company_owners:", msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : انت صاحب الشركه ما يمديك تستقيل\n⌁ : اكتب ( `مسح شركتي` )","md",true)  
 end
-local Cname = redis:get(bot_id.."in_company:name:"..msg.sender_id.user_id)
-redis:srem(bot_id.."company:mem:"..Cname, msg.sender_id.user_id)
-redis:srem(bot_id.."in_company:", msg.sender_id.user_id)
-redis:del(bot_id.."in_company:name:"..msg.sender_id.user_id, Cname)
+local Cname = redis:get(bot_id.."in_company:name:"..msg.sender.user_id)
+redis:srem(bot_id.."company:mem:"..Cname, msg.sender.user_id)
+redis:srem(bot_id.."in_company:", msg.sender.user_id)
+redis:del(bot_id.."in_company:name:"..msg.sender.user_id, Cname)
 local owner_id = redis:get(bot_id.."companys_owner:"..Cname)
-local mem_tag = "["..bot.getUser(msg.sender_id.user_id).first_name.."](tg://user?id="..msg.sender_id.user_id..")"
+local mem_tag = "["..bot.getUser(msg.sender.user_id).first_name.."](tg://user?id="..msg.sender.user_id..")"
 bot.sendText(owner_id,0, "⌁ : اللاعب "..mem_tag.." استقال من شركتك" ,"md",true)
 return bot.sendText(msg.chat_id,msg.id, "⌁ : انت الان لست موظف في شركه "..Cname ,"md",true)
 else
@@ -12871,370 +12871,370 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."yiioooo" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."yiioooo" .. msg.sender_id.user_id) / 60
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."yiioooo" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."yiioooo" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : فرصة ايجاد كنز آخر بعد "..math.floor(hours).." دقيقة","md",true, false, false, false, reply_markup)
 end
 local Textinggt = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22","23",}
 local Descriptioont = Textinggt[math.random(#Textinggt)]
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 neews = "["..ban.first_name.."](tg://user?id="..ban.id..")"
 else
 neews = " لا يوجد "
 end
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
-shkse = redis:get(bot_id.."shkse"..msg.sender_id.user_id)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
+shkse = redis:get(bot_id.."shkse"..msg.sender.user_id)
 if shkse == "طيبة" then
 if Descriptioont == "1" then
 local knez = ballancee + 40000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : قطعة اثرية 🗳\nسعره : 40000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "2" then
 local knez = ballancee + 35000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : حجر الماسي 💎\nسعره : 35000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "3" then
 local knez = ballancee + 10000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : لباس قديم 🥻\nسعره : 10000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "4" then
 local knez = ballancee + 23000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : عصى سحرية 🪄\nسعره : 23000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "5" then
 local knez = ballancee + 8000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : جوال نوكيا 📱\nسعره : 8000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "6" then
 local knez = ballancee + 27000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : صدف 🏝\nسعره : 27000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "7" then
 local knez = ballancee + 18000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : ابريق صدئ ⚗️\nسعره : 18000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "8" then
 local knez = ballancee + 100000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : قناع فرعوني 🗿\nسعره : 100000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "9" then
 local knez = ballancee + 50000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : جرة ذهب 💰\nسعره : 50000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "10" then
 local knez = ballancee + 36000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : مصباح فضي 🔦\nسعره : 36000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "11" then
 local knez = ballancee + 29000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : لوحة نحاسية 🌇\nسعره : 29000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "12" then
 local knez = ballancee + 1000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : جوارب قديمة 🧦\nسعره : 1000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "13" then
 local knez = ballancee + 16000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : اناء فخاري ⚱️\nسعره : 16000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "14" then
 local knez = ballancee + 12000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : خوذة محارب 🪖\nسعره : 12000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "15" then
 local knez = ballancee + 19000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : سيف جدي مرزوق 🗡\nسعره : 19000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "16" then
 local knez = ballancee + 14000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : مكنسة جدتي رقية 🧹\nسعره : 14000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "17" then
 local knez = ballancee + 26000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : فأس ارطغرل 🪓\nسعره : 26000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "18" then
 local knez = ballancee + 22000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : بندقية 🔫\nسعره : 22000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "19" then
 local knez = ballancee + 11000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : كبريت ناري 🪔\nسعره : 11000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "20" then
 local knez = ballancee + 33000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : فرو ثعلب 🦊\nسعره : 33000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "21" then
 local knez = ballancee + 40000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : جلد تمساح 🐊\nسعره : 40000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "22" then
 local knez = ballancee + 17000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : باقة ورود 💐\nسعره : 17000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "23" then
 local Textinggtt = {"1", "2",}
 local Descriptioontt = Textinggtt[math.random(#Textinggtt)]
 if Descriptioontt == "1" then
 local knez = ballancee + 17000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : باقة ورود 💐\nسعره : 17000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioontt == "2" then
 local Textinggttt = {"1", "2",}
 local Descriptioonttt = Textinggttt[math.random(#Textinggttt)]
 if Descriptioonttt == "1" then
 local knez = ballancee + 40000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : جلد تمساح 🐊\nسعره : 40000 دينار ??\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioonttt == "2" then
 local knez = ballancee + 10000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : حقيبة محاسب البنك 💼\nسعره : 10000000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 end
 end
 end
 else
 if Descriptioont == "1" then
 local knez = ballancee + 40000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : كتاب سحر 📕\nسعره : 40000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "2" then
 local knez = ballancee + 35000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : حقيبة ممنوعات 🎒\nسعره : 35000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "3" then
 local knez = ballancee + 60000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : زئبق احمر 🩸\nسعره : 60000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "4" then
 local knez = ballancee + 23000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : فيزا مسروقة 💳\nسعره : 23000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "5" then
 local knez = ballancee + 20000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : ماريجوانا 🚬\nسعره : 20000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "6" then
 local knez = ballancee + 27000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : قطعة اثرية 🪨\nسعره : 27000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "7" then
 local knez = ballancee + 18000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : سلا.ح ناري 🔫\nسعره : 18000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "8" then
 local knez = ballancee + 40000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : قطع فضة 🔗\nسعره : 40000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "9" then
 local knez = ballancee + 20000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : سكين 🗡\nسعره : 20000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "10" then
 local knez = ballancee + 36000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : مخطط عملية سطو 🧾\nسعره : 36000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "11" then
 local knez = ballancee + 29000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : عملات مزورة 💴\nسعره : 29000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "12" then
 local knez = ballancee + 200000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : سيارة مسروقة 🚙\nسعره : 200000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "13" then
 local knez = ballancee + 80000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : سبيكة ذهب 🪙\nسعره : 80000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "14" then
 local knez = ballancee + 75000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : الماس 💎\nسعره : 75000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "15" then
 local knez = ballancee + 19000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : رشوة من تاجر 👥️️\nسعره : 19000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "16" then
 local knez = ballancee + 14000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : علبة كبريت 🪔\nسعره : 14000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "17" then
 local knez = ballancee + 26000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : قفل ??\nسعره : 26000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "18" then
 local knez = ballancee + 26000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : قفل 🔒 \nسعره : 26000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "19" then
 local knez = ballancee + 14000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : علبة كبريت 🪔\nسعره : 14000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "20" then
 local knez = ballancee + 14000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : علبة كبريت 🪔\nسعره : 14000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "21" then
 local knez = ballancee + 26000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : قفل 🔒 \nسعره : 26000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "22" then
 local knez = ballancee + 17000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : صبار 🌵\nسعره : 17000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 elseif Descriptioont == "23" then
 local knez = ballancee + 40000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , knez)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , knez)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 bot.sendText(msg.chat_id,msg.id,""..neews.." لقد وجدت كنز\nالكنز : جلد تمساح 🐊\nسعره : 40000 دينار 💵\nرصيدك الان : "..convert_mony.." دينار 💵\n","md",true, false, false, false, reply_markup)
-redis:setex(bot_id.."yiioooo" .. msg.sender_id.user_id,1800, true)
+redis:setex(bot_id.."yiioooo" .. msg.sender.user_id,1800, true)
 end
 end
 else
@@ -13243,8 +13243,8 @@ end
 end
 --------------------------------------------------------------------------------------------------------------
 if text == 'كم فلوسي' and tonumber(msg.reply_to_message_id) == 0 then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 1 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك فلوس ارسل الالعاب وابدأ بجمع الفلوس \n","md",true)
 end
@@ -13263,14 +13263,14 @@ end
 end
 ---------------
 if text == "الغشاشين زرف" then
-if devS(msg.sender_id.user_id) then
-local ban = bot.getUser(msg.sender_id.user_id)
+if devS(msg.sender.user_id) then
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = "["..ban.first_name.."]("..ban.first_name..")"
 else
 news = " لا يوجد"
 end
-zrfee = redis:get(bot_id.."rrfff"..msg.sender_id.user_id) or 0
+zrfee = redis:get(bot_id.."rrfff"..msg.sender.user_id) or 0
 local ty_users = redis:smembers(bot_id.."rrfffid")
 if #ty_users == 0 then
 return bot.sendText(chat_id,msg_id,"⌁ : لا يوجد احد","md",true)
@@ -13331,7 +13331,7 @@ return bot.sendText(msg.chat_id,msg.id,ty_anubis..gg,"md",false, false, false, f
 end
 end
 if text == "توب الغش" or text == "توب الغشاشين" then
-if devS(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) then
 local bank_users = redis:smembers(bot_id.."booob")
 if #bank_users == 0 then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : لا يوجد حسابات في البنك","md",true)
@@ -13403,7 +13403,7 @@ end
 if text and text:match('^حظر حساب (.*)$') then
 local UserName = text:match('^حظر حساب (.*)$')
 local coniss = coin(UserName)
-if devS(msg.sender_id.user_id) or devB(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) or devB(msg.sender.user_id) then
 redis:set(bot_id.."bandid"..coniss,coniss)
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم حظر الحساب "..coniss.." من لعبة البنك\n","md",true)
 end
@@ -13411,7 +13411,7 @@ end
 if text and text:match('^الغاء حظر حساب (.*)$') then
 local UserName = text:match('^الغاء حظر حساب (.*)$')
 local coniss = coin(UserName)
-if devS(msg.sender_id.user_id) or devB(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) or devB(msg.sender.user_id) then
 redis:del(bot_id.."bandid"..coniss)
 bot.sendText(msg.chat_id,msg.id, "⌁ : تم الغاء حظر الحساب "..coniss.." من لعبة البنك\n","md",true)
 end
@@ -13419,7 +13419,7 @@ end
 if text and text:match('^اضف كوبون (.*)$') then
 local UserName = text:match('^اضف كوبون (.*)$')
 local coniss = coin(UserName)
-if devS(msg.sender_id.user_id) or devB(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) or devB(msg.sender.user_id) then
 numcobo = math.random(1000000000000,9999999999999);
 local convert_mony = string.format("%.0f",coniss)
 redis:set(bot_id.."cobonum"..numcobo,numcobo)
@@ -13433,14 +13433,14 @@ end
 if text and text:match('^كوبون (.*)$') then
 local UserName = text:match('^كوبون (.*)$')
 local coniss = coin(UserName)
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
 cobnum = redis:get(bot_id.."cobonum"..coniss)
 if coniss == tonumber(cobnum) then
 cobblc = redis:get(bot_id.."cobon"..coniss)
-ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 cobonplus = ballancee + cobblc
-redis:set(bot_id.."boob"..msg.sender_id.user_id , cobonplus)
-local ballancee = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , cobonplus)
+local ballancee = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballancee)
 redis:del(bot_id.."cobon"..coniss)
 redis:del(bot_id.."cobonum"..coniss)
@@ -13461,27 +13461,27 @@ type = 'inline',data = {
 }
 local UserName = text:match('^اضف فلوس (.*)$')
 local coniss = coin(UserName)
-if devS(msg.sender_id.user_id) or devB(msg.sender_id.user_id) then
+if devS(msg.sender.user_id) or devB(msg.sender.user_id) then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true, false, false, false, reply_markup)  
 return false
 end
-local ban = bot.getUser(Remsg.sender_id.user_id)
+local ban = bot.getUser(Remsg.sender.user_id)
 if ban.first_name then
 news = ""..ban.first_name..""
 else
 news = " لا يوجد اسم"
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
 bajiop = ballanceed + coniss
-redis:set(bot_id.."boob"..Remsg.sender_id.user_id , bajiop)
-ccccc = redis:get(bot_id.."boobb"..Remsg.sender_id.user_id)
-uuuuu = redis:get(bot_id.."bbobb"..Remsg.sender_id.user_id)
-ppppp = redis:get(bot_id.."rrfff"..Remsg.sender_id.user_id) or 0
-ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..Remsg.sender.user_id , bajiop)
+ccccc = redis:get(bot_id.."boobb"..Remsg.sender.user_id)
+uuuuu = redis:get(bot_id.."bbobb"..Remsg.sender.user_id)
+ppppp = redis:get(bot_id.."rrfff"..Remsg.sender.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballanceed)
 bot.sendText(msg.chat_id,msg.id, "⌁ : الاسم ↢ "..news.."\n⌁ : الحساب ↢ "..ccccc.."\n⌁ : بنك ↢ ( لاري  )\n⌁ : نوع ↢ ( "..uuuuu.." )\n⌁ : الزرف ↢ ( "..ppppp.." دولار ?? )\n⌁ : رفعه رصيده ↢ ( "..convert_mony.." دينار 💵 )\n","md",true, false, false, false, reply_markup)
 else
@@ -13505,16 +13505,16 @@ local coniss = coniss:gsub('٨','8')
 local coniss = coniss:gsub('٩','9')
 local coniss = coniss:gsub('-','')
 local coniss = tonumber(coniss)
-cobnum = tonumber(redis:get(bot_id.."bandid"..msg.sender_id.user_id))
-if cobnum == msg.sender_id.user_id then
+cobnum = tonumber(redis:get(bot_id.."bandid"..msg.sender.user_id))
+if cobnum == msg.sender.user_id then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : حسابك محظور من لعبة البنك","md",true)
 end
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."shbtime" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."shbtime" .. msg.sender_id.user_id) / 60
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."shbtime" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."shbtime" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : من شوي عملت سحب استنى "..math.floor(hours).." دقيقة","md",true)
 end
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
 if tonumber(coniss) < 999 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح هو 1000 دينار 💵\n","md",true)
@@ -13523,9 +13523,9 @@ if tonumber(ballanceed) < tonumber(coniss) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي","md",true)
 end
 zerus = tonumber(ballanceed) - coniss
-redis:set(bot_id.."boob"..msg.sender_id.user_id , coniss)
-redis:set(bot_id.."tdbelballance"..msg.sender_id.user_id , coniss)
-redis:setex(bot_id.."shbtime" .. msg.sender_id.user_id,620, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , coniss)
+redis:set(bot_id.."tdbelballance"..msg.sender.user_id , coniss)
+redis:setex(bot_id.."shbtime" .. msg.sender.user_id,620, true)
 local Textinggt1 = {"/tdbel", "/nonono", "/halfdbel",}
 local Textinggt2 = {"/tdbel", "/nonono", "/halfdbel",}
 local Textinggt3 = {"/tdbel", "/nonono", "/halfdbel",}
@@ -13537,7 +13537,7 @@ local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '🤑', data = msg.sender_id.user_id..Descriptioont1},{text = '🤑', data = msg.sender_id.user_id..Descriptioont2},{text = '🤑', data = msg.sender_id.user_id..Descriptioont3},
+{text = '🤑', data = msg.sender.user_id..Descriptioont1},{text = '🤑', data = msg.sender.user_id..Descriptioont2},{text = '🤑', data = msg.sender.user_id..Descriptioont3},
 },
 {text = '⌁ : LARrY TEaM .',url="t.me/EEEFBB"}, 
 }
@@ -13550,13 +13550,13 @@ end
 --------------]]
 if text == 'كم فلوسه' and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لاري  ماعندها حساب بالبنك 🤣*","md",true)  
 return false
 end
-if redis:sismember(bot_id.."booob",Remsg.sender_id.user_id) then
-ballanceed = redis:get(bot_id.."boob"..Remsg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",Remsg.sender.user_id) then
+ballanceed = redis:get(bot_id.."boob"..Remsg.sender.user_id) or 0
 local convert_mony = string.format("%.0f",ballanceed)
 local inoi = tostring(convert_mony)
 local intk = inoi:gsub(" ","-")
@@ -13596,28 +13596,28 @@ URL.escape('translate.google.com/translate_tts?q='..Text..
 "&disable_web_page_preview=true")
 end
 if text == "عجله الحظ" or text == "عجلة الحظ" or text == "عجله" or text == "عجلة" then
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-if redis:ttl(bot_id.."aglahd" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."aglahd" .. msg.sender_id.user_id) / 60
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+if redis:ttl(bot_id.."aglahd" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."aglahd" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : يمديك تلعب عجله الحظ بعد "..math.floor(hours).." دقيقة","md",true)
 end
-    local mony = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+    local mony = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
     if tonumber(mony) < 4000000 then
     return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح به هو 4000000 دينار 💵\n","md",true)
     end
-ballance = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballance = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 ballanceek = ballance - 4000000
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(ballanceek))
-redis:setex(bot_id.."aglahd" .. msg.sender_id.user_id,1800, true)
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(ballanceek))
+redis:setex(bot_id.."aglahd" .. msg.sender.user_id,1800, true)
     local msg_text = ""
     local photo = "https://t.me/f_0_C/27"
     local msg_reply = msg.id/2097152/0.5
     local keyboard = {}
     keyboard.inline_keyboard = {
       {
-      {text = '⌁ : العب الان  :', callback_data=msg.sender_id.user_id.."/happywheel"},
+      {text = '⌁ : العب الان  :', callback_data=msg.sender.user_id.."/happywheel"},
       },
       }
     return https.request("https://api.telegram.org/bot"..Token.."/sendphoto?chat_id="..msg.chat_id.."&reply_to_message_id="..msg_reply.."&photo="..photo.."&caption="..URL.escape(msg_text).."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
@@ -13626,8 +13626,8 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ","md",tr
 end
 end
 if text == 'تبرع' then
-if redis:ttl(bot_id.."tabrotime" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."tabrotime" .. msg.sender_id.user_id) / 60
+if redis:ttl(bot_id.."tabrotime" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."tabrotime" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : يمديك تتبرع بعد "..math.floor(hours).." دقيقة","md",true)
 end
 bot.sendText(msg.chat_id,msg.id, "استعمل الامر كذا :\n\n`تبرع` المبلغ","md",true)
@@ -13635,7 +13635,7 @@ end
 if text and text:match('^تبرع (.*)$') then
 local UserName = text:match('^تبرع (.*)$')
 local coniss = coin(UserName)
-if not redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
+if not redis:sismember(bot_id.."booob",msg.sender.user_id) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل ↢ ( `انشاء حساب بنكي` )","md",true)
 end
 if tonumber(coniss) > 10001 then
@@ -13644,15 +13644,15 @@ end
 if tonumber(coniss) < 999 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : الحد الادنى المسموح به هو 1000 دينار \n","md",true)
 end
-if redis:ttl(bot_id.."tabrotime" .. msg.sender_id.user_id) >=60 then
-local hours = redis:ttl(bot_id.."tabrotime" .. msg.sender_id.user_id) / 60
+if redis:ttl(bot_id.."tabrotime" .. msg.sender.user_id) >=60 then
+local hours = redis:ttl(bot_id.."tabrotime" .. msg.sender.user_id) / 60
 return bot.sendText(msg.chat_id,msg.id,"⌁ : يمديك تتبرع بعد "..math.floor(hours).." دقيقة","md",true)
 end
-ballanceed = redis:get(bot_id.."boob"..msg.sender_id.user_id) or 0
+ballanceed = redis:get(bot_id.."boob"..msg.sender.user_id) or 0
 if tonumber(coniss) > tonumber(ballanceed) then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : فلوسك ماتكفي\n","md",true)
 end
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = "["..ban.first_name.."](tg://user?id="..ban.id..")"
 else
@@ -13672,24 +13672,24 @@ tt =  "["..user_name.."]("..user_name..")"
 winner_mony = monyyy_list[tabr][1]
 local convert_mony = string.format("%.0f",tonumber(coniss))
 byre = tonumber(ballanceed) - tonumber(coniss)
-redis:set(bot_id.."boob"..msg.sender_id.user_id , math.floor(byre))
-taeswq = redis:get(bot_id.."tabbroat"..msg.sender_id.user_id) or 0
+redis:set(bot_id.."boob"..msg.sender.user_id , math.floor(byre))
+taeswq = redis:get(bot_id.."tabbroat"..msg.sender.user_id) or 0
 pokloo = tonumber(taeswq) + tonumber(coniss)
-redis:set(bot_id.."tabbroat"..msg.sender_id.user_id , math.floor(pokloo))
+redis:set(bot_id.."tabbroat"..msg.sender.user_id , math.floor(pokloo))
 ballanceeed = redis:get(bot_id.."boob"..winner_id) or 0
 tekash = tonumber(ballanceeed) + tonumber(coniss)
 redis:set(bot_id.."boob"..winner_id , tonumber(tekash))
 ballanceeed = redis:get(bot_id.."boob"..winner_id) or 0
-redis:sadd(bot_id.."taza",msg.sender_id.user_id)
-redis:setex(bot_id.."tabrotime" .. msg.sender_id.user_id,620, true)
+redis:sadd(bot_id.."taza",msg.sender.user_id)
+redis:setex(bot_id.."tabrotime" .. msg.sender.user_id,620, true)
 local convert_monyy = string.format("%.0f",tonumber(ballanceeed))
 tttt = "⌁ : وصل تبرع 📄\n\n⌁ : من : "..news.."\n⌁ : المستفيد : "..user_name.."\n⌁ : المبلغ : "..convert_mony.." دينار 💵 \n⌁ : فلوس المستفيد الان : "..convert_monyy.." دينار 💵\n"
 bot.sendText(msg.chat_id,msg.id, tttt,"md",true)  
 bot.sendText(winner_id,0, "⌁ : وصلك تبرعات من : "..news.."\n⌁ : المبلغ : "..convert_mony.." دينار ??","md",true)
 end
 if text == 'تبرعاتي' and tonumber(msg.reply_to_message_id) == 0 then
-if redis:sismember(bot_id.."booob",msg.sender_id.user_id) then
-ballancee = redis:get(bot_id.."tabbroat"..msg.sender_id.user_id) or 0
+if redis:sismember(bot_id.."booob",msg.sender.user_id) then
+ballancee = redis:get(bot_id.."tabbroat"..msg.sender.user_id) or 0
 if tonumber(ballancee) < 1 then
 return bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك تبرعات \n","md",true)
 end
@@ -13700,13 +13700,13 @@ bot.sendText(msg.chat_id,msg.id, "⌁ : ماعندك حساب بنكي ارسل 
 end
 end
 if text == "توب التبرعات" or text == "توب المتبرعين" or text == "توب متبرعين" or text == "المتبرعين" or text == "متبرعين" then
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = "["..ban.first_name.."]("..ban.first_name..")"
 else
 news = " لا يوجد"
 end
-ballancee = redis:get(bot_id.."tabbroat"..msg.sender_id.user_id) or 0
+ballancee = redis:get(bot_id.."tabbroat"..msg.sender.user_id) or 0
 local bank_users = redis:smembers(bot_id.."taza")
 if #bank_users == 0 then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : لا يوجد حسابات في البنك","md",true)
@@ -14340,7 +14340,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id..'Status:Reply'..msg.chat_id,true)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل ردود البوت بنجاح *").yu,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل ردود البوت بنجاح *").yu,"md",true)
 return false
 end
 if text == 'تعطيل ردود البوت' or text == 'تعطيل ردود بوت' then
@@ -14348,7 +14348,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id..'Status:Reply'..msg.chat_id)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل ردود البوت بنجاح *").yu,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل ردود البوت بنجاح *").yu,"md",true)
 return false
 end
 if text == "الساعه" or text == "الوقت" then
@@ -14363,7 +14363,7 @@ bot.sendText(msg.chat_id,msg.id,"*⌁ : التاريخ الان : "..os.date("%Y
 end
 if not redis:get(bot_id..":"..msg.chat_id..":settings:GetBio") then
 if text == 'البايو' or text == 'نبذتي' then
-bio = GetBio(msg.sender_id.user_id)
+bio = GetBio(msg.sender.user_id)
 if bio and bio:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or 
 bio and bio:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Dd][Oo][Gg]/") or 
 bio and bio:match("[Tt].[Mm][Ee]/") or
@@ -14441,7 +14441,7 @@ gstatus = "العضو"
 end
 local photo = bot.getUserProfilePhotos(UserInfo.id)
 if photo.total_count > 0 then
-local TestText = " *⌁ : 𝖮𝗐𝗇𝖾𝗋 𝖭𝖺𝗆𝖾 :* "..(t).." \n*⌁ : 𝖮𝗐𝗇𝖾𝗋 𝖴𝗌𝖾𝗋 :* "..(u).." \n*⌁ : 𝖮𝗐𝗇𝖾𝗋 𝗂𝖣 :* ["..msg.sender_id.user_id.."]\n"
+local TestText = " *⌁ : 𝖮𝗐𝗇𝖾𝗋 𝖭𝖺𝗆𝖾 :* "..(t).." \n*⌁ : 𝖮𝗐𝗇𝖾𝗋 𝖴𝗌𝖾𝗋 :* "..(u).." \n*⌁ : 𝖮𝗐𝗇𝖾𝗋 𝗂𝖣 :* ["..msg.sender.user_id.."]\n"
 keyboardd = {}
 keyboardd.inline_keyboard = {
 {
@@ -14468,7 +14468,7 @@ u = 'لا يوجد'
 end
 local photo = bot.getUserProfilePhotos(UserInfo.id)
 if photo.total_count > 0 then
-local TestText = " *⌁ : 𝖣𝖾𝗏 𝖭𝖺𝗆𝖾 :* "..(t).." \n*⌁ : 𝖣𝖾𝗏 𝖴𝗌𝖾𝗋 :* "..(u).." \n*⌁ : 𝖣𝖾𝗏 𝗂𝖣 :* ["..msg.sender_id.user_id.."]\n"
+local TestText = " *⌁ : 𝖣𝖾𝗏 𝖭𝖺𝗆𝖾 :* "..(t).." \n*⌁ : 𝖣𝖾𝗏 𝖴𝗌𝖾𝗋 :* "..(u).." \n*⌁ : 𝖣𝖾𝗏 𝗂𝖣 :* ["..msg.sender.user_id.."]\n"
 keyboardd = {}
 keyboardd.inline_keyboard = {
 {
@@ -14523,7 +14523,7 @@ u = 'لا يوجد'
 end
 local photo = bot.getUserProfilePhotos(UserId_Info.id)
 if photo.total_count > 0 then
-local TestText = " *⌁ : 𝖣𝖾𝗏 𝖭𝖺𝗆𝖾 :* "..(t).." \n*⌁ : 𝖣𝖾𝗏 𝖴𝗌𝖾𝗋 :* "..(u).." \n*⌁ : 𝖣𝖾𝗏 𝗂𝖣 :* ["..msg.sender_id.user_id.."]\n"
+local TestText = " *⌁ : 𝖣𝖾𝗏 𝖭𝖺𝗆𝖾 :* "..(t).." \n*⌁ : 𝖣𝖾𝗏 𝖴𝗌𝖾𝗋 :* "..(u).." \n*⌁ : 𝖣𝖾𝗏 𝗂𝖣 :* ["..msg.sender.user_id.."]\n"
 keyboardd = {}
 keyboardd.inline_keyboard = {
 {
@@ -14549,8 +14549,8 @@ bot.pinChatMessage(msg.chat_id,Rmsg.id,true)
 end
 end
 if text == 'معلوماتي' or text == 'موقعي' or text == 'صلاحياتي' then
-local UserInfo = bot.getUser(msg.sender_id.user_id)
-local Statusm = bot.getChatMember(msg.chat_id,msg.sender_id.user_id).status.luatele
+local UserInfo = bot.getUser(msg.sender.user_id)
+local Statusm = bot.getChatMember(msg.chat_id,msg.sender.user_id).status.luatele
 if Statusm == "chatMemberStatusCreator" then
 StatusmC = 'منشئ'
 elseif Statusm == "chatMemberStatusAdministrator" then
@@ -14559,7 +14559,7 @@ else
 StatusmC = 'عضو'
 end
 if StatusmC == 'مشرف' then 
-local GetMemberStatus = bot.getChatMember(msg.chat_id,msg.sender_id.user_id).status
+local GetMemberStatus = bot.getChatMember(msg.chat_id,msg.sender.user_id).status
 if GetMemberStatus.can_change_info then
 change_info = '√️' else change_info = '×'
 end
@@ -14584,11 +14584,11 @@ else
 PermissionsUser = '*\n⌁ : صلاحياتك هي :\n *ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  ┉ ┉ *'..'\n⌁ : تغيير المعلومات : '..change_info..'\n⌁ : تثبيت الرسائل : '..pin_messages..'\n⌁ : اضافه مستخدمين : '..invite_users..'\n⌁ : مسح الرسائل : '..delete_messages..'\n⌁ : حظر المستخدمين : '..restrict_members..'\n⌁ : اضافه المشرفين : '..promote..'\n\n*'
 end
 end
-local UserId = msg.sender_id.user_id
-local Get_Rank =(Get_Rank(msg.sender_id.user_id,msg.chat_id))
-local messageC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1)
-local EditmessageC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") or 0)
-local Total_ms =Total_message((redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1))
+local UserId = msg.sender.user_id
+local Get_Rank =(Get_Rank(msg.sender.user_id,msg.chat_id))
+local messageC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1)
+local EditmessageC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") or 0)
+local Total_ms =Total_message((redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1))
 if UserInfo.username and UserInfo.username ~= "" then
 UserInfousername = '@'..UserInfo.username
 else
@@ -14603,16 +14603,16 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-local Get_Rank =(Get_Rank(msg.sender_id.user_id,msg.chat_id))
-local messageC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1)
-local gameC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0)
-local Addedmem =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Addedmem") or 0)
-local EditmessageC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") or 0)
-local Total_ms =Total_message((redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1))
-local photo = bot.getUserProfilePhotos(msg.sender_id.user_id)
+local Get_Rank =(Get_Rank(msg.sender.user_id,msg.chat_id))
+local messageC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1)
+local gameC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0)
+local Addedmem =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Addedmem") or 0)
+local EditmessageC =(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") or 0)
+local Total_ms =Total_message((redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1))
+local photo = bot.getUserProfilePhotos(msg.sender.user_id)
 local TotalPhoto = photo.total_count or 0
-local UserInfo = bot.getUser(msg.sender_id.user_id)
-local InfoUser = bot.getUserFullInfo(msg.sender_id.user_id)
+local UserInfo = bot.getUser(msg.sender.user_id)
+local InfoUser = bot.getUserFullInfo(msg.sender.user_id)
 local Texting = {'والله انك جبر خاطر وجبر قلب وجبر حياه.','جابك الله انت وأيديك على شكل جبر خاطر لقلبْي. ','أيديك هو جبر الخاطر الذي لطالما بحثتُ عنه !','أنت وأيديك جبّر خاطر لقلبِي. ','والله انك جبر خاطر وجبر قلب وجبر حياه.','أيديك هو جبر الخاطر الذي لطالما بحثتُ عنه !',' جبر لقلبي ',}
 local Description = Texting[math.random(#Texting)]
 if UserInfo.username and UserInfo.username ~= "" then
@@ -14629,7 +14629,7 @@ if redis:get(bot_id..":"..msg.chat_id..":id") then
 theId = redis:get(bot_id..":"..msg.chat_id..":id") 
 theId = theId:gsub('#AddMem',Addedmem) 
 theId = theId:gsub('#game',gameC) 
-theId = theId:gsub('#id',msg.sender_id.user_id) 
+theId = theId:gsub('#id',msg.sender.user_id) 
 theId = theId:gsub('#name',UserInfo.first_name) 
 theId = theId:gsub('#username',UserInfousername) 
 theId = theId:gsub('#msgs',messageC) 
@@ -14644,7 +14644,7 @@ redis:get(bot_id..":iid") then
 theId = redis:get(bot_id..":iid") 
 theId = theId:gsub('#AddMem',Addedmem) 
 theId = theId:gsub('#game',gameC) 
-theId = theId:gsub('#id',msg.sender_id.user_id) 
+theId = theId:gsub('#id',msg.sender.user_id) 
 theId = theId:gsub('#name',UserInfo.first_name) 
 theId = theId:gsub('#username',UserInfousername) 
 theId = theId:gsub('#msgs',messageC) 
@@ -14655,7 +14655,7 @@ theId = theId:gsub('#Description',Description)
 theId = theId:gsub('#photos',TotalPhoto) 
 theId = theId:gsub('#Bio',Bio) 
 else
-theId = Description.."\n*⌁ : الايدي : (* `"..msg.sender_id.user_id.."`* ) .\n⌁ : المعرف :* ( "..UserInfousername.." ) .\n⌁ : *الرتبه : (  "..Get_Rank.." ) .\n⌁ : تفاعلك : (  "..Total_ms.." ) .\n⌁ : عدد الرسائل : ( "..messageC.." ) .\n⌁ : عدد السحكات : ( "..EditmessageC.." ) .\n⌁ : عدد صورك : ( "..TotalPhoto.."* ) ."
+theId = Description.."\n*⌁ : الايدي : (* `"..msg.sender.user_id.."`* ) .\n⌁ : المعرف :* ( "..UserInfousername.." ) .\n⌁ : *الرتبه : (  "..Get_Rank.." ) .\n⌁ : تفاعلك : (  "..Total_ms.." ) .\n⌁ : عدد الرسائل : ( "..messageC.." ) .\n⌁ : عدد السحكات : ( "..EditmessageC.." ) .\n⌁ : عدد صورك : ( "..TotalPhoto.."* ) ."
 end
 if redis:get(bot_id..":"..msg.chat_id..":settings:id:ph") then
 bot.sendText(msg.chat_id,msg.id,theId,"md",true, false, false, false, reply_markup) 
@@ -14717,13 +14717,13 @@ type = 'inline',data = {
 }
 }
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.username and UserInfo.username ~= "" then
 uame = '@'..UserInfo.username
 else
 uame = 'لا يوجد'
 end
-sm = bot.getChatMember(msg.chat_id,Remsg.sender_id.user_id)
+sm = bot.getChatMember(msg.chat_id,Remsg.sender.user_id)
 if sm.status.luatele == "chatMemberStatusCreator"  then
 gstatus = "المالك الاساسي"
 elseif sm.status.luatele == "chatMemberStatusAdministrator" then
@@ -14731,7 +14731,7 @@ gstatus = "مشرف"
 else
 gstatus = "عضو"
 end
-bot.sendText(msg.chat_id,msg.id,"*⌁ : الايدي : *( `"..(Remsg.sender_id.user_id).."` *)*\n*⌁ : المعرف : *( ["..(uame).."] *)*\n*⌁ : الرتبه : *( `"..(Get_Rank(Remsg.sender_id.user_id,msg.chat_id)).."` *)*\n*⌁ : الموقع : *( `"..(gstatus).."` *)*\n*⌁ : عدد الرسائل : *( `"..(redis:get(bot_id..":"..msg.chat_id..":"..Remsg.sender_id.user_id..":message") or 1).."` *)*" ,"md",true, false, false, false, reply_markup)  
+bot.sendText(msg.chat_id,msg.id,"*⌁ : الايدي : *( `"..(Remsg.sender.user_id).."` *)*\n*⌁ : المعرف : *( ["..(uame).."] *)*\n*⌁ : الرتبه : *( `"..(Get_Rank(Remsg.sender.user_id,msg.chat_id)).."` *)*\n*⌁ : الموقع : *( `"..(gstatus).."` *)*\n*⌁ : عدد الرسائل : *( `"..(redis:get(bot_id..":"..msg.chat_id..":"..Remsg.sender.user_id..":message") or 1).."` *)*" ,"md",true, false, false, false, reply_markup)  
 end
 if text and text:match('^كشف (%d+)$') or text and text:match('^ايدي (%d+)$') then
 local reply_markup = bot.replyMarkup{
@@ -14764,26 +14764,26 @@ if text == 'اوامر المسح' then
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
-{{text = ' مسح رسائلي',data="delforme_"..msg.sender_id.user_id.."_1"}},
-{{text =" مسح سحكاتي",data="delforme_"..msg.sender_id.user_id.."_2"}},
-{{text = ' مسح جهاتي',data="delforme_"..msg.sender_id.user_id.."_3"}},
-{{text =" مسح نقاطي",data="delforme_"..msg.sender_id.user_id.."_4"}},
+{{text = ' مسح رسائلي',data="delforme_"..msg.sender.user_id.."_1"}},
+{{text =" مسح سحكاتي",data="delforme_"..msg.sender.user_id.."_2"}},
+{{text = ' مسح جهاتي',data="delforme_"..msg.sender.user_id.."_3"}},
+{{text =" مسح نقاطي",data="delforme_"..msg.sender.user_id.."_4"}},
 }
 }
 bot.sendText(msg.chat_id,msg.id,'*⌁ : اهلا بك بأوامر المسح اضغط على الزر لحذفهن*',"md", true, false, false, false, reply_markup)
 end
 if text == ("احصائياتي") and tonumber(msg.reply_to_message_id) == 0 then  
-local nummsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1
-local edit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage")or 0
-local addmem = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Addedmem") or 0
-local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0
+local nummsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1
+local edit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage")or 0
+local addmem = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Addedmem") or 0
+local Num = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
-{{text = ' الرسائل',data="iforme_"..msg.sender_id.user_id.."_1"},{text ="( "..nummsg.." )",data="iforme_"..msg.sender_id.user_id.."_1"}},
-{{text = ' السحكات',data="iforme_"..msg.sender_id.user_id.."_2"},{text ="( "..edit.." )",data="iforme_"..msg.sender_id.user_id.."_2"}},
-{{text = ' الجهات',data="iforme_"..msg.sender_id.user_id.."_3"},{text ="( "..addmem.." )",data="iforme_"..msg.sender_id.user_id.."_3"}},
-{{text = ' المجوهرات',data="iforme_"..msg.sender_id.user_id.."_4"},{text ="( "..Num.." )",data="iforme_"..msg.sender_id.user_id.."_4"}},
+{{text = ' الرسائل',data="iforme_"..msg.sender.user_id.."_1"},{text ="( "..nummsg.." )",data="iforme_"..msg.sender.user_id.."_1"}},
+{{text = ' السحكات',data="iforme_"..msg.sender.user_id.."_2"},{text ="( "..edit.." )",data="iforme_"..msg.sender.user_id.."_2"}},
+{{text = ' الجهات',data="iforme_"..msg.sender.user_id.."_3"},{text ="( "..addmem.." )",data="iforme_"..msg.sender.user_id.."_3"}},
+{{text = ' المجوهرات',data="iforme_"..msg.sender.user_id.."_4"},{text ="( "..Num.." )",data="iforme_"..msg.sender.user_id.."_4"}},
 }
 }
 bot.sendText(msg.chat_id,msg.id,"*⌁ : اهلا بك احصائياتك هي ⬇️ .*","md", true, false, false, false, reply_markup)
@@ -14839,24 +14839,24 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,"*⌁ : رتبتك : *"..(Get_Rank(msg.sender_id.user_id,msg.chat_id)).." **","md",true, false, false, false, reply_markup)  
+bot.sendText(msg.chat_id,msg.id,"*⌁ : رتبتك : *"..(Get_Rank(msg.sender.user_id,msg.chat_id)).." **","md",true, false, false, false, reply_markup)  
 return false
 end
 if text == 'سحكاتي' or text == 'تعديلاتي' then
-bot.sendText(msg.chat_id,msg.id,"*⌁ : عدد تعديلاتك : *"..(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") or 0).." **","md",true)  
+bot.sendText(msg.chat_id,msg.id,"*⌁ : عدد تعديلاتك : *"..(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") or 0).." **","md",true)  
 return false
 end
 if text == 'مسح سحكاتي' or text == 'مسح تعديلاتي' then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : تم مسح جميع تعديلاتك*',"md",true)   
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage")
 return false
 end
 if text == 'جهاتي' or text == 'اضافاتي' then
-bot.sendText(msg.chat_id,msg.id,"*⌁ : عدد جهاتك : *"..(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Addedmem") or 0).." **","md",true)  
+bot.sendText(msg.chat_id,msg.id,"*⌁ : عدد جهاتك : *"..(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Addedmem") or 0).." **","md",true)  
 return false
 end
 if text == 'تفاعلي' or text == 'نشاطي' then
-bot.sendText(msg.chat_id,msg.id,"*"..Total_message((redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1)).."*","md",true)  
+bot.sendText(msg.chat_id,msg.id,"*"..Total_message((redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1)).."*","md",true)  
 return false
 end
 if text ==("مسح") and Administrator(msg) and tonumber(msg.reply_to_message_id) > 0 then
@@ -14869,18 +14869,18 @@ bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end   
 if text == 'مسح جهاتي' or text == 'مسح اضافاتي' then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : تم مسح جميع جهاتك*',"md",true)   
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Addedmem")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Addedmem")
 return false
 end
 if text == "منو ضافني" then
 if not redis:get(bot_id.."Abs:Addme:Abs"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : منو ضافني معطله بواسطه المشرفين .","md",true)
 end
-if bot.getChatMember(msg.chat_id,msg.sender_id.user_id).status.luatele == "chatMemberStatusCreator" then
+if bot.getChatMember(msg.chat_id,msg.sender.user_id).status.luatele == "chatMemberStatusCreator" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : انت منشئ المجموعه .*","md",true) 
 return false
 end
-addby = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":AddedMe")
+addby = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":AddedMe")
 if addby then 
 UserInfo = bot.getUser(addby)
 Name = '['..UserInfo.first_name..'](tg://user?id='..addby..')'
@@ -14892,28 +14892,28 @@ end
 end
 
 if msg then
-local GetMsg = redis:incr(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") 
-redis:hset(bot_id..':User:Count:'..msg.chat_id,msg.sender_id.user_id,GetMsg)
-local UserInfo = bot.getUser(msg.sender_id.user_id)
+local GetMsg = redis:incr(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") 
+redis:hset(bot_id..':User:Count:'..msg.chat_id,msg.sender.user_id,GetMsg)
+local UserInfo = bot.getUser(msg.sender.user_id)
 if UserInfo.first_name then
 NameLUser = UserInfo.first_name
 NameLUser = NameLUser:gsub("]","")
 NameLUser = NameLUser:gsub("[[]","")
-redis:hset(bot_id..':User:Name:'..msg.chat_id,msg.sender_id.user_id,NameLUser)
+redis:hset(bot_id..':User:Name:'..msg.chat_id,msg.sender.user_id,NameLUser)
 end
 end
-redis:incr(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") 
+redis:incr(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") 
 if text == 'رسائلي' or text == 'رسايلي' then
-bot.sendText(msg.chat_id,msg.id,"*⌁ : عدد رسائلك : *"..(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1).." **","md",true)  
+bot.sendText(msg.chat_id,msg.id,"*⌁ : عدد رسائلك : *"..(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1).." **","md",true)  
 return false
 end
 if text == 'مسح رسائلي' or text == 'مسح رسايلي' then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : تم مسح كل رسائلك*',"md",true)   
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message")
 return false
 end
 if text == 'نقاطي' then
-bot.sendText(msg.chat_id,msg.id,"*⌁ : عدد نقاطك : *"..(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game") or 0).." **","md",true)  
+bot.sendText(msg.chat_id,msg.id,"*⌁ : عدد نقاطك : *"..(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game") or 0).." **","md",true)  
 return false
 end
 
@@ -14922,60 +14922,60 @@ if not Constructor(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المنشئ ومافوق* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-redis:incrby(bot_id..":"..msg.chat_id..":"..Message_Reply.sender_id.user_id..":game", text:match("^اضف نقاط (%d+)$"))
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم اضافه له ( "..text:match("^اضف نقاط (%d+)$").." ) من النقاط").heloo,"md",true)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..Message_Reply.sender.user_id..":game", text:match("^اضف نقاط (%d+)$"))
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم اضافه له ( "..text:match("^اضف نقاط (%d+)$").." ) من النقاط").heloo,"md",true)  
 end
 if text and text:match("^اضف تعديلات (%d+)$") and msg.reply_to_message_id ~= 0 and redis:get(bot_id.."Status:Games"..msg.chat_id) then
 if not Constructor(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المنشئ ومافوق* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-redis:incrby(bot_id..":"..msg.chat_id..":"..Message_Reply.sender_id.user_id..":Editmessage", text:match("^اضف تعديلات (%d+)$"))  
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم اضافه له ( "..text:match("^اضف تعديلات (%d+)$").." ) من تعديلات").heloo,"md",true)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..Message_Reply.sender.user_id..":Editmessage", text:match("^اضف تعديلات (%d+)$"))  
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم اضافه له ( "..text:match("^اضف تعديلات (%d+)$").." ) من تعديلات").heloo,"md",true)  
 end
 if text and text:match("^اضف رسائل (%d+)$") and msg.reply_to_message_id ~= 0 and redis:get(bot_id.."Status:Games"..msg.chat_id) then
 if not Constructor(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المنشئ ومافوق* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-redis:incrby(bot_id..":"..msg.chat_id..":"..Message_Reply.sender_id.user_id..":message", text:match("^اضف رسائل (%d+)$"))    
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم اضافه له ( "..text:match("^اضف رسائل (%d+)$").." ) من الرسائل").heloo,"md",true)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..Message_Reply.sender.user_id..":message", text:match("^اضف رسائل (%d+)$"))    
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم اضافه له ( "..text:match("^اضف رسائل (%d+)$").." ) من الرسائل").heloo,"md",true)  
 end
 if text and text:match("^اضف رسايل (%d+)$") and msg.reply_to_message_id ~= 0 and redis:get(bot_id.."Status:Games"..msg.chat_id) then
 if not Constructor(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المنشئ ومافوق* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-redis:incrby(bot_id..":"..msg.chat_id..":"..Message_Reply.sender_id.user_id..":message", text:match("^اضف رسايل (%d+)$"))    
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم اضافه له ( "..text:match("^اضف رسايل (%d+)$").." ) من الرسائل").heloo,"md",true)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..Message_Reply.sender.user_id..":message", text:match("^اضف رسايل (%d+)$"))    
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم اضافه له ( "..text:match("^اضف رسايل (%d+)$").." ) من الرسائل").heloo,"md",true)  
 end
 if text and text:match("^بيع نقاطي (%d+)$") then  
 local end_n = text:match("^بيع نقاطي (%d+)$")
@@ -14983,24 +14983,24 @@ if tonumber(end_n) == tonumber(0) then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : لا استطيع بيع اقل من 1*","md",true)  
 return false 
 end
-if tonumber(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game")) == tonumber(0) then
+if tonumber(redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game")) == tonumber(0) then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ليس لديك نقاط من الالعاب \n⌁ : اذا كنت تريد ربح النقاط \n⌁ : ارسل الالعاب وابدأ العب *","md",true)  
 else
-local nb = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game")
+local nb = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game")
 if tonumber(end_n) > tonumber(nb) then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ليس لديك نقاط بهذا العدد \n⌁ : لزيادة نقاطك \n⌁ : ارسل الالعاب وابدأ العب*","md",true)  
 return false
 end
 local end_d = string.match((end_n * 50), "(%d+)") 
 bot.sendText(msg.chat_id,msg.id,"*⌁ : بعت* *~ ( "..end_n.." )* *من نقاطك* \n*⌁ : واضفتلك* *~ ( "..end_d.." )* *رسالة*","md",true)  
-redis:decrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game",end_n)  
-redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message",end_d)  
+redis:decrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game",end_n)  
+redis:incrby(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message",end_d)  
 end
 return false 
 end
 if text == 'مسح نقاطي' then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : تم مسح كل نقاطك*',"md",true)   
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":game")
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":game")
 return false
 end
 if text == 'ايديي' then
@@ -15009,7 +15009,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,"*⌁ : ايديك : (* `"..msg.sender_id.user_id.."` *) .*","md",true, false, false, false, reply_markup)  
+bot.sendText(msg.chat_id,msg.id,"*⌁ : ايديك : (* `"..msg.sender.user_id.."` *) .*","md",true, false, false, false, reply_markup)  
 return false
 end
 if text == 'اسمي' then
@@ -15018,7 +15018,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-firse = bot.getUser(msg.sender_id.user_id).first_name
+firse = bot.getUser(msg.sender.user_id).first_name
 if firse and firse:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or 
 firse and firse:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Dd][Oo][Gg]/") or 
 firse and firse:match("[Tt].[Mm][Ee]/") or
@@ -15039,7 +15039,7 @@ firse and firse:match(".[Oo][Rr][Gg]") then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : الاسم الخاص بك يحتوي على رابط لا يمكن عرضه .*","md",true)  
 return false
 end
-bot.sendText(msg.chat_id,msg.id," *⌁ : اسمك : *( "..bot.getUser(msg.sender_id.user_id).first_name.." *)*","md",true, false, false, false, reply_markup)  
+bot.sendText(msg.chat_id,msg.id," *⌁ : اسمك : *( "..bot.getUser(msg.sender.user_id).first_name.." *)*","md",true, false, false, false, reply_markup)  
 return false
 end
 
@@ -15193,7 +15193,7 @@ if text == "نسبه الحب" or text == "نسبه حب" and msg.reply_to_messa
 if not redis:get(bot_id.."nsab"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اوامر النسب معطله بواسطه المشرفين .","md",true)
 end
-redis:set(bot_id..":"..msg.sender_id.user_id..":lov_Bots"..msg.chat_id,"sendlove")
+redis:set(bot_id..":"..msg.sender.user_id..":lov_Bots"..msg.chat_id,"sendlove")
 hggg = '⌁ : الان ارسل اسمك واسم الشخص الثاني'
 bot.sendText(msg.chat_id,msg.id,hggg) 
 return false
@@ -15203,7 +15203,7 @@ if text == "جمالي" or text == 'نسبه جمالي' then
 if not redis:get(bot_id.."jmal"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اوامر جمالي معطله بواسطه المشرفين .","md",true)
 end
-local photo = bot.getUserProfilePhotos(msg.sender_id.user_id)
+local photo = bot.getUserProfilePhotos(msg.sender.user_id)
 if developer(msg) then
 if photo.total_count > 0 then
 return bot.sendPhoto(msg.chat_id, msg.id, photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id,"*اجمل مطور شفته بحياتي ❤*", "md")
@@ -15306,7 +15306,7 @@ if text == "نسبه الغباء" or text == "نسبه الغباء" and msg.re
 if not redis:get(bot_id.."nsab"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اوامر النسب معطله بواسطه المشرفين .","md",true)
 end
-redis:set(bot_id..":"..msg.sender_id.user_id..":lov_Bottts"..msg.chat_id,"sendlove")
+redis:set(bot_id..":"..msg.sender.user_id..":lov_Bottts"..msg.chat_id,"sendlove")
 hggg = '⌁ : الان ارسل اسم الشخص '
 bot.sendText(msg.chat_id,msg.id,hggg) 
 return false
@@ -15315,7 +15315,7 @@ if text == "نسبه الذكاء" or text == "نسبه الذكاء" and msg.re
 if not redis:get(bot_id.."nsab"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اوامر النسب معطله بواسطه المشرفين .","md",true)
 end
-redis:set(bot_id..":"..msg.sender_id.user_id..":lov_Botttuus"..msg.chat_id,"sendlove")
+redis:set(bot_id..":"..msg.sender.user_id..":lov_Botttuus"..msg.chat_id,"sendlove")
 hggg = '⌁ : الان ارسل اسم الشخص '
 bot.sendText(msg.chat_id,msg.id,hggg) 
 return false
@@ -15324,7 +15324,7 @@ if text == "نسبه الكره" or text == "نسبه كره" and msg.reply_to_m
 if not redis:get(bot_id.."nsab"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اوامر النسب معطله بواسطه المشرفين .","md",true)
 end
-redis:set(bot_id..":"..msg.sender_id.user_id..":krh_Bots"..msg.chat_id,"sendkrhe")
+redis:set(bot_id..":"..msg.sender.user_id..":krh_Bots"..msg.chat_id,"sendkrhe")
 hggg = '⌁ : الان ارسل اسمك واسم الشخص الثاني '
 bot.sendText(msg.chat_id,msg.id,hggg) 
 return false
@@ -15333,7 +15333,7 @@ if text == "نسبه الرجوله" or text == "نسبه الرجولة" and ms
 if not redis:get(bot_id.."nsab"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اوامر النسب معطله بواسطه المشرفين .","md",true)
 end
-redis:set(bot_id..":"..msg.sender_id.user_id..":rjo_Bots"..msg.chat_id,"sendrjoe")
+redis:set(bot_id..":"..msg.sender.user_id..":rjo_Bots"..msg.chat_id,"sendrjoe")
 hggg = '⌁ : الان ارسل اسم الشخص :'
 bot.sendText(msg.chat_id,msg.id,hggg) 
 return false
@@ -15342,13 +15342,13 @@ if text == "نسبه الانوثه" or text == "نسبه انوثه" and msg.re
 if not redis:get(bot_id.."nsab"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اوامر النسب معطله بواسطه المشرفين .","md",true)
 end
-redis:set(bot_id..":"..msg.sender_id.user_id..":ano_Bots"..msg.chat_id,"sendanoe")
+redis:set(bot_id..":"..msg.sender.user_id..":ano_Bots"..msg.chat_id,"sendanoe")
 hggg = '⌁ : الان ارسل اسم الشخص :'
 bot.sendText(msg.chat_id,msg.id,hggg) 
 return false
 end
 if text == "اسمي"  then
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = " `"..ban.first_name.."` "
 else
@@ -15362,7 +15362,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.username then
 banusername = '[@'..ban.username..']'
 else
@@ -15375,7 +15375,7 @@ if text == 'نادي المطور' or text == 'بدي مساعدة' or text == '
 bot.sendText(msg.chat_id,msg.id,"⌁ : تم إرسال طلبك للمطور سيتم الرد عليك قريباً .")
 local Get_Chat = bot.getChat(msg.chat_id)
 local Info_Chats = bot.getSupergroupFullInfo(msg.chat_id)
-local bains = bot.getUser(msg.sender_id.user_id)
+local bains = bot.getUser(msg.sender.user_id)
 if bains.first_name then
 klajq = '*['..bains.first_name..'](tg://user?id='..bains.id..')*'
 else
@@ -15399,17 +15399,17 @@ data = {
 }
 }
 
-bot.sendText(6022589060,0,'*\n⌁ : مرحباً عزيزي المطور \nشخص ما يحتاج مساعدتك\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : اسمه : '..klajq..' \n⌁ : ايديه : '..msg.sender_id.user_id..'\n⌁ : يوزره : @'..basgk..'\n⌁ : الوقت : '..os.date("%I:%M %p")..'\n⌁ : التاريخ : '..os.date("%Y/%m/%d")..'*',"md",false, false, false, false, reply_markup)
-bot.sendText(6022589060,0,'*\n⌁ : مرحباً عزيزي المطور \nشخص ما يحتاج مساعدتك\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : اسمه : '..klajq..' \n⌁ : ايديه : '..msg.sender_id.user_id..'\n⌁ : يوزره : @'..basgk..'\n⌁ : الوقت : '..os.date("%I:%M %p")..'\n⌁ : التاريخ : '..os.date("%Y/%m/%d")..'*',"md",false, false, false, false, reply_markup)
-bot.sendText(6022589060,0,'*\n⌁ : مرحباً عزيزي المطور \nشخص ما يحتاج مساعدتك\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : اسمه : '..klajq..' \n⌁ : ايديه : '..msg.sender_id.user_id..'\n⌁ : يوزره : @'..basgk..'\n⌁ : الوقت : '..os.date("%I:%M %p")..'\n⌁ : التاريخ : '..os.date("%Y/%m/%d")..'*',"md",false, false, false, false, reply_markup)
+bot.sendText(6022589060,0,'*\n⌁ : مرحباً عزيزي المطور \nشخص ما يحتاج مساعدتك\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : اسمه : '..klajq..' \n⌁ : ايديه : '..msg.sender.user_id..'\n⌁ : يوزره : @'..basgk..'\n⌁ : الوقت : '..os.date("%I:%M %p")..'\n⌁ : التاريخ : '..os.date("%Y/%m/%d")..'*',"md",false, false, false, false, reply_markup)
+bot.sendText(6022589060,0,'*\n⌁ : مرحباً عزيزي المطور \nشخص ما يحتاج مساعدتك\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : اسمه : '..klajq..' \n⌁ : ايديه : '..msg.sender.user_id..'\n⌁ : يوزره : @'..basgk..'\n⌁ : الوقت : '..os.date("%I:%M %p")..'\n⌁ : التاريخ : '..os.date("%Y/%m/%d")..'*',"md",false, false, false, false, reply_markup)
+bot.sendText(6022589060,0,'*\n⌁ : مرحباً عزيزي المطور \nشخص ما يحتاج مساعدتك\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : اسمه : '..klajq..' \n⌁ : ايديه : '..msg.sender.user_id..'\n⌁ : يوزره : @'..basgk..'\n⌁ : الوقت : '..os.date("%I:%M %p")..'\n⌁ : التاريخ : '..os.date("%Y/%m/%d")..'*',"md",false, false, false, false, reply_markup)
 end
 if text == "تتزوجني" then
 if not redis:get(bot_id.."ttzog"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : الزواج معطل من قبل المشرفين","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local ban = bot.getUser(Message_Reply.sender_id.user_id)
-local bain = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(Message_Reply.sender.user_id)
+local bain = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 baniusername = '*طلبت : *['..bain.first_name..'](tg://user?id='..bain.id..')*\nالزواج من : *['..ban.first_name..'](tg://user?id='..ban.id..')*\nهل العريس موافق ؟\n*'
 else
@@ -15419,10 +15419,10 @@ local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '‹ موافق ›', data = Message_Reply.sender_id.user_id..'/zog3'},{text = '‹ رفض ›', data = Message_Reply.sender_id.user_id..'/zog4'}, 
+{text = '‹ موافق ›', data = Message_Reply.sender.user_id..'/zog3'},{text = '‹ رفض ›', data = Message_Reply.sender.user_id..'/zog4'}, 
 },
 {
-{text = '‹ اخفاء ›', data = msg.sender_id.user_id..'/delAmr'}, 
+{text = '‹ اخفاء ›', data = msg.sender.user_id..'/delAmr'}, 
 },
 }
 }
@@ -15433,8 +15433,8 @@ if not redis:get(bot_id.."ttzog"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : تتزوجيني معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local ban = bot.getUser(Message_Reply.sender_id.user_id)
-local bain = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(Message_Reply.sender.user_id)
+local bain = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 baniusername = '*طلب *['..bain.first_name..'](tg://user?id='..bain.id..')*\nالزواج من *['..ban.first_name..'](tg://user?id='..ban.id..')*\nهل الزوجة موافقة ؟\n*'
 else
@@ -15444,10 +15444,10 @@ local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '‹ موافقه ›', data = Message_Reply.sender_id.user_id..'/zog1'},{text = '‹ رفض ›', data = Message_Reply.sender_id.user_id..'/zog2'}, 
+{text = '‹ موافقه ›', data = Message_Reply.sender.user_id..'/zog1'},{text = '‹ رفض ›', data = Message_Reply.sender.user_id..'/zog2'}, 
 },
 {
-{text = '‹ اخفاء ›', data = msg.sender_id.user_id..'/delAmr'}, 
+{text = '‹ اخفاء ›', data = msg.sender.user_id..'/delAmr'}, 
 },
 }
 }
@@ -15458,17 +15458,17 @@ if text == "صورتي" or text == "افتاري" then
 if not redis:get(bot_id.."aftare"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : صورتي معطله بواسطه المشرفين .","md",true)
 end
-local photo = bot.getUserProfilePhotos(msg.sender_id.user_id)
-local ban = bot.getUser(msg.sender_id.user_id)
+local photo = bot.getUserProfilePhotos(msg.sender.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 local ban_ns = ''
 if photo.total_count > 0 then
 data = {} 
 data.inline_keyboard = {
 {
-{text = '‹ الصوره التاليه ›', callback_data= msg.sender_id.user_id..'/ban1'}, 
+{text = '‹ الصوره التاليه ›', callback_data= msg.sender.user_id..'/ban1'}, 
 },
 {
-{text = '‹ اخفاء ›', callback_data= msg.sender_id.user_id..'/delAmr'}, 
+{text = '‹ اخفاء ›', callback_data= msg.sender.user_id..'/delAmr'}, 
 },
 }
 local msgg = msg.id/2097152/0.5
@@ -15480,98 +15480,98 @@ if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:sadd(bot_id.."bot_idath"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:sadd(bot_id.."bot_idath"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم رفع العضو زق  🤡\n⌁ : وتمت إضافته إلى قائمه الزقات")
 elseif text== "تنزيل زق"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:srem(bot_id.."bot_idath"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:srem(bot_id.."bot_idath"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم تنزيل العضو من زقات المجموعه️")
 elseif text== "رفع بقره"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:sadd(bot_id.."klp"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:sadd(bot_id.."klp"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم رفع العضو بقرة  🐄\n⌁ : وتمت إضافته إلى قائمه البقر️")
 elseif text== "رفع كلب"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:sadd(bot_id.."donke"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:sadd(bot_id.."donke"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم رفع العضو كلب 🐕‍🦺\n⌁ : وتمت إضافته إلى قائمه الكلاب")
 elseif text== "تنزيل كلب"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:srem(bot_id.."donke"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:srem(bot_id.."donke"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم تنزيل العضو من قائمة الكلاب️")
 elseif text== "تنزيل بقره"  and msg.reply_to_message_id then 
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:srem(bot_id.."klp"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:srem(bot_id.."klp"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي \n⌁ : تم تنزيل العضو من قائمه البقر")
 elseif text== "تنزيل غبي"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:srem(bot_id.."zahf"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:srem(bot_id.."zahf"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم تنزيل من قائمه الاغبياء️")
 elseif text== "رفع غبي"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:sadd(bot_id.."zahf"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:sadd(bot_id.."zahf"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم رفعه غبي بالمجموعه 🤡️")
 elseif text== "رفع قلبي"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:sadd(bot_id.."klpe"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:sadd(bot_id.."klpe"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم رفع العضو داخل قلبك️ 🥰")
 elseif text== "تنزيل قلبي"  and msg.reply_to_message_id then  
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:srem(bot_id.."klpe"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:srem(bot_id.."klpe"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم تنزيل من داخل قلبك")
 elseif text== "رفع زوجتي"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:sadd(bot_id.."mrtee"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:sadd(bot_id.."mrtee"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم رفع العضو ️زوجتك 👰")
 elseif text== "تنزيل زوجتي"  and msg.reply_to_message_id then 
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:srem(bot_id.."mrtee"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:srem(bot_id.."mrtee"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم تنزيل العضو زوجتك️")
 elseif text== "زواج"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:sadd(bot_id.."bot_id1"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:sadd(bot_id.."bot_id1"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : اهــلا عزيزي\n⌁ : تم زواجكم  \n⌁ : الآن يمكنكم أخذ راحتكم🤤😉️")
 elseif text== "طلاق"  and msg.reply_to_message_id then    
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : التسليه معطله بواسطه المشرفين .","md",true)
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:srem(bot_id.."bot_id1"..msg.chat_id, Message_Reply.sender_id.user_id)
+redis:srem(bot_id.."bot_id1"..msg.chat_id, Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"⌁ : أهلاً عزيزي\n⌁ : تم طلاق الخاينه \n⌁ : الأن هي مطلقه️")
 elseif text == ("الزقات") then
 if not redis:get(bot_id.."trfeh"..msg.chat_id) then
@@ -15743,7 +15743,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط . * ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:set(bot_id..':SetRt'..msg.chat_id..':'..Message_Reply.sender_id.user_id,text:match('^ضع رتبه (.*)$'))
+redis:set(bot_id..':SetRt'..msg.chat_id..':'..Message_Reply.sender.user_id,text:match('^ضع رتبه (.*)$'))
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : وضعتله رتبه : "..text:match('^ضع رتبه (.*)$'),"md",true)  
 end
 if text and text:match('^مسح رتبه @(%S+)$') then
@@ -15781,7 +15781,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط . * ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-redis:del(bot_id..':SetRt'..msg.chat_id..':'..Message_Reply.sender_id.user_id)
+redis:del(bot_id..':SetRt'..msg.chat_id..':'..Message_Reply.sender.user_id)
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : مسحت رتبته ","md",true)  
 end
 
@@ -15828,7 +15828,7 @@ local Text ='⌁ : تم اختيار الكت لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ كت اخر ›',callback_data = msg.sender_id.user_id..'/aftar'}}} 
+keyboard.inline_keyboard = {{{text = '‹ كت اخر ›',callback_data = msg.sender.user_id..'/aftar'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendphoto?chat_id=' .. msg.chat_id .. '&photo=https://t.me/srckt/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15845,7 +15845,7 @@ local Text ='⌁ : تم اختيار الاغنيه لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}
-keyboard.inline_keyboard = {{{text = '‹ اغنيه اخرى ›', callback_data = msg.sender_id.user_id..'/kanele'}}}
+keyboard.inline_keyboard = {{{text = '‹ اغنيه اخرى ›', callback_data = msg.sender.user_id..'/kanele'}}}
 local msg_id = msg.id/2097152/0.5
 https.request("https://api.telegram.org/bot"..Token..'/sendVoice?chat_id=' .. msg.chat_id .. '&voice=https://t.me/Teamsulta/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 end
@@ -15858,7 +15858,7 @@ local Text ='⌁ : تم اختيار الصوره لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ صوره اخرى ›',callback_data = msg.sender_id.user_id..'/aftar'}}} 
+keyboard.inline_keyboard = {{{text = '‹ صوره اخرى ›',callback_data = msg.sender.user_id..'/aftar'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendphoto?chat_id=' .. msg.chat_id .. '&photo=https://t.me/nyx441/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15871,7 +15871,7 @@ local Text ='⌁ : تم اختيار الميمز لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ ميمز اخر ›',callback_data = msg.sender_id.user_id..'/memz'}}} 
+keyboard.inline_keyboard = {{{text = '‹ ميمز اخر ›',callback_data = msg.sender.user_id..'/memz'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendVoice?chat_id=' .. msg.chat_id .. '&voice=https://t.me/werrtl/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15884,7 +15884,7 @@ local Text ='⌁ : تم اختيار الصوره لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ صوره اخرى ›',callback_data = msg.sender_id.user_id..'/aftboy'}}} 
+keyboard.inline_keyboard = {{{text = '‹ صوره اخرى ›',callback_data = msg.sender.user_id..'/aftboy'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendphoto?chat_id=' .. msg.chat_id .. '&photo=https://t.me/avboytol/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15897,7 +15897,7 @@ local Text ='⌁ : تم اختيار الصوره لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ صوره اخرى ›',callback_data = msg.sender_id.user_id..'/aftgir'}}} 
+keyboard.inline_keyboard = {{{text = '‹ صوره اخرى ›',callback_data = msg.sender.user_id..'/aftgir'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendphoto?chat_id=' .. msg.chat_id .. '&photo=https://t.me/QXXX_4/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15910,7 +15910,7 @@ local Text ='⌁ : تم اختيار المتحركه لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ متحركه اخرى ›',callback_data = msg.sender_id.user_id..'/gifed'}}} 
+keyboard.inline_keyboard = {{{text = '‹ متحركه اخرى ›',callback_data = msg.sender.user_id..'/gifed'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendanimation?chat_id=' .. msg.chat_id .. '&animation=https://t.me/qwqwgif/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15923,7 +15923,7 @@ local Text ='⌁ : تم اختيار الفلم لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ فلم اخر ›',callback_data = msg.sender_id.user_id..'/fillm'}}} 
+keyboard.inline_keyboard = {{{text = '‹ فلم اخر ›',callback_data = msg.sender.user_id..'/fillm'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendphoto?chat_id=' .. msg.chat_id .. '&photo=https://t.me/RRRRRTQ/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15936,7 +15936,7 @@ local Text ='⌁ : تم اختيار الانمي لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ انمي اخر ›',callback_data = msg.sender_id.user_id..'/anme'}}} 
+keyboard.inline_keyboard = {{{text = '‹ انمي اخر ›',callback_data = msg.sender.user_id..'/anme'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendphoto?chat_id=' .. msg.chat_id .. '&photo=https://t.me/AnimeWaTaN/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15949,7 +15949,7 @@ local Text ='⌁ : تم اختيار الاستوري لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ ستوري اخر ›',callback_data = msg.sender_id.user_id..'/stor'}}} 
+keyboard.inline_keyboard = {{{text = '‹ ستوري اخر ›',callback_data = msg.sender.user_id..'/stor'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendanimation?chat_id=' .. msg.chat_id .. '&animation=https://t.me/stortolen/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15962,7 +15962,7 @@ local Text ='⌁ : تم اختيار الريمكس لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ ريمكس اخر ›',callback_data = msg.sender_id.user_id..'/remix'}}} 
+keyboard.inline_keyboard = {{{text = '‹ ريمكس اخر ›',callback_data = msg.sender.user_id..'/remix'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendVoice?chat_id=' .. msg.chat_id .. '&voice=https://t.me/erweri/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -15978,7 +15978,7 @@ local Text ='⌁ : تم اختيار الشعر لك .'
 local MsgId = msg.id/2097152/0.5
 local MSGID = string.gsub(MsgId,'.0','')
 keyboard = {}  
-keyboard.inline_keyboard = {{{text = '‹ شعر اخر ›',callback_data = msg.sender_id.user_id..'/ashar'}}} 
+keyboard.inline_keyboard = {{{text = '‹ شعر اخر ›',callback_data = msg.sender.user_id..'/ashar'}}} 
 local msg_id = msg.id/2097152/0.5 
 https.request("https://api.telegram.org/bot"..Token..'/sendVoice?chat_id=' .. msg.chat_id .. '&voice=https://t.me/L1BBBL/'..Abs..'&caption=' .. URL.escape(Text).."&reply_to_message_id="..MsgId.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard)) 
 end
@@ -16029,7 +16029,7 @@ bot.sendText(msg.chat_id,msg.id, ag.ok.abs)
 end  
 
 if text == 'السيرفر' then
-if not devS(msg.sender_id.user_id) then 
+if not devS(msg.sender.user_id) then 
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور الاساسي * ',"md",true)  
 end
 bot.sendText(msg.chat_id,msg.id, io.popen([[
@@ -16095,14 +16095,14 @@ if text == 'نزلني' then
 if not redis:get(bot_id.."Abs:Nzlne:Abs"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : امر نزلني معطل من قبل المشرفين","md",true)
 end
-if Controllerbanall(msg.sender_id.user_id,msg.chat_id) == true then 
-return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذراً لا استطيع تنزيل { "..Get_Rank(msg.sender_id.user_id,msg.chat_id).." } *","md",true)  
+if Controllerbanall(msg.sender.user_id,msg.chat_id) == true then 
+return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذراً لا استطيع تنزيل { "..Get_Rank(msg.sender.user_id,msg.chat_id).." } *","md",true)  
 end
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = ' نعم ', data = msg.sender_id.user_id..'/Nzlne'},{text = ' لا ', data = msg.sender_id.user_id..'/noNzlne'},
+{text = ' نعم ', data = msg.sender.user_id..'/Nzlne'},{text = ' لا ', data = msg.sender.user_id..'/noNzlne'},
 },
 {
 {text = '⌁ : LARrY TEaM .', url = 't.me/EEEFBB'}, 
@@ -16165,7 +16165,7 @@ end
 
 --------------------------------------------------------------------------------------------
 if text == 'id' or text == 'Id' or text == 'ID' then
-local ban = bot.getUser(msg.sender_id.user_id)
+local ban = bot.getUser(msg.sender.user_id)
 if ban.first_name then
 news = " "..ban.first_name.." "
 else
@@ -16181,15 +16181,15 @@ banusername = '@'..ban.username..''
 else
 banusername = 'لا يوجد'
 end
-local UserId = msg.sender_id.user_id
-local RinkBot = Get_Rank(msg.sender_id.user_id,msg.chat_id)
-local TotalMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1
+local UserId = msg.sender.user_id
+local RinkBot = Get_Rank(msg.sender.user_id,msg.chat_id)
+local TotalMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1
 local news = 'ɪᴅ : '..UserId
 local uass = 'ɴᴀᴍᴇ : '..UserName
 local banhas = 'ᴜѕᴇ : '..banusername
 local rengk = 'ѕᴛᴀ : '..RinkBot
 local masha = 'ᴍѕɢ : '..TotalMsg
-local BIO = 'ʙɪᴏ : '..GetBio(msg.sender_id.user_id)
+local BIO = 'ʙɪᴏ : '..GetBio(msg.sender.user_id)
 local again = '[⌁ : LARrY TEaM .](t.me/EEEFBB)'
 local reply_markup = bot.replyMarkup{type = 'inline',data = {
 {
@@ -16271,8 +16271,8 @@ local texting = {"عنيده",
 "مظلومة  ",
 } 
 zezee = texting[math.random(#texting)]
-local Jabwa = bot.getUser(msg.sender_id.user_id)
-local photo = bot.getUserProfilePhotos(msg.sender_id.user_id)
+local Jabwa = bot.getUser(msg.sender.user_id)
+local photo = bot.getUserProfilePhotos(msg.sender.user_id)
 local news = 'شخصيتك : '..zezee
 if photo.total_count > 0 then
 data = {} 
@@ -16281,7 +16281,7 @@ data.inline_keyboard = {
 {text =news,url = "https://t.me/"..Jabwa.username..""}, 
 },
 {
-{text = '‹ اخفاء ›', callback_data= msg.sender_id.user_id..'/delAmr'}, 
+{text = '‹ اخفاء ›', callback_data= msg.sender.user_id..'/delAmr'}, 
 },
 }
 local msgg = msg.id/2097152/0.5
@@ -16295,7 +16295,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-local StatusMember = bot.getChatMember(msg.chat_id,msg.sender_id.user_id)
+local StatusMember = bot.getChatMember(msg.chat_id,msg.sender.user_id)
 if StatusMember.status.custom_title ~= "" then
 Lakb = StatusMember.status.custom_title
 else
@@ -16567,7 +16567,7 @@ return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا يوجد حساب
 local UserInfo = bot.getUser(UserId_Info.id)
 if UserInfo.first_name and UserInfo.first_name ~= "" then
 local reply_markup = bot.replyMarkup{type = 'inline',data = {{{text = '‹ رابط الاهداء ›', url ="https://t.me/c/"..string.gsub(msg.chat_id,"-100",'').."/"..(msg.reply_to_message_id/2097152/0.5)}}}}
-local UserInfom = bot.getUser(msg.sender_id.user_id)
+local UserInfom = bot.getUser(msg.sender.user_id)
 if UserInfom.username and UserInfom.username ~= "" then
 Us = '@['..UserInfom.username..']' 
 else 
@@ -16591,7 +16591,7 @@ local Textinggt = {" ‌‌‏حَـب عَظيمَ ݪبيستك ",
 "‌‏هذا بيسَتك يديمَكمَ ياݛب 🎀",}
 local Descriptioont = Textinggt[math.random(#Textinggt)]
 Text = "\n*"..Descriptioont.." *: ["..tagname.."](tg://user?id="..Zozne.member_id.user_id..")"
-local reply_markup = bot.replyMarkup{type = 'inline',data = {{{text = '‹ مسح › ', data =msg.sender_id.user_id..'/'.. 'delAmr'},},}}
+local reply_markup = bot.replyMarkup{type = 'inline',data = {{{text = '‹ مسح › ', data =msg.sender.user_id..'/'.. 'delAmr'},},}}
 bot.sendText(msg.chat_id,msg.id,Text,"md",false ,false, false,false,reply_markup)
 end
 if text == "trnd" or text == "الترند" or text == "ترند" then
@@ -16600,7 +16600,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-Info_User = bot.getUser(msg.sender_id.user_id) 
+Info_User = bot.getUser(msg.sender.user_id) 
 if Info_User.type.luatele == "userTypeRegular" then
 GroupAllRtba = redis:hgetall(bot_id..':User:Count:'..msg.chat_id)
 GetAllNames = redis:hgetall(bot_id..':User:Name:'..msg.chat_id)
@@ -16665,7 +16665,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-local UserInfo = bot.getUser(msg.sender_id.user_id)
+local UserInfo = bot.getUser(msg.sender.user_id)
 local nump = UserInfo.phone_number
 if #nump == 0 then
 MyNumber = "⌯︙رقمك موضوع لجهات اتصالك فقط"
@@ -17029,11 +17029,11 @@ if text == "انا مين" or text == 'مين انا' then
 if not redis:get(bot_id.."anamen"..msg.chat_id) then
 return bot.sendText(msg.chat_id,msg.id,"⌁ : انا مين معطل من قبل المشرفين","md",true)
 end
-if msg.sender_id.user_id == tonumber(6022589060) then
+if msg.sender.user_id == tonumber(6022589060) then
 bot.sendText(msg.chat_id,msg.id,"⌁ : انتا العشق وهم 🥰","md",true)
-elseif msg.sender_id.user_id == tonumber(6022589060) then
+elseif msg.sender.user_id == tonumber(6022589060) then
 bot.sendText(msg.chat_id,msg.id,"⌁ : المطور لاري  😍","md",true)
-elseif devB(msg.sender_id.user_id) then
+elseif devB(msg.sender.user_id) then
 bot.sendText(msg.chat_id,msg.id,"⌁ : انت المطور الاساسي يقلبي🌚♥","md",true)
 elseif programmer(msg) then
 bot.sendText(msg.chat_id,msg.id,"⌁ : اطلق مطور ثانوي ??","md",true)
@@ -17060,7 +17060,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."nsab"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل اوامر النسب *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل اوامر النسب *").by,"md",true)
 end
 
 if text == 'تعطيل اوامر النسب' or text == 'تعطيل النسب' then
@@ -17068,7 +17068,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."nsab"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل اوامر النسب *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل اوامر النسب *").by,"md",true)
 end
 -------------------------------- اوامر اخلاق
 
@@ -17077,7 +17077,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."aqlaq"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل اوامر الاخلاق *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل اوامر الاخلاق *").by,"md",true)
 end
 
 if text == 'تعطيل اوامر الخلاق' or text == 'تعطيل الاخلاق' or text == 'تعطيل اخلاقي' then
@@ -17085,7 +17085,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."aqlaq"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل اوامر الاخلاق *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل اوامر الاخلاق *").by,"md",true)
 end
 ----------------------- الاخلاق
 
@@ -17098,7 +17098,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."jmal"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل اوامر جمالي *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل اوامر جمالي *").by,"md",true)
 end
 
 if text == 'تعطيل اوامر جمالي' or text == 'تعطيل جمالي' then
@@ -17106,7 +17106,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."jmal"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل اوامر جمالي *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل اوامر جمالي *").by,"md",true)
 end
 
 ---------------------------------------- جمالي ؟ نسبه جمالي
@@ -17115,7 +17115,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."ttzog"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل تتزوجيني *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل تتزوجيني *").by,"md",true)
 end
 
 if text == 'تعطيل تتزوجيني' then
@@ -17123,7 +17123,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."ttzog"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل تتزوجيني *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل تتزوجيني *").by,"md",true)
 end
 
 if text == 'تفعيل زوجني' then
@@ -17131,7 +17131,7 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."zogne"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل زوجني *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل زوجني *").by,"md",true)
 end
 
 if text == 'تعطيل زوجني' then
@@ -17139,217 +17139,217 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."zogne"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل زوجني *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل زوجني *").by,"md",true)
 end
 if text == 'تفعيل الالعاب' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."Status:Games"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل الالعاب بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل الالعاب بنجاح . *").by,"md",true)
 end
 if text == 'تعطيل الالعاب' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."Status:Games"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل الالعاب بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل الالعاب بنجاح . *").by,"md",true)
 end
 if text == 'تفعيل صورتي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."aftare"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل صورتي بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل صورتي بنجاح . *").by,"md",true)
 end
 if text == 'تعطيل صورتي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."aftare"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل صورتي بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل صورتي بنجاح . *").by,"md",true)
 end
 if text == 'تفعيل اوامر التسليه' or text == 'تفعيل التسليه' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."trfeh"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل اوامر التسليه بنجاح .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل اوامر التسليه بنجاح .*").by,"md",true)
 end
 if text == 'تعطيل اوامر التسليه' or text == 'تعطيل التسليه' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."trfeh"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل اوامر التسليه بنجاح .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل اوامر التسليه بنجاح .*").by,"md",true)
 end
 if text == 'تفعيل الميمز' or text == 'تفعيل ميمز' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."memzz"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل الميمز بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل الميمز بنجاح . *").by,"md",true)
 end
 if text == 'تعطيل الميمز' or text == 'تعطيل ميمز' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."memzz"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل الميمز بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل الميمز بنجاح . *").by,"md",true)
 end
 if text == 'تفعيل انا مين' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."anamen"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل مين انا *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل مين انا *").by,"md",true)
 end
 if text == 'تعطيل انا مين' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."anamen"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل مين انا *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل مين انا *").by,"md",true)
 end
 if text == 'تفعيل شبيهي' or TextMsg == 'تفعيل شبيهتي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."shapeh"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل شبيهي *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل شبيهي *").by,"md",true)
 end
 if text == 'تعطيل شبيهي' or TextMsg == 'تعطيل شبيهتي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."shapeh"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل شبيهي *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل شبيهي *").by,"md",true)
 end
 if text == 'تفعيل الانذارات' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."indar"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل الانذارات *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل الانذارات *").by,"md",true)
 end
 if text == 'تعطيل الانذارات' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."indar"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل الانذارات *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل الانذارات *").by,"md",true)
 end
 if text == 'تفعيل شخصيتي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."shakse"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل شخصيتي *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل شخصيتي *").by,"md",true)
 end
 if text == 'تعطيل شخصيتي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."shakse"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل شخصيتي *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل شخصيتي *").by,"md",true)
 end
 if text == 'تفعيل ثنائي' or TextMsg == 'تفعيل الثنائي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."thnaee"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل الثنائي بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل الثنائي بنجاح . *").by,"md",true)
 end
 if text == 'تعطيل ثنائي' or TextMsg == 'تعطيل الثنائي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."thnaee"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل الثنائي بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل الثنائي بنجاح . *").by,"md",true)
 end
 if text == 'تفعيل اليوتيوب' or text == 'تفعيل يوتيوب' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."youutube"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : عذراء اليوتيوب متوقف حاليا *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : عذراء اليوتيوب متوقف حاليا *").by,"md",true)
 end
 if text == 'تعطيل اليوتيوب' or text == 'تعطيل يوتيوب' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."youutube"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : عذراء اليوتيوب متوقف حاليا *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : عذراء اليوتيوب متوقف حاليا *").by,"md",true)
 end
 if text == 'تفعيل ضع رتبه' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."redis:setRt"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل ضع رتبه *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل ضع رتبه *").by,"md",true)
 end
 if text == 'تعطيل ضع رتبه' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."redis:setRt"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل ضع رتبه *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل ضع رتبه *").by,"md",true)
 end
 if text == 'تفعيل التاك للكل' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."taggg"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل التاك للكل بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل التاك للكل بنجاح . *").by,"md",true)
 end
 if text == 'تعطيل التاك للكل' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."taggg"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل التاك للكل بنجاح . *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل التاك للكل بنجاح . *").by,"md",true)
 end
 if text == 'تفعيل نزلني' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."Abs:Nzlne:Abs"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل نزلني *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل نزلني *").by,"md",true)
 end
 if text == 'تعطيل نزلني' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."Abs:Nzlne:Abs"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل نزلني *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل نزلني *").by,"md",true)
 end
 if text == 'تفعيل مين ضافني' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."Abs:Addme:Abs"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل مين ضافني *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل مين ضافني *").by,"md",true)
 end
 if text == 'تعطيل مين ضافني' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."Abs:Addme:Abs"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل مين ضافني *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل مين ضافني *").by,"md",true)
 end
 if text == 'تفعيل قولي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."Abs:kol:Abs"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل قولي *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل قولي *").by,"md",true)
 end
 if text == 'تعطيل قولي' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."Abs:kol:Abs"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل قولي *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل قولي *").by,"md",true)
 end
 
 if text == 'تفعيل قول' then
@@ -17357,14 +17357,14 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."Abs:kol:Abs"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل قول *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل قول *").by,"md",true)
 end
 if text == 'تعطيل قول' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."Abs:kol:Abs"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل قول *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل قول *").by,"md",true)
 end
 
 if text == 'تفعيل الزخرفه' then
@@ -17372,70 +17372,70 @@ if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."myzhrfa"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل الزخرفه *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل الزخرفه *").by,"md",true)
 end
 if text == 'تعطيل الزخرفه' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."myzhrfa"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل الزخرفه *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل الزخرفه *").by,"md",true)
 end
 if text == 'تفعيل الابراج' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."brjj"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل الابراج *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل الابراج *").by,"md",true)
 end
 if text == 'تعطيل الابراج' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."brjj"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل الابراج *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل الابراج *").by,"md",true)
 end
 if text == 'تفعيل معاني الاسماء' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."name:k"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل معاني الاسماء *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل معاني الاسماء *").by,"md",true)
 end
 if text == 'تعطيل معاني الاسماء' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."name:k"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل معاني الاسماء *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل معاني الاسماء *").by,"md",true)
 end
 if text == 'تفعيل حساب العمر' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."calculate"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل حساب العمر *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل حساب العمر *").by,"md",true)
 end
 if text == 'تعطيل حساب العمر' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."calculate"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل حساب العمر *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل حساب العمر *").by,"md",true)
 end
 if text == 'تفعيل التحقق' or text == 'تفعيل تحقق' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:set(bot_id.."Status:joinet"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل التحقق *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل التحقق *").by,"md",true)
 end
 if text == 'تعطيل التحقق' or text == 'تعطيل تحقق' then
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
 redis:del(bot_id.."Status:joinet"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل التحقق *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل التحقق *").by,"md",true)
 end
 
 if text == 'تفعيل الاقتباسات' or text == 'تفعيل اقتباسات' or text == 'تفعيل وضع الاقتباسات' or text == 'تفعيل وضع اقتباسات' then
@@ -17444,7 +17444,7 @@ return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص ا
 end
 redis:del(bot_id..'Status:Reply'..msg.chat_id)
 redis:set(bot_id.."Status:aktbas"..msg.chat_id,true) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تفعيل الاقتباسات *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تفعيل الاقتباسات *").by,"md",true)
 end
 if text == 'تعطيل الاقتباسات' or text == 'تعطيل اقتباسات' or text == 'تعطيل وضع الاقتباسات' or text == 'تعطيل وضع اقتباسات' then
 if not Administrator(msg) then
@@ -17452,7 +17452,7 @@ return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص ا
 end
 redis:set(bot_id..'Status:Reply'..msg.chat_id,true)
 redis:del(bot_id.."Status:aktbas"..msg.chat_id) 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم تعطيل الاقتباسات *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم تعطيل الاقتباسات *").by,"md",true)
 end
 
 if text== "همسه"  or text == "همسة" then
@@ -17461,19 +17461,19 @@ end
 
 if text == 'تفعيل امسح' and Creator(msg) then      
 if redis:get(bot_id..":"..msg.chat_id..":Amsh") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":Amsh")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل امسح' and Creator(msg) then     
 if not redis:get(bot_id..":"..msg.chat_id..":Amsh") then
 redis:set(bot_id..":"..msg.chat_id..":Amsh",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
@@ -17513,13 +17513,13 @@ local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '‹ كتم ›', data = msg.sender_id.user_id..'mute'..UserInfo.id}, 
+{text = '‹ كتم ›', data = msg.sender.user_id..'mute'..UserInfo.id}, 
 },
 {
-{text = '‹ تقييد ›', data = msg.sender_id.user_id..'kid'..UserInfo.id},  
+{text = '‹ تقييد ›', data = msg.sender.user_id..'kid'..UserInfo.id},  
 },
 {
-{text = '‹ حظر ›', data = msg.sender_id.user_id..'ban'..UserInfo.id}, 
+{text = '‹ حظر ›', data = msg.sender.user_id..'ban'..UserInfo.id}, 
 },
 }
 }
@@ -17541,42 +17541,42 @@ if GetInfoBot(msg).Delmsg == false then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : البوت ليس لديه صلاحيه مسح الرسائل* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-if not Norank(Message_Reply.sender_id.user_id,msg.chat_id) then
-return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذراً لا تستطيع استخدام الامر على ( "..Get_Rank(Message_Reply.sender_id.user_id,msg.chat_id).." ) *","md",true)  
+if not Norank(Message_Reply.sender.user_id,msg.chat_id) then
+return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذراً لا تستطيع استخدام الامر على ( "..Get_Rank(Message_Reply.sender.user_id,msg.chat_id).." ) *","md",true)  
 end
-local zz = redis:get(bot_id.."zz"..msg.chat_id..Message_Reply.sender_id.user_id)
+local zz = redis:get(bot_id.."zz"..msg.chat_id..Message_Reply.sender.user_id)
 if not zz then
-redis:set(bot_id.."zz"..msg.chat_id..Message_Reply.sender_id.user_id,"1")
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم اعطائه انذار بنجاح . ").helo,"md",true)  
+redis:set(bot_id.."zz"..msg.chat_id..Message_Reply.sender.user_id,"1")
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم اعطائه انذار بنجاح . ").helo,"md",true)  
 end
 if zz == "1" then
-redis:set(bot_id.."zz"..msg.chat_id..Message_Reply.sender_id.user_id,"2")
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم اعطائه انذارين بنجاح . ").helo,"md",true)  
+redis:set(bot_id.."zz"..msg.chat_id..Message_Reply.sender.user_id,"2")
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم اعطائه انذارين بنجاح . ").helo,"md",true)  
 end
 if zz == "2" then
-redis:del(bot_id.."zz"..msg.chat_id..Message_Reply.sender_id.user_id)
+redis:del(bot_id.."zz"..msg.chat_id..Message_Reply.sender.user_id)
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '‹ كتم ›', data = msg.sender_id.user_id..'mute'..Message_Reply.sender_id.user_id}, 
+{text = '‹ كتم ›', data = msg.sender.user_id..'mute'..Message_Reply.sender.user_id}, 
 },
 {
-{text = '‹ تقييد ›', data = msg.sender_id.user_id..'kid'..Message_Reply.sender_id.user_id},  
+{text = '‹ تقييد ›', data = msg.sender.user_id..'kid'..Message_Reply.sender.user_id},  
 },
 {
-{text = '‹ حظر ›', data = msg.sender_id.user_id..'ban'..Message_Reply.sender_id.user_id}, 
+{text = '‹ حظر ›', data = msg.sender.user_id..'ban'..Message_Reply.sender.user_id}, 
 },
 }
 }
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم اعطائه الانذار الثالث اختر العقوبه له . ").helo,"md",true, false, false, true, reply_markup)
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم اعطائه الانذار الثالث اختر العقوبه له . ").helo,"md",true, false, false, true, reply_markup)
 end
 end
 if text == ('مسح الانذارات') or text == ('مسح انذاراته') or text == ('مسح انذارات') and msg.reply_to_message_id ~= 0 then
@@ -17593,15 +17593,15 @@ if GetInfoBot(msg).BanUser == false then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : البوت ليس لديه صلاحيه حظر المستخدمين* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-redis:del(bot_id.."zz"..msg.chat_id..Message_Reply.sender_id.user_id)
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم مسح جميع انذاراته بنجاح .").yu,"md",true)  
+redis:del(bot_id.."zz"..msg.chat_id..Message_Reply.sender.user_id)
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم مسح جميع انذاراته بنجاح .").yu,"md",true)  
 end
 
 if text == ('ابلاغ') or text == ('تبليغ') and msg.reply_to_message_id ~= 0 then
@@ -17612,15 +17612,15 @@ if text == ('ابلاغ') or text == ('تبليغ') and msg.reply_to_message_id 
 		return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : البوت ليس لديه صلاحيه مسح الرسائل* ',"md",true)  
 	end
 	local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-	local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+	local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 	if UserInfo.message == "Invalid user ID" then
 		return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 	end
 	if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 		return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 	end
-if not Norank(Message_Reply.sender_id.user_id,msg.chat_id) then
-return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذراً لا تستطيع استخدام الامر على { "..Get_Rank(Message_Reply.sender_id.user_id,msg.chat_id).." } *","md",true)  
+if not Norank(Message_Reply.sender.user_id,msg.chat_id) then
+return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذراً لا تستطيع استخدام الامر على { "..Get_Rank(Message_Reply.sender.user_id,msg.chat_id).." } *","md",true)  
 end
 	local Info_Members = bot.getSupergroupMembers(msg.chat_id, "Administrators", "*", 0, 200)
 	local List_Members = Info_Members.members
@@ -17645,7 +17645,7 @@ end
 			end
 		end
 	end
-	bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم الابلاغ على رسالته\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"..Creatorrr.."").heloo,"md",true)
+	bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم الابلاغ على رسالته\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"..Creatorrr.."").heloo,"md",true)
 end
 if text == ('رفع مشرف') and msg.reply_to_message_id ~= 0 then
 if not programmer(msg) then
@@ -17658,23 +17658,23 @@ if GetInfoBot(msg).SetAdmin == false then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : البوت ليس لديه صلاحيه اضافة مشرفين* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-local SetAdmin = bot.setChatMemberStatus(msg.chat_id,Message_Reply.sender_id.user_id,'administrator',{1 ,1, 0, 0, 0, 0, 0 , 0, 0, 0, 0, 0, ''})
+local SetAdmin = bot.setChatMemberStatus(msg.chat_id,Message_Reply.sender.user_id,'administrator',{1 ,1, 0, 0, 0, 0, 0 , 0, 0, 0, 0, 0, ''})
 if SetAdmin.code == 3 then
 return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لا يمكنني رفعه ليس لدي صلاحيات *","md",true)  
 end
-https.request("https://api.telegram.org/bot" .. Token .. "/promoteChatMember?chat_id=" .. msg.chat_id .. "&user_id=" ..Message_Reply.sender_id.user_id.."&&can_manage_voice_chats=true")
+https.request("https://api.telegram.org/bot" .. Token .. "/promoteChatMember?chat_id=" .. msg.chat_id .. "&user_id=" ..Message_Reply.sender.user_id.."&&can_manage_voice_chats=true")
 local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '⌁ : تعديل الصلاحيات .', data = msg.sender_id.user_id..'/groupNumseteng//'..Message_Reply.sender_id.user_id}, 
+{text = '⌁ : تعديل الصلاحيات .', data = msg.sender.user_id..'/groupNumseteng//'..Message_Reply.sender.user_id}, 
 },
 }
 }
@@ -17710,7 +17710,7 @@ local reply_markup = bot.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '⌁ : تعديل صلاحيات المشرف .', data = msg.sender_id.user_id..'/groupNumseteng//'..UserId_Info.id}, 
+{text = '⌁ : تعديل صلاحيات المشرف .', data = msg.sender.user_id..'/groupNumseteng//'..UserId_Info.id}, 
 },
 }
 }
@@ -17727,21 +17727,21 @@ if GetInfoBot(msg).SetAdmin == false then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : البوت ليس لديه صلاحيه اضافة مشرفين* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-local SetAdmin = bot.setChatMemberStatus(msg.chat_id,Message_Reply.sender_id.user_id,'administrator',{0 ,0, 0, 0, 0, 0, 0 ,0, 0})
+local SetAdmin = bot.setChatMemberStatus(msg.chat_id,Message_Reply.sender.user_id,'administrator',{0 ,0, 0, 0, 0, 0, 0 ,0, 0})
 if SetAdmin.code == 400 then
 return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لست انا من قام برفعه *","md",true)  
 end
 if SetAdmin.code == 3 then
 return bot.sendText(msg.chat_id,msg.id,"\n*⌁ : لا يمكنني تنزيله ليس لدي صلاحيات *","md",true)  
 end
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : تم تنزيله من المشرفين ").heloo,"md",true)  
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : تم تنزيله من المشرفين ").heloo,"md",true)  
 end
 if text and text:match('^تنزيل مشرف @(%S+)$') then
 local UserName = text:match('^تنزيل مشرف @(%S+)$')
@@ -17786,17 +17786,17 @@ if GetInfoBot(msg).SetAdmin == false then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : البوت ليس لديه صلاحيه اضافة مشرفين* ',"md",true)  
 end
 local Message_Reply = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Message_Reply.sender_id.user_id)
+local UserInfo = bot.getUser(Message_Reply.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
 if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً لا تستطيع استخدام الامر على البوت ","md",true)  
 end
-local SetCustomTitle = https.request("https://api.telegram.org/bot"..Token.."/setChatAdministratorCustomTitle?chat_id="..msg.chat_id.."&user_id="..Message_Reply.sender_id.user_id.."&custom_title="..CustomTitle)
+local SetCustomTitle = https.request("https://api.telegram.org/bot"..Token.."/setChatAdministratorCustomTitle?chat_id="..msg.chat_id.."&user_id="..Message_Reply.sender.user_id.."&custom_title="..CustomTitle)
 local SetCustomTitle_ = JSON.decode(SetCustomTitle)
 if SetCustomTitle_.result == true then
-return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender_id.user_id,"⌁ : رفعه لقبه : "..CustomTitle).heloo,"md",true)  
+return bot.sendText(msg.chat_id,msg.id,Reply_Status(Message_Reply.sender.user_id,"⌁ : رفعه لقبه : "..CustomTitle).heloo,"md",true)  
 else
 return bot.sendText(msg.chat_id,msg.id,"\n⌁ : عذراً هناك خطا تاكد من البوت ومن الشخص","md",true)  
 end 
@@ -17863,15 +17863,15 @@ end
     type = 'inline',
     data = {
     {
-    {text = '‹ الغاء ›', data = msg.sender_id.user_id..'/cancelamr'},
+    {text = '‹ الغاء ›', data = msg.sender.user_id..'/cancelamr'},
     },
     }
     }
-    redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id,"true2")
+    redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id,"true2")
     return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الان الكلمه لمسحها من الردود الانلاين","md",false, false, false, false, reply_markup)
     end 
   if text and text:match("^(.*)$") then
-  if redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id.."") == "true2" then
+  if redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id.."") == "true2" then
     redis:del(bot_id.."Add:Rd:Manager:Gif:inline"..text..msg.chat_id)   
     redis:del(bot_id.."Add:Rd:Manager:Vico:inline"..text..msg.chat_id)   
     redis:del(bot_id.."Add:Rd:Manager:Stekrs:inline"..text..msg.chat_id)     
@@ -17886,7 +17886,7 @@ end
     redis:del(bot_id.."Add:Rd:Manager:Audioc:inline"..text..msg.chat_id)
     redis:del(bot_id.."Rd:Manager:inline:text"..text..msg.chat_id)
     redis:del(bot_id.."Rd:Manager:inline:link"..text..msg.chat_id)
-  redis:del(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id.."")
+  redis:del(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id.."")
   redis:srem(bot_id.."List:Manager:inline"..msg.chat_id.."", text)
   bot.sendText(msg.chat_id,msg.id,"⌁ : تم مسح الرد من الردود الانلاين ","md",true)  
   return false
@@ -17920,21 +17920,21 @@ end
 if not Administrator(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : عذراً الامر يخص الادمن فقط .* ',"md",true)  
 end
-    redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id,true)
+    redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id,true)
     local reply_markup = bot.replyMarkup{
     type = 'inline',
     data = {
     {
-    {text = '‹ الغاء ›', data = msg.sender_id.user_id..'/cancelamr'},
+    {text = '‹ الغاء ›', data = msg.sender.user_id..'/cancelamr'},
     },
     }
     }
     return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الان الكلمه لاضافتها في ردود الانلاين ","md",false, false, false, false, reply_markup)
   end
-  if text and text:match("^(.*)$") and tonumber(msg.sender_id.user_id) ~= tonumber(bot_id) then
-    if redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id) == "true" then
-    redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id,"true1")
-    redis:set(bot_id.."Text:Manager:inline"..msg.sender_id.user_id..":"..msg.chat_id, text)
+  if text and text:match("^(.*)$") and tonumber(msg.sender.user_id) ~= tonumber(bot_id) then
+    if redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id) == "true" then
+    redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id,"true1")
+    redis:set(bot_id.."Text:Manager:inline"..msg.sender.user_id..":"..msg.chat_id, text)
     redis:del(bot_id.."Add:Rd:Manager:Gif:inline"..text..msg.chat_id)   
     redis:del(bot_id.."Add:Rd:Manager:Vico:inline"..text..msg.chat_id)   
     redis:del(bot_id.."Add:Rd:Manager:Stekrs:inline"..text..msg.chat_id)     
@@ -17968,16 +17968,16 @@ end
     end
     end
 
-  if text and redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id) == "set_inline" then
-  redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id, "set_link")
-  local anubis = redis:get(bot_id.."Text:Manager:inline"..msg.sender_id.user_id..":"..msg.chat_id)
+  if text and redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id) == "set_inline" then
+  redis:set(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id, "set_link")
+  local anubis = redis:get(bot_id.."Text:Manager:inline"..msg.sender.user_id..":"..msg.chat_id)
   redis:set(bot_id.."Rd:Manager:inline:text"..anubis..msg.chat_id, text)
   bot.sendText(msg.chat_id,msg.id,"⌁ : الان ارسل الرابط","md",true)  
   return false  
   end
-  if text and redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id) == "set_link" then
-  redis:del(bot_id.."Set:Manager:rd:inline"..msg.sender_id.user_id..":"..msg.chat_id)
-  local anubis = redis:get(bot_id.."Text:Manager:inline"..msg.sender_id.user_id..":"..msg.chat_id)
+  if text and redis:get(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id) == "set_link" then
+  redis:del(bot_id.."Set:Manager:rd:inline"..msg.sender.user_id..":"..msg.chat_id)
+  local anubis = redis:get(bot_id.."Text:Manager:inline"..msg.sender.user_id..":"..msg.chat_id)
   redis:set(bot_id.."Rd:Manager:inline:link"..anubis..msg.chat_id, text)
   bot.sendText(msg.chat_id,msg.id,"⌁ : تم اضافه الرد بنجاح","md",true)  
   return false  
@@ -18006,14 +18006,14 @@ end
     }
     }
   if Texingt then 
-  local UserInfo = bot.getUser(msg.sender_id.user_id)
-  local NumMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1
+  local UserInfo = bot.getUser(msg.sender.user_id)
+  local NumMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1
   local TotalMsg = Total_message(NumMsg) 
-  local Status_Gps = Get_Rank(msg.sender_id.user_id,msg.chat_id)
-  local NumMessageEdit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") or 0
+  local Status_Gps = Get_Rank(msg.sender.user_id,msg.chat_id)
+  local NumMessageEdit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") or 0
   local Texingt = Texingt:gsub('#username',(UserInfo.username or 'لا يوجد')) 
   local Texingt = Texingt:gsub('#name',UserInfo.first_name)
-  local Texingt = Texingt:gsub('#id',msg.sender_id.user_id)
+  local Texingt = Texingt:gsub('#id',msg.sender.user_id)
   local Texingt = Texingt:gsub('#edit',NumMessageEdit)
   local Texingt = Texingt:gsub('#msgs',NumMsg)
   local Texingt = Texingt:gsub('#stast',Status_Gps)
@@ -18086,15 +18086,15 @@ end
     type = 'inline',
     data = {
     {
-    {text = '‹ الغاء ›', data = msg.sender_id.user_id..'/cancelamr'},
+    {text = '‹ الغاء ›', data = msg.sender.user_id..'/cancelamr'},
     },
     }
     }
-    redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id,"true2")
+    redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id,"true2")
     return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الان الكلمه لمسحها من الردود الانلاين العامه","md",false, false, false, false, reply_markup)
     end 
   if text and text:match("^(.*)$") then
-  if redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id.."") == "true2" then
+  if redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id.."") == "true2" then
     redis:del(bot_id.."Addd:Rdd:Managerr:Giff:inlinee"..text)   
     redis:del(bot_id.."Addd:Rdd:Managerr:Vicoo:inlinee"..text)   
     redis:del(bot_id.."Addd:Rdd:Managerr:Stekrss:inlinee"..text)     
@@ -18109,7 +18109,7 @@ end
     redis:del(bot_id.."Addd:Rdd:Managerr:Audiocc:inlinee"..text)
     redis:del(bot_id.."Rdd:Managerr:inlinee:textt"..text)
     redis:del(bot_id.."Rdd:Managerr:inlinee:linkk"..text)
-  redis:del(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id.."")
+  redis:del(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id.."")
   redis:srem(bot_id.."Listt:Managerr:inlinee", text)
   bot.sendText(msg.chat_id,msg.id,"⌁ : تم مسح الرد من الردود الانلاين العامه","md",true)  
   return false
@@ -18143,21 +18143,21 @@ end
 if not programmer(msg) then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور الثانوي* ',"md",true)  
 end
-    redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id,true)
+    redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id,true)
     local reply_markup = bot.replyMarkup{
     type = 'inline',
     data = {
     {
-    {text = '‹ الغاء ›', data = msg.sender_id.user_id..'/cancelamr'},
+    {text = '‹ الغاء ›', data = msg.sender.user_id..'/cancelamr'},
     },
     }
     }
     return bot.sendText(msg.chat_id,msg.id,"⌁ : ارسل الان الكلمه لاضافتها في ردود الانلاين العامه","md",false, false, false, false, reply_markup)
   end
-  if text and text:match("^(.*)$") and tonumber(msg.sender_id.user_id) ~= tonumber(bot_id) then
-    if redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id) == "true" then
-    redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id,"true1")
-    redis:set(bot_id.."Textt:Managerr:inlinee"..msg.sender_id.user_id.."", text)
+  if text and text:match("^(.*)$") and tonumber(msg.sender.user_id) ~= tonumber(bot_id) then
+    if redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id) == "true" then
+    redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id,"true1")
+    redis:set(bot_id.."Textt:Managerr:inlinee"..msg.sender.user_id.."", text)
     redis:del(bot_id.."Addd:Rdd:Managerr:Giff:inlinee"..text)   
     redis:del(bot_id.."Addd:Rdd:Managerr:Vicoo:inlinee"..text)   
     redis:del(bot_id.."Addd:Rdd:Managerr:Stekrss:inlinee"..text)     
@@ -18191,16 +18191,16 @@ end
     end
     end
 
-  if text and redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id) == "set_inlinee" then
-  redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id, "set_linkk")
-  local anubis = redis:get(bot_id.."Textt:Managerr:inlinee"..msg.sender_id.user_id)
+  if text and redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id) == "set_inlinee" then
+  redis:set(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id, "set_linkk")
+  local anubis = redis:get(bot_id.."Textt:Managerr:inlinee"..msg.sender.user_id)
   redis:set(bot_id.."Rdd:Managerr:inlinee:textt"..anubis, text)
   bot.sendText(msg.chat_id,msg.id,"⌁ : الان ارسل الرابط","md",true)  
   return false  
   end
-  if text and redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id) == "set_linkk" then
-  redis:del(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender_id.user_id..":"..msg.chat_id)
-  local anubis = redis:get(bot_id.."Textt:Managerr:inlinee"..msg.sender_id.user_id)
+  if text and redis:get(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id) == "set_linkk" then
+  redis:del(bot_id.."Sett:Managerr:rdd:inlinee"..msg.sender.user_id..":"..msg.chat_id)
+  local anubis = redis:get(bot_id.."Textt:Managerr:inlinee"..msg.sender.user_id)
   redis:set(bot_id.."Rdd:Managerr:inlinee:linkk"..anubis, text)
   bot.sendText(msg.chat_id,msg.id,"⌁ : تم اضافه الرد بنجاح","md",true)  
   return false  
@@ -18229,14 +18229,14 @@ end
     }
     }
   if Texingt then 
-  local UserInfo = bot.getUser(msg.sender_id.user_id)
-  local NumMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1
+  local UserInfo = bot.getUser(msg.sender.user_id)
+  local NumMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1
   local TotalMsg = Total_message(NumMsg) 
-  local Status_Gps = Get_Rank(msg.sender_id.user_id,msg.chat_id)
-  local NumMessageEdit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") or 0
+  local Status_Gps = Get_Rank(msg.sender.user_id,msg.chat_id)
+  local NumMessageEdit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") or 0
   local Texingt = Texingt:gsub('#username',(UserInfo.username or 'لا يوجد')) 
   local Texingt = Texingt:gsub('#name',UserInfo.first_name)
-  local Texingt = Texingt:gsub('#id',msg.sender_id.user_id)
+  local Texingt = Texingt:gsub('#id',msg.sender.user_id)
   local Texingt = Texingt:gsub('#edit',NumMessageEdit)
   local Texingt = Texingt:gsub('#msgs',NumMsg)
   local Texingt = Texingt:gsub('#stast',Status_Gps)
@@ -19124,8 +19124,8 @@ local texting = {"اخر افلام شاهدتها",
 bot.sendText(msg.chat_id,msg.id,texting[math.random(#texting)],'md', true)
 end
 
-if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":link:add") then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":link:add")
+if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":link:add") then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":link:add")
 if text and text:match("^https://t.me/+(.*)$") then     
 redis:set(bot_id..":"..msg.chat_id..":link",text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ الرابط الجديد بنجاح .*","md", true)
@@ -19133,23 +19133,23 @@ else
 bot.sendText(msg.chat_id,msg.id,"*⌁ : عذرا الرابط خطأ .*","md", true)
 end
 end
-if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":iid:adds") then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":iid:adds")
+if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":iid:adds") then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":iid:adds")
 redis:set(bot_id..":iid",text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ الايدي العام الجديد *","md", true)
 end
-if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":id:add") then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":id:add")
+if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":id:add") then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":id:add")
 redis:set(bot_id..":"..msg.chat_id..":id",text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ الايدي الجديد بنجاح *","md", true)
 end
-if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":we:add") then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":we:add")
+if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":we:add") then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":we:add")
 redis:set(bot_id..":"..msg.chat_id..":Welcome",text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم حفظ الترحيب الجديد *","md", true)
 end
-if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":nameGr:add") then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":nameGr:add")
+if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":nameGr:add") then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":nameGr:add")
 if GetInfoBot(msg).Info == false then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : ليس لدي صلاحيات تغيير المعلومات*',"md",true)  
 return false
@@ -19157,8 +19157,8 @@ end
 bot.setChatTitle(msg.chat_id,text)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم تغيير الاسم *","md", true)
 end
-if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":decGr:add") then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":decGr:add")
+if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":decGr:add") then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":decGr:add")
 if GetInfoBot(msg).Info == false then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : ليس لدي صلاحيات تغيير المعلومات*',"md",true)  
 return false
@@ -19168,22 +19168,22 @@ bot.sendText(msg.chat_id,msg.id,"*⌁ : تم تغيير الوصف *","md", true
 end
 if developer(msg) then
 if text == 'تغيير اسم المجموعه' then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":nameGr:add",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":nameGr:add",true)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الاسم الجديد الان*","md", true)
 end
 if text == 'تغيير الوصف' then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":decGr:add",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":decGr:add",true)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الوصف الجديد الان*","md", true)
 end
 end
-if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":law:add") then
-redis:del(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":law:add")
+if text and redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":law:add") then
+redis:del(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":law:add")
 redis:set(bot_id..":"..msg.chat_id..":Law",text)
 bot.sendText(msg.chat_id,msg.id,"*- تم حفظ القوانين *","md", true)
 end
 if Owner(msg) then
 if text == 'تعين قوانين' or text == 'تعيين قوانين' or text == 'وضع قوانين' or text == 'اضف قوانين' then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":law:add",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":law:add",true)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل القوانين الان*","md", true)
 end
 if text == 'مسح القوانين' or text == 'حذف القوانين' then
@@ -19241,7 +19241,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu, 'md', true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu, 'md', true, false, false, false, reply_markup)
 end
 if text == "تنظيف المعرفات" or text == "مسح المعرفات" or text == "مسح التاكات"  or text == "تنظيف التاكات" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : يتم البحث عن المعرفات .*","md",true)  
@@ -19271,7 +19271,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu, 'md', true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu, 'md', true, false, false, false, reply_markup)
 end
 ---------------------------------------
 if text == "تنظيف الهاشتاك" or text == "مسح الهاشتاك" or text == "مسح الهاشتاكات"  or text == "تنظيف الهاشتاكات" then
@@ -19302,7 +19302,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu, 'md', true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu, 'md', true, false, false, false, reply_markup)
 end
 if text == "تنظيف التعديل" or text == "مسح التعديل" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : يتم البحث عن الرسائل المعدله*","md",true)
@@ -19327,7 +19327,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu, 'md', true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu, 'md', true, false, false, false, reply_markup)
 end
 if text == "تنظيف الميديا" or text == "مسح الميديا" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : يتم البحث عن الميديا*","md",true)
@@ -19352,7 +19352,7 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu, 'md', true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu, 'md', true, false, false, false, reply_markup)
 end
 if text == 'رفع الادمنيه' then
 if msg.can_be_deleted_for_all_users == false then
@@ -19375,7 +19375,7 @@ end
 bot.sendText(msg.chat_id,msg.id,'*⌁ : تم رفع ( '..y..' ) ادمن بالمجموعه*',"md",true)  
 end
 if text == 'تعين ترحيب' or text == 'تعيين ترحيب' or text == 'وضع ترحيب' or text == 'ضع ترحيب' then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":we:add",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":we:add",true)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الان الترحيب الجديد\n⌁ : يمكنك اضافه :*\n⌁ : `user` > *يوزر المستخدم*\n⌁ : `name` > *اسم المستخدم*","md", true)
 end
 if text == 'الترحيب' then
@@ -19395,7 +19395,7 @@ redis:del(bot_id..":"..msg.chat_id..":id")
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم "..text.." الجديد بنجاح .*","md", true)
 end
 if text == 'تعين الايدي' or text == 'تعيين الايدي' then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":id:add",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":id:add",true)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : ارسل الان النص\n⌁ : يمكنك اضافه :*\n⌁ : `#name` > *اسم المستخدم*\n⌁ : `[#username]` > *يوزر المستخدم*\n⌁ : `#msgs` > *عدد رسائل المستخدم*\n⌁ : `#photos` > *عدد صور المستخدم*\n⌁ : `#id` > *ايدي المستخدم*\n⌁ : `#auto` > *تفاعل المستخدم*\n⌁ : `#stast` > *موقع المستخدم* \n⌁ : `#edit` > *عدد التعديلات*\n⌁ : `#AddMem` > *عدد الجهات*\n⌁ : `#Description` > *تعليق الصوره*","md", true)
 end
 if text == "تغيير الايدي" or text == "تغير الايدي" then 
@@ -19409,7 +19409,7 @@ redis:del(bot_id..":"..msg.chat_id..":link")
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم "..text.." بنجاح .*","md", true)
 end
 if text == 'تعين الرابط' or text == 'تعيين الرابط' or text == 'وضع رابط' or text == 'تغيير الرابط' or text == 'تغير الرابط' then
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":link:add",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":link:add",true)
 bot.sendText(msg.chat_id,msg.id,"*⌁ : قم بارسال الرابط الجديد الان .*","md", true)
 end
 if text == 'فحص البوت' then 
@@ -19463,7 +19463,7 @@ end
 if #list == 0 then
 t = "⌁ : لا يوجد ميديا في المجموعه ."
 end
-Text = Reply_Status(msg.sender_id.user_id,"*"..t.."*").by
+Text = Reply_Status(msg.sender.user_id,"*"..t.."*").by
 bot.sendText(msg.chat_id,msg.id,Text,"md",true, false, false, false, reply_markup)
 end
 if text and text:match('^مسح (%d+)$') then
@@ -19490,7 +19490,7 @@ end
 end
 
 if text == "تنزيل جميع الرتب" or text == 'مسح الرتب' or text == 'حذف الرتب' and tonumber(msg.reply_to_message_id) == 0 then
-local StatusMember = bot.getChatMember(msg.chat_id,msg.sender_id.user_id).status.luatele
+local StatusMember = bot.getChatMember(msg.chat_id,msg.sender.user_id).status.luatele
 if not (StatusMember == "chatMemberStatusCreator") then
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص مالك المجموعه فقط .* ',"md",true)  
 end
@@ -19505,7 +19505,7 @@ redis:del(bot_id..":"..msg.chat_id..":Status:Owner")
 redis:del(bot_id..":"..msg.chat_id..":Status:Administrator") 
 redis:del(bot_id..":"..msg.chat_id..":Status:Vips")
 if #Info_Members1 == 0 and #Info_Members2 == 0 and #Info_Members3 == 0 and #Info_Members4 == 0 and #Info_Members5 == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu,"md",true)  
 else
 bot.sendText(msg.chat_id,msg.id,"*⌁ : تم مسح جميع الرتب بنجاح .\nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n⌁ : تم تنزيل ( "..#Info_Members1.." ) من المنشئين الاساسيين\n⌁ : تم تنزيل ( "..#Info_Members2.." ) من المنشئين\n⌁ : تم تنزيل ( "..#Info_Members3.." ) من المدراء\n⌁ : تم تنزيل ( "..#Info_Members4.." ) من الادمن\n⌁ : تم تنزيل ( "..#Info_Members5.." ) من المميزين *","md",true)
 end
@@ -19585,9 +19585,9 @@ local Sticker =redis:scard(bot_id.."mn:content:Sticker"..msg.chat_id)
 local Text =redis:scard(bot_id.."mn:content:Text"..msg.chat_id)  
 local reply_markup = bot.replyMarkup{
 type = 'inline',data = {
-{{text = '‹ الصور ›', data="mn_"..msg.sender_id.user_id.."_ph"},{text = '‹ الكلمات ›', data="mn_"..msg.sender_id.user_id.."_tx"}},
-{{text = '‹ المتحركات ›', data="mn_"..msg.sender_id.user_id.."_gi"},{text = '‹ الملصقات ›',data="mn_"..msg.sender_id.user_id.."_st"}},
-{{text = '‹ تحديث ›',data="mn_"..msg.sender_id.user_id.."_up"}},
+{{text = '‹ الصور ›', data="mn_"..msg.sender.user_id.."_ph"},{text = '‹ الكلمات ›', data="mn_"..msg.sender.user_id.."_tx"}},
+{{text = '‹ المتحركات ›', data="mn_"..msg.sender.user_id.."_gi"},{text = '‹ الملصقات ›',data="mn_"..msg.sender.user_id.."_st"}},
+{{text = '‹ تحديث ›',data="mn_"..msg.sender.user_id.."_up"}},
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
@@ -19603,7 +19603,7 @@ redis:del(bot_id.."mn:content:Photo"..msg.chat_id)
 end
 if text == "منع" and msg.reply_to_message_id == 0 then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : قم الان بارسال ( نص او الميديا ) لمنعه من المجموعه .*","md",true)  
-redis:set(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":mn:set",true)
+redis:set(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":mn:set",true)
 end
 if text == "منع" and msg.reply_to_message_id ~= 0 then
 Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
@@ -19693,7 +19693,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:kik") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الطرد معطل من قبل المنشئين الاساسيين*").yu,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الطرد معطل من قبل المنشئين الاساسيين*").yu,"md",true)
 return false
 end
 end
@@ -19751,7 +19751,7 @@ if not redis:sismember(bot_id..srt1.."Status:"..srt,usetid) then
 bot.sendText(msg.chat_id,msg.id,Reply_Status(usetid,"*⌁ : مو "..TextMsg.." من قبل*").heloo,"md",true)  
 return false
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:srem(bot_id..srt1.."Status:"..srt,usetid)
 elseif programmer(msg) then
 if TextMsg == 'مطور' then
@@ -19886,7 +19886,7 @@ return false
 end  
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:Up") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الرفع معطل من قبل المنشئين الاساسيين*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الرفع معطل من قبل المنشئين الاساسيين*").yu,"md",true)  
 return false
 end
 end
@@ -19894,7 +19894,7 @@ if redis:sismember(bot_id..srt1.."Status:"..srt,usetid) then
 bot.sendText(msg.chat_id,msg.id,Reply_Status(usetid,"*⌁ : "..TextMsg.." من قبل*").helo,"md",true)  
 return false
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:sadd(bot_id..srt1.."Status:"..srt,usetid)
 elseif programmer(msg) then
 if TextMsg == 'مطور' then
@@ -19987,7 +19987,7 @@ return false
 else
 return false
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,"*⌁ : تم رفعه بنجاح .*").i,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,"*⌁ : تم رفعه بنجاح .*").i,"md",true)  
 return false
 end
 end
@@ -20004,7 +20004,7 @@ tt = "⌁ : لا يمتلك رتبه لتنزيله "
 else
 tt = "⌁ : تم تنزيله من جميع الرتب بنجاح"
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:srem(bot_id..":Status:programmer",usetid)
 redis:srem(bot_id..":Status:developer",usetid)
 redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",usetid)
@@ -20079,7 +20079,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:ktm") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الكتم معطل من قبل المنشئين الاساسيين*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الكتم معطل من قبل المنشئين الاساسيين*").yu,"md",true)  
 return false
 end
 end
@@ -20118,7 +20118,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:bn") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الحظر معطل من قبل المنشئين الاساسيين*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الحظر معطل من قبل المنشئين الاساسيين*").yu,"md",true)  
 return false
 end
 end
@@ -20196,18 +20196,18 @@ return false
 end
 if text == "رفع القيود" and msg.reply_to_message_id ~= 0 then
 Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if redis:sismember(bot_id..":"..msg.chat_id..":restrict", Remsg.sender_id.user_id) then
-redis:srem(bot_id..":"..msg.chat_id..":restrict",Remsg.sender_id.user_id)
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
+if redis:sismember(bot_id..":"..msg.chat_id..":restrict", Remsg.sender.user_id) then
+redis:srem(bot_id..":"..msg.chat_id..":restrict",Remsg.sender.user_id)
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
 end
-if redis:sismember(bot_id..":"..msg.chat_id..":silent", Remsg.sender_id.user_id) then
-redis:srem(bot_id..":"..msg.chat_id..":silent",Remsg.sender_id.user_id)
+if redis:sismember(bot_id..":"..msg.chat_id..":silent", Remsg.sender.user_id) then
+redis:srem(bot_id..":"..msg.chat_id..":silent",Remsg.sender.user_id)
 end
-if redis:sismember(bot_id..":"..msg.chat_id..":Ban", Remsg.sender_id.user_id) then
-redis:srem(bot_id..":"..msg.chat_id..":Ban",Remsg.sender_id.user_id)
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
+if redis:sismember(bot_id..":"..msg.chat_id..":Ban", Remsg.sender.user_id) then
+redis:srem(bot_id..":"..msg.chat_id..":Ban",Remsg.sender.user_id)
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,"*⌁ : تم رفع القيود عنه بنجاح .*").helo,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,"*⌁ : تم رفع القيود عنه بنجاح .*").helo,"md",true)  
 return false
 end
 if text and text:match('^كشف القيود @(%S+)$') and tonumber(msg.reply_to_message_id) == 0 then
@@ -20304,32 +20304,32 @@ type = 'inline',data = {
 }
 }
 Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-if redis:sismember(bot_id..":bot:Ban", Remsg.sender_id.user_id) then
+if redis:sismember(bot_id..":bot:Ban", Remsg.sender.user_id) then
 Banal = "⌁ : الحظر العام : √️"
 else
 Banal = "⌁ : الحظر العام : ×"
 end
-if redis:sismember(bot_id..":bot:silent", Remsg.sender_id.user_id) then
+if redis:sismember(bot_id..":bot:silent", Remsg.sender.user_id) then
 silental  = "⌁ : الكتم العام : √️"
 else
 silental = "⌁ : الكتم العام : ×"
 end
-if redis:sismember(bot_id..":"..msg.chat_id..":restrict", Remsg.sender_id.user_id) then
+if redis:sismember(bot_id..":"..msg.chat_id..":restrict", Remsg.sender.user_id) then
 rict = "⌁ : لتقييد : √️"
 else
 rict = "⌁ : التقييد : ×"
 end
-if redis:sismember(bot_id..":"..msg.chat_id..":silent", Remsg.sender_id.user_id) then
+if redis:sismember(bot_id..":"..msg.chat_id..":silent", Remsg.sender.user_id) then
 sent = "\n⌁ : الكتم : √️"
 else
 sent = "\n⌁ : الكتم : ×"
 end
-if redis:sismember(bot_id..":"..msg.chat_id..":Ban", Remsg.sender_id.user_id) then
+if redis:sismember(bot_id..":"..msg.chat_id..":Ban", Remsg.sender.user_id) then
 an = "\n⌁ : الحظر : √️"
 else
 an = "\n⌁ : الحظر : ×"
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,"*ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"..Banal.."\n"..silental.."\n"..rict..""..sent..""..an.."*").i,"md",true, false, false, false, reply_markup)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,"*ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ \n"..Banal.."\n"..silental.."\n"..rict..""..sent..""..an.."*").i,"md",true, false, false, false, reply_markup)  
 return false
 end
 if text and text:match('^تقييد (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
@@ -20381,7 +20381,7 @@ bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,t).i,"md",true)
 end
 if text == "تقييد" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -20394,14 +20394,14 @@ if GetInfoBot(msg).BanUser == false then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : البوت لا يمتلك صلاحيه تقييد الاعضاء* ',"md",true)  
 return false
 end
-if not Norank(Remsg.sender_id.user_id,msg.chat_id) then
-t = "*⌁ : لا يمكنك تقييد "..Get_Rank(Remsg.sender_id.user_id,msg.chat_id).." .*"
+if not Norank(Remsg.sender.user_id,msg.chat_id) then
+t = "*⌁ : لا يمكنك تقييد "..Get_Rank(Remsg.sender.user_id,msg.chat_id).." .*"
 else
 t = "*⌁ : تم تقييده بنجاح .*"
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
-redis:sadd(bot_id..":"..msg.chat_id..":restrict",Remsg.sender_id.user_id)
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+redis:sadd(bot_id..":"..msg.chat_id..":restrict",Remsg.sender.user_id)
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).i,"md",true)    
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).i,"md",true)    
 end
 if text and text:match('^الغاء تقييد (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^الغاء تقييد (%d+)$')
@@ -20436,7 +20436,7 @@ bot.setChatMemberStatus(msg.chat_id,UserId_Info.id,'restricted',{1,1,1,1,1,1,1,1
 end
 if text == "الغاء تقييد" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -20446,9 +20446,9 @@ bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخد�
 return false
 end
 t = "*⌁ : تم الغاء تقييده بنجاح .*"
-redis:srem(bot_id..":"..msg.chat_id..":restrict",Remsg.sender_id.user_id)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).helo,"md",true)    
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
+redis:srem(bot_id..":"..msg.chat_id..":restrict",Remsg.sender.user_id)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).helo,"md",true)    
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
 end
 if text and text:match('^طرد (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^طرد (%d+)$')
@@ -20458,7 +20458,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:kik") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الطرد معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الطرد معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)
 return false
 end
 end
@@ -20483,7 +20483,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:kik") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الطرد معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الطرد معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)
 return false
 end
 end
@@ -20509,14 +20509,14 @@ bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,t).i,"md",true)
 end
 if text == "طرد" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:kik") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الطرد معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الطرد معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)
 return false
 end
 end
@@ -20528,13 +20528,13 @@ if GetInfoBot(msg).BanUser == false then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : البوت لا يمتلك صلاحيه طرد الاعضاء* ',"md",true)  
 return false
 end
-if not Norank(Remsg.sender_id.user_id,msg.chat_id) then
-t = "*⌁ : لا يمكنك طرد "..Get_Rank(Remsg.sender_id.user_id,msg.chat_id).." .*"
+if not Norank(Remsg.sender.user_id,msg.chat_id) then
+t = "*⌁ : لا يمكنك طرد "..Get_Rank(Remsg.sender.user_id,msg.chat_id).." .*"
 else
 t = "*⌁ : تم طرده بنجاح .*"
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'banned',0)
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).i,"md",true)    
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).i,"md",true)    
 end
 if text and text:match('^حظر (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^حظر (%d+)$')
@@ -20544,7 +20544,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:bn") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الحظر معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الحظر معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
@@ -20570,7 +20570,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:bn") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الحظر معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الحظر معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
@@ -20597,14 +20597,14 @@ bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,t).i,"md",true)
 end
 if text == "حظر" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:bn") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الحظر معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الحظر معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
@@ -20616,14 +20616,14 @@ if GetInfoBot(msg).BanUser == false then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : البوت لا يمتلك صلاحيه حظر الاعضاء* ',"md",true)  
 return false
 end
-if not Norank(Remsg.sender_id.user_id,msg.chat_id) then
-t = "*⌁ : لا يمكنك حظر "..Get_Rank(Remsg.sender_id.user_id,msg.chat_id).." .*"
+if not Norank(Remsg.sender.user_id,msg.chat_id) then
+t = "*⌁ : لا يمكنك حظر "..Get_Rank(Remsg.sender.user_id,msg.chat_id).." .*"
 else
 t = "*⌁ : تم حظره بنجاح .*"
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'banned',0)
-redis:sadd(bot_id..":"..msg.chat_id..":Ban",Remsg.sender_id.user_id)
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'banned',0)
+redis:sadd(bot_id..":"..msg.chat_id..":Ban",Remsg.sender.user_id)
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).i,"md",true)    
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).i,"md",true)    
 end
 if text and text:match('^الغاء حظر (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^الغاء حظر (%d+)$')
@@ -20658,7 +20658,7 @@ bot.setChatMemberStatus(msg.chat_id,UserId_Info.id,'restricted',{1,1,1,1,1,1,1,1
 end
 if text == "الغاء حظر" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -20668,9 +20668,9 @@ bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخد�
 return false
 end
 t = "*⌁ : تم الغاء الحظر بنجاح .*"
-redis:srem(bot_id..":"..msg.chat_id..":Ban",Remsg.sender_id.user_id)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).helo,"md",true)    
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
+redis:srem(bot_id..":"..msg.chat_id..":Ban",Remsg.sender.user_id)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).helo,"md",true)    
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
 end
 if text and text:match('^كتم (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^كتم (%d+)$')
@@ -20680,7 +20680,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:ktm") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الكتم معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الكتم معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
@@ -20705,7 +20705,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:ktm") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الكتم معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الكتم معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
@@ -20723,7 +20723,7 @@ bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,t).i,"md",true)
 end
 if text == "كتم" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -20734,17 +20734,17 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:ktm") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الكتم معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الكتم معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
-if not Norank(Remsg.sender_id.user_id,msg.chat_id) then
-t = "*⌁ : لا يمكنك كتم "..Get_Rank(Remsg.sender_id.user_id,msg.chat_id).." .*"
+if not Norank(Remsg.sender.user_id,msg.chat_id) then
+t = "*⌁ : لا يمكنك كتم "..Get_Rank(Remsg.sender.user_id,msg.chat_id).." .*"
 else
 t = "*⌁ : تم كتمه بنجاح .*"
-redis:sadd(bot_id..":"..msg.chat_id..":silent",Remsg.sender_id.user_id)
+redis:sadd(bot_id..":"..msg.chat_id..":silent",Remsg.sender.user_id)
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).i,"md",true)    
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).i,"md",true)    
 end
 if text and text:match('^الغاء كتم (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^الغاء كتم (%d+)$')
@@ -20777,7 +20777,7 @@ bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,t).helo,"md",true)
 end
 if text == "الغاء كتم" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -20787,14 +20787,14 @@ bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخد�
 return false
 end
 t = "*⌁ : تم الغاء كتمه بنجاح .*"
-redis:srem(bot_id..":"..msg.chat_id..":silent",Remsg.sender_id.user_id)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).helo,"md",true)  
+redis:srem(bot_id..":"..msg.chat_id..":silent",Remsg.sender.user_id)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).helo,"md",true)  
 end
 if text == 'المكتومين' then
 t = '\n*⌁ : قائمه '..text..'  \nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ *\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":silent") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").." .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").." .*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -20805,13 +20805,13 @@ else
 t = t.." .*"..k.." ⌁ : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'المقيدين' then
 t = '\n*⌁ : قائمه '..text..'  \nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ *\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":restrict") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").." .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").." .*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -20822,13 +20822,13 @@ else
 t = t.." .*"..k.." ⌁ : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'المحظورين' then
 t = '\n*⌁ : قائمه '..text..'  \nٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ *\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Ban") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").." .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").." .*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -20839,19 +20839,19 @@ else
 t = t.." .*"..k.." ⌁ : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'مسح المحظورين' and Owner(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Ban") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
 bot.setChatMemberStatus(msg.chat_id,v,'restricted',{1,1,1,1,1,1,1,1,1})
 end
 redis:del(bot_id..":"..msg.chat_id..":Ban") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح المطرودين' then
 if not Owner(msg) then
@@ -20875,9 +20875,9 @@ y = true
 end
 end
 if y == true then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم الغاء الحظر عن  "..x.." عضو *").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم الغاء الحظر عن  "..x.." عضو *").by,"md",true)
 else
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ :  لا يوجد مطرودين في البوت *").heloo,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ :  لا يوجد مطرودين في البوت *").heloo,"md",true)
 end
 end
 if text == 'مسح المحذوفين' or text == 'طرد المحذوفين' then
@@ -20905,31 +20905,31 @@ end
 end
 end
 if y == true then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم طرد "..x.." من الحسابات المحذوفه .*").by,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم طرد "..x.." من الحسابات المحذوفه .*").by,"md",true)
 else
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا توجد حسابات محذوفه هنا . *").yu,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا توجد حسابات محذوفه هنا . *").yu,"md",true)
 end
 end
 if text == 'مسح المكتومين' and Owner(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":silent") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":"..msg.chat_id..":silent") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح المقيدين' and Owner(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":restrict") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
 bot.setChatMemberStatus(msg.chat_id,v,'restricted',{1,1,1,1,1,1,1,1,1})
 end
 redis:del(bot_id..":"..msg.chat_id..":restrict") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 end
 if programmer(msg)  then
@@ -20972,7 +20972,7 @@ bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,t).i,"md",true)
 end
 if text == "كتم عام" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -20981,13 +20981,13 @@ if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخدام الامر على البوت .*","md",true)  
 return false
 end
-if not Isrank(Remsg.sender_id.user_id,msg.chat_id) then
-t = "*⌁ : لا يمكنك كتم "..Get_Rank(Remsg.sender_id.user_id,msg.chat_id).." .*"
+if not Isrank(Remsg.sender.user_id,msg.chat_id) then
+t = "*⌁ : لا يمكنك كتم "..Get_Rank(Remsg.sender.user_id,msg.chat_id).." .*"
 else
 t = "*⌁ : تم كتمه عام بنجاح .*"
-redis:sadd(bot_id..":bot:silent",Remsg.sender_id.user_id)
+redis:sadd(bot_id..":bot:silent",Remsg.sender.user_id)
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).i,"md",true)    
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).i,"md",true)    
 end
 if text and text:match('^الغاء كتم عام (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^الغاء كتم عام (%d+)$')
@@ -21020,7 +21020,7 @@ bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,t).helo,"md",true)
 end
 if text == "الغاء كتم عام" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -21030,17 +21030,17 @@ bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخد�
 return false
 end
 t = "*⌁ : تم الغاء كتمه عام بنجاح .*"
-redis:srem(bot_id..":bot:silent",Remsg.sender_id.user_id)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).helo,"md",true)  
+redis:srem(bot_id..":bot:silent",Remsg.sender.user_id)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).helo,"md",true)  
 end
 if text == 'مسح المكتومين عام' then
 local Info_ = redis:smembers(bot_id..":bot:silent") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف"..text:gsub('مسح',"").." سابقا .*").yu,"md",true)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف"..text:gsub('مسح',"").." سابقا .*").yu,"md",true)
 return false
 end  
 redis:del(bot_id..":bot:silent") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text and text:match('^حظر عام (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^حظر عام (%d+)$')
@@ -21091,7 +21091,7 @@ bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,t).i,"md",true)
 end
 if text == "حظر عام" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -21104,14 +21104,14 @@ if GetInfoBot(msg).BanUser == false then
 bot.sendText(msg.chat_id,msg.id,'*⌁ : البوت لا يمتلك صلاحيه حظر عام الاعضاء* ',"md",true)  
 return false
 end
-if not Isrank(Remsg.sender_id.user_id,msg.chat_id) then
-t = "*⌁ : لا يمكنك حظر عام "..Get_Rank(Remsg.sender_id.user_id,msg.chat_id).." .*"
+if not Isrank(Remsg.sender.user_id,msg.chat_id) then
+t = "*⌁ : لا يمكنك حظر عام "..Get_Rank(Remsg.sender.user_id,msg.chat_id).." .*"
 else
 t = "*⌁ : تم حظره عام بنجاح .*"
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'banned',0)
-redis:sadd(bot_id..":bot:Ban",Remsg.sender_id.user_id)
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'banned',0)
+redis:sadd(bot_id..":bot:Ban",Remsg.sender.user_id)
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).i,"md",true)    
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).i,"md",true)    
 end
 if text and text:match('^الغاء حظر عام (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
 local UserName = text:match('^الغاء حظر عام (%d+)$')
@@ -21146,7 +21146,7 @@ bot.setChatMemberStatus(msg.chat_id,UserId_Info.id,'restricted',{1,1,1,1,1,1,1,1
 end
 if text == "الغاء حظر عام" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -21156,15 +21156,15 @@ bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخد�
 return false
 end
 t = "*⌁ : تم الغاء حظره عام بنجاح .*"
-redis:srem(bot_id..":bot:Ban",Remsg.sender_id.user_id)
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,t).helo,"md",true)    
-bot.setChatMemberStatus(msg.chat_id,Remsg.sender_id.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
+redis:srem(bot_id..":bot:Ban",Remsg.sender.user_id)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,t).helo,"md",true)    
+bot.setChatMemberStatus(msg.chat_id,Remsg.sender.user_id,'restricted',{1,1,1,1,1,1,1,1,1})
 end
 if text == 'المحظورين عام' then
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉*\n'
 local Info_ = redis:smembers(bot_id..":bot:Ban") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -21175,19 +21175,19 @@ else
 t = t.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'مسح المحظورين عام' and Owner(msg) then
 local Info_ = redis:smembers(bot_id..":bot:Ban") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
 bot.setChatMemberStatus(msg.chat_id,v,'restricted',{1,1,1,1,1,1,1,1,1})
 end
 redis:del(bot_id..":bot:Ban") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 end
 ----------------------------------------------------------------------------------------------------
@@ -21397,37 +21397,37 @@ end
 end
 if text == 'تفعيل المسح التلقائي' and BasicConstructor(msg) then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:mediaAude") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:set(bot_id..":"..msg.chat_id..":settings:mediaAude",true)  
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل المسح التلقائي' and BasicConstructor(msg) then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:mediaAude") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:mediaAude")  
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل all' and Creator(msg) then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:all") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:all")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل all' and Creator(msg) then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:all") then
 redis:set(bot_id..":"..msg.chat_id..":settings:all",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
@@ -21435,73 +21435,73 @@ end
 if BasicConstructor(msg) then
 if text == 'تفعيل الرفع' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:up") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:up")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الرفع' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:up") then
 redis:set(bot_id..":"..msg.chat_id..":settings:up",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل الكتم' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:ktm") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:ktm")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ :⌁ : تم "..text.." من قبلً*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ :⌁ : تم "..text.." من قبلً*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الكتم' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:ktm") then
 redis:set(bot_id..":"..msg.chat_id..":settings:ktm",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل الحظر' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:bn") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:bn")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الحظر' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:bn") then
 redis:set(bot_id..":"..msg.chat_id..":settings:bn",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل الطرد' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:kik") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:kik")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الطرد' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:kik") then
 redis:set(bot_id..":"..msg.chat_id..":settings:kik",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
@@ -21521,7 +21521,7 @@ redis:set(bot_id..":mediaAude:utdl"..msg.chat_id,Teext)
 else
 t = "⌁ : عذرا يجب كتابه ( وضع عدد المسح + رقم )"
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true, false, false, false, reply_markup)
 end
 if text == ("عدد الميديا") or text == ("الميديا") then
 local reply_markup = bot.replyMarkup{
@@ -21529,171 +21529,171 @@ type = 'inline',data = {
 {{text = '‹ اخفاء ›',data ="https://t.me/delAmr"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : عدد الميديا هو :  "..redis:scard(bot_id..":"..msg.chat_id..":mediaAude:ids").." .*").yu,"md",true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : عدد الميديا هو :  "..redis:scard(bot_id..":"..msg.chat_id..":mediaAude:ids").." .*").yu,"md",true, false, false, false, reply_markup)
 end
 --
 if text == 'تفعيل اطردني' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:kickme") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:kickme")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل اطردني' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:kickme") then
 redis:set(bot_id..":"..msg.chat_id..":settings:kickme",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 --
 if text == 'تفعيل البايو' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:GetBio") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:GetBio")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل البايو' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:GetBio") then
 redis:set(bot_id..":"..msg.chat_id..":settings:GetBio",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 --
 if text == 'تفعيل الرابط' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:link") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:link")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الرابط' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:link") then
 redis:set(bot_id..":"..msg.chat_id..":settings:link",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 --
 if text == 'تفعيل الترحيب' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:Welcome") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:Welcome")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الترحيب' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:Welcome") then
 redis:set(bot_id..":"..msg.chat_id..":settings:Welcome",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل التنظيف' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:delmsg") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:delmsg")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل التنظيف' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:delmsg") then
 redis:set(bot_id..":"..msg.chat_id..":settings:delmsg",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل الايدي' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:id") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:id")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الايدي' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:id") then
 redis:set(bot_id..":"..msg.chat_id..":settings:id",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل الايدي بالصوره' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:id:ph") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:id:ph")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الايدي بالصوره' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:id:ph") then
 redis:set(bot_id..":"..msg.chat_id..":settings:id:ph",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل ردود المدير' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:Reply") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:Reply")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل ردود المدير' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:Reply") then
 redis:set(bot_id..":"..msg.chat_id..":settings:Reply",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تفعيل الالعاب المتطوره' then   
 if redis:get(bot_id..":"..msg.chat_id..":settings:gameVip") then
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 redis:del(bot_id..":"..msg.chat_id..":settings:gameVip")  
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
 if text == 'تعطيل الالعاب المتطوره' then  
 if not redis:get(bot_id..":"..msg.chat_id..":settings:gameVip") then
 redis:set(bot_id..":"..msg.chat_id..":settings:gameVip",true)  
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").by
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").by
 else
-Text = Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." سابقا .*").yu
+Text = Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." سابقا .*").yu
 end
 bot.sendText(msg.chat_id,msg.id,Text,"md",true)
 end
@@ -21711,7 +21711,7 @@ tt = "لا يمتلك رتبه بالفعل"
 else
 tt = "تم تنزيله من جميع الرتب بنجاح"
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:srem(bot_id..":Status:programmer",UserName)
 redis:srem(bot_id..":Status:developer",UserName)
 redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",UserName)
@@ -21784,7 +21784,7 @@ tt = "لا يمتلك رتبه بالفعل"
 else
 tt = "تم تنزيله من جميع الرتب بنجاح"
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:srem(bot_id..":Status:programmer",UserId_Info.id)
 redis:srem(bot_id..":Status:developer",UserId_Info.id)
 redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",UserId_Info.id)
@@ -21839,7 +21839,7 @@ return false
 end
 if text == "تنزيل الكل" and tonumber(msg.reply_to_message_id) ~= 0 then
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -21848,62 +21848,62 @@ if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخدام الامر على البوت .*","md",true)  
 return false
 end
-if Get_Rank(Remsg.sender_id.user_id,msg.chat_id)== "العضو" then
+if Get_Rank(Remsg.sender.user_id,msg.chat_id)== "العضو" then
 tt = "لا يمتلك رتبه بالفعل"
 else
 tt = "تم تنزيله من جميع الرتب بنجاح"
 end
-if devB(msg.sender_id.user_id) then
-redis:srem(bot_id..":Status:programmer",Remsg.sender_id.user_id)
-redis:srem(bot_id..":Status:developer",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender_id.user_id)
+if devB(msg.sender.user_id) then
+redis:srem(bot_id..":Status:programmer",Remsg.sender.user_id)
+redis:srem(bot_id..":Status:developer",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender.user_id)
 elseif programmer(msg) then
-redis:srem(bot_id..":Status:developer",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender_id.user_id)
+redis:srem(bot_id..":Status:developer",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender.user_id)
 elseif developer(msg) then
-redis:srem(bot_id..":"..msg.chat_id..":Status:Creator",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender_id.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Creator",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender.user_id)
 elseif Creator(msg) then
-redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender_id.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:BasicConstructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender.user_id)
 elseif BasicConstructor(msg) then
-redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender_id.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Constructor",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender.user_id)
 elseif Constructor(msg) then
-redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender_id.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Owner",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender.user_id)
 elseif Owner(msg) then
-redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender_id.user_id)
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender_id.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Administrator",Remsg.sender.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender.user_id)
 elseif Administrator(msg) then
-redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender_id.user_id)
+redis:srem(bot_id..":"..msg.chat_id..":Status:Vips",Remsg.sender.user_id)
 elseif Vips(msg) then
 return false
 else
 return false
 end
-if bot.getChatMember(msg.chat_id,Remsg.sender_id.user_id).status.luatele == "chatMemberStatusCreator" then
-redis:sadd(bot_id..":"..msg.chat_id..":Status:Creator",Remsg.sender_id.user_id)
+if bot.getChatMember(msg.chat_id,Remsg.sender.user_id).status.luatele == "chatMemberStatusCreator" then
+redis:sadd(bot_id..":"..msg.chat_id..":Status:Creator",Remsg.sender.user_id)
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,"*⌁ : "..tt.." .*").helo,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,"*⌁ : "..tt.." .*").helo,"md",true)  
 return false
 end
 if text and text:match('^رفع (.*) (%d+)$') and tonumber(msg.reply_to_message_id) == 0 then
@@ -21944,7 +21944,7 @@ return false
 end  
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:up") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الرفع معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الرفع معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
@@ -21952,7 +21952,7 @@ if redis:sismember(bot_id..srt1.."Status:"..srt,UserName) then
 bot.sendText(msg.chat_id,msg.id,Reply_Status(UserName,"*⌁ : تم رفعه سابقا .*").helo,"md",true)  
 return false
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:sadd(bot_id..srt1.."Status:"..srt,UserName)
 elseif programmer(msg) then
 if TextMsg == 'مطور' then
@@ -22103,7 +22103,7 @@ return false
 end
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:up") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الرفع معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الرفع معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
@@ -22111,7 +22111,7 @@ if redis:sismember(bot_id..srt1.."Status:"..srt,UserId_Info.id) then
 bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,"*⌁ : تم رفعه سابقا .*").helo,"md",true)  
 return false
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:sadd(bot_id..srt1.."Status:"..srt,UserId_Info.id)
 elseif programmer(msg) then
 if TextMsg == 'مطور' then
@@ -22238,12 +22238,12 @@ return false
 end  
 if not BasicConstructor(msg) then
 if redis:get(bot_id..":"..msg.chat_id..":settings:up") then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : الرفع معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : الرفع معطل بواسطه المنشئين الاساسيين .*").yu,"md",true)  
 return false
 end
 end
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -22252,93 +22252,93 @@ if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخدام الامر على البوت .*","md",true)  
 return false
 end
-if redis:sismember(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id) then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,"*⌁ : تم رفعه سابقا .*").helo,"md",true)  
+if redis:sismember(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id) then
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,"*⌁ : تم رفعه سابقا .*").helo,"md",true)  
 return false
 end
-if devB(msg.sender_id.user_id) then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+if devB(msg.sender.user_id) then
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif programmer(msg) then
 if TextMsg == 'مطور' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مالك' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ اساسي' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مدير' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end
 elseif developer(msg) then
 if TextMsg == 'مالك' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ اساسي' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مدير' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif Creator(msg) then
 if TextMsg == 'منشئ اساسي' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مدير' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif BasicConstructor(msg) then
 if TextMsg == 'منشئ' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مدير' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif Constructor(msg) then
 if TextMsg == 'مدير' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif Owner(msg) then
 if TextMsg == 'ادمن' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif Administrator(msg) then
 if TextMsg == 'مميز' then
-redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:sadd(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
@@ -22347,7 +22347,7 @@ return false
 else
 return false
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,"*⌁ : تم رفعه بنجاح .*").helo,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,"*⌁ : تم رفعه بنجاح .*").helo,"md",true)  
 return false
 end
 end
@@ -22391,7 +22391,7 @@ if not redis:sismember(bot_id..srt1.."Status:"..srt,UserName) then
 bot.sendText(msg.chat_id,msg.id,Reply_Status(UserName,"*⌁ : لا يمتلك رتبه بالفعل .*").yu,"md",true)  
 return false
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:srem(bot_id..srt1.."Status:"..srt,UserName)
 elseif programmer(msg) then
 if TextMsg == 'مطور' then
@@ -22544,7 +22544,7 @@ if not redis:sismember(bot_id..srt1.."Status:"..srt,UserId_Info.id) then
 bot.sendText(msg.chat_id,msg.id,Reply_Status(UserId_Info.id,"*⌁ : لا يمتلك رتبه بالفعل .*").i,"md",true)  
 return false
 end
-if devB(msg.sender_id.user_id) then
+if devB(msg.sender.user_id) then
 redis:srem(bot_id..srt1.."Status:"..srt,UserId_Info.id)
 elseif programmer(msg) then
 if TextMsg == 'مطور' then
@@ -22670,7 +22670,7 @@ else
 return false
 end  
 local Remsg = bot.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = bot.getUser(Remsg.sender_id.user_id)
+local UserInfo = bot.getUser(Remsg.sender.user_id)
 if UserInfo.message == "Invalid user ID" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ تستطيع فقط استخدام الامر على المستخدمين .*","md",true)  
 return false
@@ -22679,93 +22679,93 @@ if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
 bot.sendText(msg.chat_id,msg.id,"\n*⌁ : عذرآ لا تستطيع استخدام الامر على البوت .*","md",true)  
 return false
 end
-if not redis:sismember(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id) then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,"*⌁ : لا يمتلك رتبه بالفعل .*").i,"md",true)  
+if not redis:sismember(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id) then
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,"*⌁ : لا يمتلك رتبه بالفعل .*").i,"md",true)  
 return false
 end
-if devB(msg.sender_id.user_id) then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+if devB(msg.sender.user_id) then
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif programmer(msg) then
 if TextMsg == 'مطور' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مالك' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ اساسي' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مدير' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end
 elseif developer(msg) then
 if TextMsg == 'مالك' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ اساسي' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مدير' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif Creator(msg) then
 if TextMsg == 'منشئ اساسي' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'منشئ' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مدير' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif BasicConstructor(msg) then
 if TextMsg == 'منشئ' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مدير' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif Constructor(msg) then
 if TextMsg == 'مدير' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'ادمن' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif Owner(msg) then
 if TextMsg == 'ادمن' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 elseif TextMsg == 'مميز' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
 elseif Administrator(msg) then
 if TextMsg == 'مميز' then
-redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender_id.user_id)
+redis:srem(bot_id..srt1.."Status:"..srt,Remsg.sender.user_id)
 else
 return false
 end  
@@ -22774,7 +22774,7 @@ return false
 else
 return false
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender_id.user_id,"*⌁ : تم تنزيله بنجاح .*").i,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(Remsg.sender.user_id,"*⌁ : تم تنزيله بنجاح .*").i,"md",true)  
 return false
 end
 end
@@ -22784,7 +22784,7 @@ if text == 'الثانويين' or text == 'المطورين الثانويين'
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  *\n'
 local Info_ = redis:smembers(bot_id..":Status:programmer") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -22800,13 +22800,13 @@ type = 'inline',data = {
 {{text = '‹ مسح الثانويين ›',data="delpor"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu, 'md', true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu, 'md', true, false, false, false, reply_markup)
 end
 if text == 'المطورين' then
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉  *\n'
 local Info_ = redis:smembers(bot_id..":Status:developer") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -22822,13 +22822,13 @@ type = 'inline',data = {
 {{text = '‹ مسح المطورين ›',data="deldev"}},
 }
 }
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu, 'md', true, false, false, false, reply_markup)
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu, 'md', true, false, false, false, reply_markup)
 end
 if text == 'المالكين' then
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉*\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Creator") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد المالكين*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد المالكين*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -22839,13 +22839,13 @@ else
 t = t.."*"..k.." : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'المنشئين الاساسيين' then
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉*\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:BasicConstructor") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -22856,13 +22856,13 @@ else
 t = t.."*"..k.." : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'المنشئين' then
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉*\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Constructor") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -22873,13 +22873,13 @@ else
 t = t.."*"..k.." : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'المدراء' then
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉*\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Owner") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -22890,13 +22890,13 @@ else
 t = t.."*"..k.." : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'الادمنيه' then
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉*\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Administrator") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -22907,13 +22907,13 @@ else
 t = t.."*"..k.." : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 if text == 'المميزين' then
 t = '\n*⌁ : قائمه '..text..'  \n ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉*\n'
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Vips") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : لا يوجد "..text:gsub('ال',"").."*").yu,"md",true)  
 return false
 end  
 for k, v in pairs(Info_) do
@@ -22924,81 +22924,81 @@ else
 t = t.."*"..k.." : * ["..v.."](tg://user?id="..v..")\n"
 end
 end
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,t).yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,t).yu,"md",true)  
 end
 ----------------------------------------------------------------------------------------------------
 end
-if text == 'مسح الثانويين' or text == 'مسح المطورين الثانويين' and devB(msg.sender_id.user_id) then
+if text == 'مسح الثانويين' or text == 'مسح المطورين الثانويين' and devB(msg.sender.user_id) then
 local Info_ = redis:smembers(bot_id..":Status:programmer") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":Status:programmer") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح المطورين' and programmer(msg) then
 local Info_ = redis:smembers(bot_id..":Status:developer") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":Status:developer") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح المالكين' and developer(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Creator") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":"..msg.chat_id..":Status:Creator") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح المنشئين الاساسيين' and Creator(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:BasicConstructor") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":"..msg.chat_id..":Status:BasicConstructor") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح المنشئين' and BasicConstructor(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Constructor") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":"..msg.chat_id..":Status:Constructor") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح المدراء' and Constructor(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Owner") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":"..msg.chat_id..":Status:Owner") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح الادمنيه' and Owner(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Administrator") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":"..msg.chat_id..":Status:Administrator") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 if text == 'مسح المميزين' and Administrator(msg) then
 local Info_ = redis:smembers(bot_id..":"..msg.chat_id..":Status:Vips") 
 if #Info_ == 0 then
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم حذف "..text:gsub('مسح',"").." سابقا .*").yu,"md",true)  
 return false
 end  
 redis:del(bot_id..":"..msg.chat_id..":Status:Vips") 
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : تم "..text.." بنجاح .*").yu,"md",true)  
 end
 ----------------------------------------------------------------------------------------------------
 if text and not redis:get(bot_id..":"..msg.chat_id..":settings:Reply") then
@@ -23006,7 +23006,7 @@ if text and redis:sismember(bot_id..'List:array'..msg.chat_id,text) then
 local list = redis:smembers(bot_id.."Add:Rd:array:Text"..text..msg.chat_id)
 return bot.sendText(msg.chat_id,msg.id,"["..list[math.random(#list)].."]","md",true)
 end  
-if not redis:sismember(bot_id..'Spam:Group'..msg.sender_id.user_id,text) then
+if not redis:sismember(bot_id..'Spam:Group'..msg.sender.user_id,text) then
 local Text = redis:get(bot_id.."Rp:content:Text"..msg.chat_id..":"..text)
 local VoiceNote = redis:get(bot_id.."Rp:content:VoiceNote"..msg.chat_id..":"..text) 
 local photo = redis:get(bot_id.."Rp:content:Photo"..msg.chat_id..":"..text)
@@ -23022,67 +23022,67 @@ local animacaption = redis:get(bot_id.."Rp:content:Animation:caption"..msg.chat_
 local documentcaption = redis:get(bot_id.."Rp:Manager:File:caption"..msg.chat_id..":"..text) or ""
 local audiocaption = redis:get(bot_id.."Rp:content:Audio:caption"..msg.chat_id..":"..text) or ""
 if Text  then
-local UserInfo = bot.getUser(msg.sender_id.user_id)
-local countMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1
+local UserInfo = bot.getUser(msg.sender.user_id)
+local countMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1
 local totlmsg = Total_message(countMsg) 
-local getst = Get_Rank(msg.sender_id.user_id,msg.chat_id)
-local countedit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") or 0
-local Text = Text:gsub('#username',(UserInfo.username or 'لا يوجد')):gsub('#name',UserInfo.first_name):gsub('#id',msg.sender_id.user_id):gsub('#edit',countedit):gsub('#msgs',countMsg):gsub('#stast',getst)
+local getst = Get_Rank(msg.sender.user_id,msg.chat_id)
+local countedit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") or 0
+local Text = Text:gsub('#username',(UserInfo.username or 'لا يوجد')):gsub('#name',UserInfo.first_name):gsub('#id',msg.sender.user_id):gsub('#edit',countedit):gsub('#msgs',countMsg):gsub('#stast',getst)
 if Text:match("]") then
 bot.sendText(msg.chat_id,msg.id,""..Text.."","md",true)  
 else
 bot.sendText(msg.chat_id,msg.id,"["..Text.."]","md",true)  
 end
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end
 if photo  then
 bot.sendPhoto(msg.chat_id, msg.id, photo,photocaption)
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end  
 if vido  then
 bot.sendVideo(msg.chat_id, msg.id, vido,vidocaption)
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end  
 if stickr  then
 bot.sendSticker(msg.chat_id, msg.id, stickr,stickrcaption)
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end  
 if anima  then
 bot.sendAnimation(msg.chat_id, msg.id, anima,animacaption)
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end  
 if VoiceNote then
 bot.sendVoiceNote(msg.chat_id, msg.id, VoiceNote,"["..VoiceNotecaption.."]", "md")
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end
 if document  then
 bot.sendDocument(msg.chat_id, msg.id, document,"["..documentcaption.."]", "md")
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end  
 if audio  then
 bot.sendAudio(msg.chat_id, msg.id, audio,"["..audiocaption.."]", "md")
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end
 end 
 end
 
 
 ----------------------------------------------------------------------------------------------------
-if not redis:sismember(bot_id..'Spam:Group'..msg.sender_id.user_id,text) then
+if not redis:sismember(bot_id..'Spam:Group'..msg.sender.user_id,text) then
 local Text = redis:get(bot_id.."Rp:content:Textg"..msg.chat_id..":"..text)
 if Text  then
-local UserInfo = bot.getUser(msg.sender_id.user_id)
-local countMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":message") or 1
+local UserInfo = bot.getUser(msg.sender.user_id)
+local countMsg = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":message") or 1
 local totlmsg = Total_message(countMsg) 
-local getst = Get_Rank(msg.sender_id.user_id,msg.chat_id)
-local countedit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") or 0
-local Text = Text:gsub('#username',(UserInfo.username or 'لا يوجد')):gsub('#name',UserInfo.first_name):gsub('#id',msg.sender_id.user_id):gsub('#edit',countedit):gsub('#msgs',countMsg):gsub('#stast',getst)
+local getst = Get_Rank(msg.sender.user_id,msg.chat_id)
+local countedit = redis:get(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") or 0
+local Text = Text:gsub('#username',(UserInfo.username or 'لا يوجد')):gsub('#name',UserInfo.first_name):gsub('#id',msg.sender.user_id):gsub('#edit',countedit):gsub('#msgs',countMsg):gsub('#stast',getst)
 if Text:match("]") then
 bot.sendText(msg.chat_id,msg.id,""..Text.."","md",true)  
 else
 bot.sendText(msg.chat_id,msg.id,"["..Text.."]","md",true)  
 end
-redis:sadd(bot_id.."Spam:Group"..msg.sender_id.user_id,text) 
+redis:sadd(bot_id.."Spam:Group"..msg.sender.user_id,text) 
 end
 end 
 ----------------------------------------------------------------------------------------------------
@@ -23104,7 +23104,7 @@ local datar = {data = {{text = "⌁ : LARrY TEaM ." , url = 'http://t.me/EEEFBB'
 for i = 1,5 do
 title = json[i].title
 link = json[i].url
-datar[i] = {{text = title , data =msg.sender_id.user_id.."dl/"..link}}
+datar[i] = {{text = title , data =msg.sender.user_id.."dl/"..link}}
 end
 local reply_markup = bot.replyMarkup{
 type = 'inline',
@@ -23119,47 +23119,47 @@ end
 ----------------------------------------------------------------------------------------------------
 -- نهايه التفعيل
 
-if redis:get(bot_id..":"..msg.sender_id.user_id..":lov_Bots"..msg.chat_id) == "sendlove" then
+if redis:get(bot_id..":"..msg.sender.user_id..":lov_Bots"..msg.chat_id) == "sendlove" then
 num = {"😂 10","🤤 20","😢 30","😔 35","😒 75","🤩 34","😗 66","🤐 82","😪 23","😫 19","😛 55","😜 80","😲 63","😓 32","🙂 27","😎 89","😋 99","😁 98","😀 79","🤣 100","😣 8","🙄 3","😕 6","🤯 0",};
 sendnum = num[math.random(#num)]
 local tttttt = '⌁ : نسبة الحب بيـن : '..text..' '..sendnum..' %'
 bot.sendText(msg.chat_id,msg.id,tttttt) 
-redis:del(bot_id..":"..msg.sender_id.user_id..":lov_Bots"..msg.chat_id)
+redis:del(bot_id..":"..msg.sender.user_id..":lov_Bots"..msg.chat_id)
 end
-if redis:get(bot_id..":"..msg.sender_id.user_id..":lov_Bottts"..msg.chat_id) == "sendlove" then
+if redis:get(bot_id..":"..msg.sender.user_id..":lov_Bottts"..msg.chat_id) == "sendlove" then
 num = {"😂 10","?? 20","?? 30","😔 35","😒 75","🤩 34","😗 66","🤐 82","😪 23","😫 19","😛 55","😜 80","😲 63","😓 32","🙂 27","😎 89","😋 99","😁 98","😀 79","🤣 100","😣 8","🙄 3","😕 6","🤯 0",};
 sendnum = num[math.random(#num)]
 local tttttt = '⌁ : نسبة غباء : '..text..' '..sendnum..' %'
 bot.sendText(msg.chat_id,msg.id,tttttt) 
-redis:del(bot_id..":"..msg.sender_id.user_id..":lov_Bottts"..msg.chat_id)
+redis:del(bot_id..":"..msg.sender.user_id..":lov_Bottts"..msg.chat_id)
 end
-if redis:get(bot_id..":"..msg.sender_id.user_id..":lov_Botttuus"..msg.chat_id) == "sendlove" then
+if redis:get(bot_id..":"..msg.sender.user_id..":lov_Botttuus"..msg.chat_id) == "sendlove" then
 num = {"😂 10","🤤 20","😢 30","😔 35","😒 75","🤩 34","?? 66","🤐 82","😪 23","😫 19","😛 55","😜 80","😲 63","😓 32","🙂 27","😎 89","😋 99","😁 98","😀 79","🤣 100","😣 8","🙄 3","😕 6","🤯 0",};
 sendnum = num[math.random(#num)]
 local tttttt = '⌁ : نسبة الذكاء : '..text..' '..sendnum..' %'
 bot.sendText(msg.chat_id,msg.id,tttttt) 
-redis:del(bot_id..":"..msg.sender_id.user_id..":lov_Botttuus"..msg.chat_id)
+redis:del(bot_id..":"..msg.sender.user_id..":lov_Botttuus"..msg.chat_id)
 end
-if text and redis:get(bot_id..":"..msg.sender_id.user_id..":krh_Bots"..msg.chat_id) == "sendkrhe" then
+if text and redis:get(bot_id..":"..msg.sender.user_id..":krh_Bots"..msg.chat_id) == "sendkrhe" then
 num = {"😂 10","🤤 20","😢 30","😔 35","😒 75","🤩 34","😗 66","🤐 82","😪 23","😫 19","😛 55","😜 80","😲 63","😓 32","🙂 27","?? 89","😋 99","😁 98","😀 79","🤣 100","😣 8","🙄 3","😕 6","🤯 0",};
 sendnum = num[math.random(#num)]
 local tttttt = '⌁ : نسبه الكره : '..text..' '..sendnum..' %'
 bot.sendText(msg.chat_id,msg.id,tttttt) 
-redis:del(bot_id..":"..msg.sender_id.user_id..":krh_Bots"..msg.chat_id)
+redis:del(bot_id..":"..msg.sender.user_id..":krh_Bots"..msg.chat_id)
 end
-if text and text ~="نسبه الرجوله" and redis:get(bot_id..":"..msg.sender_id.user_id..":rjo_Bots"..msg.chat_id) == "sendrjoe" then
+if text and text ~="نسبه الرجوله" and redis:get(bot_id..":"..msg.sender.user_id..":rjo_Bots"..msg.chat_id) == "sendrjoe" then
 numj = {"😂 10","🤤 20","😢 30","😔 35","😒 75","🤩 34","😗 66","?? 82","😪 23","😫 19","😛 55","😜 80","😲 63","😓 32","🙂 27","😎 89","😋 99","😁 98","🥰 79","🤣 100","😣 8","🙄 3","😕 6","🤯 0",};
 sendnuj = numj[math.random(#numj)]
 local tttttt = '⌁ : نسبة الرجوله : '..text..' '..sendnuj..' %'
 bot.sendText(msg.chat_id,msg.id,tttttt) 
-redis:del(bot_id..":"..msg.sender_id.user_id..":rjo_Bots"..msg.chat_id)
+redis:del(bot_id..":"..msg.sender.user_id..":rjo_Bots"..msg.chat_id)
 end
-if text and text ~="نسبه الانوثه" and redis:get(bot_id..":"..msg.sender_id.user_id..":ano_Bots"..msg.chat_id) == "sendanoe" then
+if text and text ~="نسبه الانوثه" and redis:get(bot_id..":"..msg.sender.user_id..":ano_Bots"..msg.chat_id) == "sendanoe" then
 numj = {"😂 10","🤤 20","😢 30","😔 35","😒 75","?? 34","😗 66","🤐 82","😪 23","😫 19","😛 55","😜 80","😲 63","😓 32","🙂 27","😎 89","😋 99","?? 98","😀 79","🤣 100","😣 8","🙄 3","😕 6","🤯 0",};
 sendnuj = numj[math.random(#numj)]
 local tttttt = '⌁ : نسبه الانوثة : '..text..' '..sendnuj..' %'
 bot.sendText(msg.chat_id,msg.id,tttttt) 
-redis:del(bot_id..":"..msg.sender_id.user_id..":ano_Bots"..msg.chat_id)
+redis:del(bot_id..":"..msg.sender.user_id..":ano_Bots"..msg.chat_id)
 end
 
 if redis:get(bot_id..'Status:aktbas'..msg.chat_id) == 'true' then
@@ -23180,7 +23180,7 @@ https.request("https://api.telegram.org/bot"..Token.."/sendphoto?chat_id=" .. ms
 end
 ----------------------------------------------------------------------------------------------------
 if text and text:match("^تعيين عدد الاعضاء (%d+)$") then
-if not devB(msg.sender_id.user_id) then 
+if not devB(msg.sender.user_id) then 
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور الاساسي * ',"md",true)  
 end
 redis:set(bot_id..'Num:Add:Bot',text:match("تعيين عدد الاعضاء (%d+)$") ) 
@@ -23188,7 +23188,7 @@ bot.sendText(msg.chat_id,msg.id,'*⌁ : تم تعيين عدد اعضاء تفع
 end
 
 if text and text:match("^حظر كروب (.*)$") then
-if not devB(msg.sender_id.user_id) then 
+if not devB(msg.sender.user_id) then 
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور الاساسي * ',"md",true)  
 end
 local txx = text:match("^حظر كروب (.*)$")
@@ -23200,7 +23200,7 @@ bot.sendText(msg.chat_id,msg.id,'\n⌁ : اكتب ايدي المجموعه بش
 end
 end
 if text and text:match("^الغاء حظر كروب (.*)$") then
-if not devB(msg.sender_id.user_id) then 
+if not devB(msg.sender.user_id) then 
 return bot.sendText(msg.chat_id,msg.id,'\n*⌁ : هذا الامر يخص المطور الاساسي * ',"md",true)  
 end
 local txx = text:match("^الغاء حظر كروب (.*)$")
@@ -23217,7 +23217,7 @@ if msg.can_be_deleted_for_all_users == false then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : عذراً البوت ليس ادمن في المجموعه .*","md",true)  
 return false
 end
-sm = bot.getChatMember(msg.chat_id,msg.sender_id.user_id)
+sm = bot.getChatMember(msg.chat_id,msg.sender.user_id)
 if not developer(msg) then
 if sm.status.luatele ~= "chatMemberStatusCreator" and sm.status.luatele ~= "chatMemberStatusAdministrator" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : عذراً يجب أنْ تكون مشرف او مالك المجموعه .*","md",true)  
@@ -23225,9 +23225,9 @@ return false
 end
 end
 if sm.status.luatele == "chatMemberStatusCreator" then
-redis:sadd(bot_id..":"..msg.chat_id..":Status:Creator",msg.sender_id.user_id)
+redis:sadd(bot_id..":"..msg.chat_id..":Status:Creator",msg.sender.user_id)
 else
-redis:sadd(bot_id..":"..msg.chat_id..":Status:Administrator",msg.sender_id.user_id)
+redis:sadd(bot_id..":"..msg.chat_id..":Status:Administrator",msg.sender.user_id)
 end
 if redis:sismember(bot_id..":Groups",msg.chat_id) then
  bot.sendText(msg.chat_id,msg.id,'*⌁ : تم تفعيل المجموعه سابقا* .',"md",true)  
@@ -23242,8 +23242,8 @@ data = {
 {{text = '⌁ : LARrY TEaM .',url="t.me/EEEFBB"}},
 }
 }
-UserInfo = bot.getUser(msg.sender_id.user_id).first_name
-bot.sendText(sudoid,0,'*\n⌁ : تم تفعيل مجموعه جديده \n⌁ : بواسطه : (*['..UserInfo..'](tg://user?id='..msg.sender_id.user_id..')*)\n⌁ : معلومات المجموعه :\n⌁ : عدد الاعضاء : '..Info_Chats.member_count..'\n⌁ : عدد الادمنيه : '..Info_Chats.administrator_count..'\n⌁ : عدد المطرودين : '..Info_Chats.banned_count..'\n⌁ : عدد المقيدين : '..Info_Chats.restricted_count..'*',"md", true, false, false, false, reply_markup)
+UserInfo = bot.getUser(msg.sender.user_id).first_name
+bot.sendText(sudoid,0,'*\n⌁ : تم تفعيل مجموعه جديده \n⌁ : بواسطه : (*['..UserInfo..'](tg://user?id='..msg.sender.user_id..')*)\n⌁ : معلومات المجموعه :\n⌁ : عدد الاعضاء : '..Info_Chats.member_count..'\n⌁ : عدد الادمنيه : '..Info_Chats.administrator_count..'\n⌁ : عدد المطرودين : '..Info_Chats.banned_count..'\n⌁ : عدد المقيدين : '..Info_Chats.restricted_count..'*',"md", true, false, false, false, reply_markup)
 bot.sendText(msg.chat_id,msg.id,'*⌁ : تم تفعيل المجموعه بنجاح .*',"md", true, false, false, false, reply_markup)
 redis:sadd(bot_id..":Groups",msg.chat_id)
 end
@@ -23253,7 +23253,7 @@ if msg.can_be_deleted_for_all_users == false then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : عذراً البوت ليس ادمن في المجموعه .*","md",true)  
 return false
 end
-sm = bot.getChatMember(msg.chat_id,msg.sender_id.user_id)
+sm = bot.getChatMember(msg.chat_id,msg.sender.user_id)
 if not developer(msg) then
 if sm.status.luatele ~= "chatMemberStatusCreator" then
 bot.sendText(msg.chat_id,msg.id,"*⌁ : عذراً يجب أنْ تكون مالك المجموعه فقط .*","md",true)  
@@ -23270,8 +23270,8 @@ data = {
 {{text = '⌁ : LARrY TEaM .',url="https://t.me/EEEFBB"}},
 }
 }
-UserInfo = bot.getUser(msg.sender_id.user_id).first_name
-bot.sendText(sudoid,0,'*\n⌁ : تم تعطيل المجموعه التاليه : \n⌁ : بواسطه : (*['..UserInfo..'](tg://user?id='..msg.sender_id.user_id..')*)\n⌁ : معلومات المجموعه :\n⌁ : عدد الاعضاء : '..Info_Chats.member_count..'\n⌁ : عدد الادمنيه : '..Info_Chats.administrator_count..'\n⌁ : عدد المطرودين : '..Info_Chats.banned_count..'\n⌁ : عدد المقيدين : '..Info_Chats.restricted_count..'*',"md", true, false, false, false, reply_markup)
+UserInfo = bot.getUser(msg.sender.user_id).first_name
+bot.sendText(sudoid,0,'*\n⌁ : تم تعطيل المجموعه التاليه : \n⌁ : بواسطه : (*['..UserInfo..'](tg://user?id='..msg.sender.user_id..')*)\n⌁ : معلومات المجموعه :\n⌁ : عدد الاعضاء : '..Info_Chats.member_count..'\n⌁ : عدد الادمنيه : '..Info_Chats.administrator_count..'\n⌁ : عدد المطرودين : '..Info_Chats.banned_count..'\n⌁ : عدد المقيدين : '..Info_Chats.restricted_count..'*',"md", true, false, false, false, reply_markup)
 bot.sendText(msg.chat_id,msg.id,'*⌁ : تم تعطيل المجموعه بنجاح .*',"md",true, false, false, false, reply_markup)
 redis:srem(bot_id..":Groups",msg.chat_id)
 local keys = redis:keys(bot_id..'*'..'-100'..data.supergroup.id..'*')
@@ -23408,17 +23408,17 @@ end
 end
 
 if data and data.luatele and data.luatele == "updateNewMessage" then
-if data.message.sender_id.luatele == "messageSenderChat" then
+if data.message.sender.luatele == "messageSenderChat" then
 if redis:get(bot_id..":"..data.message.chat_id..":settings:messageSenderChat") == "del" then
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 return false
 end
 end
-if data.message.sender_id.luatele ~= "messageSenderChat" then
-if tonumber(data.message.sender_id.user_id) ~= tonumber(bot_id) then  
+if data.message.sender.luatele ~= "messageSenderChat" then
+if tonumber(data.message.sender.user_id) ~= tonumber(bot_id) then  
 if data.message.content.text and data.message.content.text.text:match("^(.*)$") then
-if redis:get(bot_id..":"..data.message.chat_id..":"..data.message.sender_id.user_id..":Command:del") == "true" then
-redis:del(bot_id..":"..data.message.chat_id..":"..data.message.sender_id.user_id..":Command:del")
+if redis:get(bot_id..":"..data.message.chat_id..":"..data.message.sender.user_id..":Command:del") == "true" then
+redis:del(bot_id..":"..data.message.chat_id..":"..data.message.sender.user_id..":Command:del")
 if redis:get(bot_id..":"..data.message.chat_id..":Command:"..data.message.content.text.text) then
 redis:del(bot_id..":"..data.message.chat_id..":Command:"..data.message.content.text.text)
 redis:srem(bot_id.."List:Command:"..data.message.chat_id,data.message.content.text.text)
@@ -23437,8 +23437,8 @@ end
 end
 ---------‐-------------
 if data.message.content.text and data.message.content.text.text:match("^(.*)$") then
-if redis:get(bot_id..":"..data.message.chat_id..":"..data.message.sender_id.user_id..":Commandd:dell") == "true" then
-redis:del(bot_id..":"..data.message.chat_id..":"..data.message.sender_id.user_id..":Commandd:dell")
+if redis:get(bot_id..":"..data.message.chat_id..":"..data.message.sender.user_id..":Commandd:dell") == "true" then
+redis:del(bot_id..":"..data.message.chat_id..":"..data.message.sender.user_id..":Commandd:dell")
 if redis:get(bot_id..":Commandd:"..data.message.content.text.text) then
 redis:del(bot_id..":Commandd:"..data.message.content.text.text)
 redis:srem(bot_id.."Listt:Commandd",data.message.content.text.text)
@@ -23463,9 +23463,9 @@ td = data.message.content.text.text
 if redis:get(bot_id..":TheCh") then
 infokl = bot.getChatMember(redis:get(bot_id..":TheCh"),bot_id)
 if infokl and infokl.status and infokl.status.luatele == "chatMemberStatusAdministrator" then
-if not devS(data.message.sender_id.user_id) then
+if not devS(data.message.sender.user_id) then
 if td == "/start" or  td == "ايدي" or  td == "الرابط" or  td == "قفل الكل" or  td == "فتح الكل" or  td == "الاوامر" or  td == "م1" or  td == "م2" or  td == "م3" or  td == "كشف" or  td == "رتبتي" or  td == "المالك" or  td == "قفل الصور" or  td == "قفل الالعاب" or  td == "الالعاب" or  td == "العكس" or  td == "روليت" or  td == "كت" or  td == "تنزيل الكل" or  td == "رفع ادمن" or  td == "رفع مميز" or  td == "رفع منشئ" or  td == "المكتومين" or  td == "قفل المتحركات"  then
-if bot.getChatMember(redis:get(bot_id..":TheCh"),data.message.sender_id.user_id).status.luatele == "chatMemberStatusLeft" then
+if bot.getChatMember(redis:get(bot_id..":TheCh"),data.message.sender.user_id).status.luatele == "chatMemberStatusLeft" then
 Get_Chat = bot.getChat(redis:get(bot_id..":TheCh"))
 Info_Chats = bot.getSupergroupFullInfo(redis:get(bot_id..":TheCh"))
 if Info_Chats and Info_Chats.invite_link and Info_Chats.invite_link.invite_link and  Get_Chat and Get_Chat.title then 
@@ -23474,7 +23474,7 @@ type = 'inline',data = {
 {{text = Get_Chat.title,url=Info_Chats.invite_link.invite_link}},
 }
 }
-return bot.sendText(data.message.chat_id,data.message.id,Reply_Status(data.message.sender_id.user_id,"*⌁ : عليك الاشتراك في قناة البوت اولاً *").yu,"md", true, false, false, false, reply_dev)
+return bot.sendText(data.message.chat_id,data.message.id,Reply_Status(data.message.sender.user_id,"*⌁ : عليك الاشتراك في قناة البوت اولاً *").yu,"md", true, false, false, false, reply_dev)
 end
 end
 end
@@ -23482,30 +23482,30 @@ end
 end
 end
 end
-if redis:sismember(bot_id..":bot:Ban", data.message.sender_id.user_id) then    
+if redis:sismember(bot_id..":bot:Ban", data.message.sender.user_id) then    
 if GetInfoBot(data.message).BanUser then
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'banned',0)
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 elseif GetInfoBot(data.message).BanUser == false then
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 end
 end  
-if redis:sismember(bot_id..":bot:silent", data.message.sender_id.user_id) then    
+if redis:sismember(bot_id..":bot:silent", data.message.sender.user_id) then    
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 end  
-if redis:sismember(bot_id..":"..data.message.chat_id..":silent", data.message.sender_id.user_id) then    
+if redis:sismember(bot_id..":"..data.message.chat_id..":silent", data.message.sender.user_id) then    
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})  
 end
-if redis:sismember(bot_id..":"..data.message.chat_id..":Ban", data.message.sender_id.user_id) then    
+if redis:sismember(bot_id..":"..data.message.chat_id..":Ban", data.message.sender.user_id) then    
 if GetInfoBot(data.message).BanUser then
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'banned',0)
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 elseif GetInfoBot(data.message).BanUser == false then
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 end
 end 
-if redis:sismember(bot_id..":"..data.message.chat_id..":restrict", data.message.sender_id.user_id) then    
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+if redis:sismember(bot_id..":"..data.message.chat_id..":restrict", data.message.sender.user_id) then    
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 end  
 if not Administrator(msg) then
 if data.message.content.text then
@@ -23527,7 +23527,7 @@ ut = "ممنوعه"
 end
 if hash then    
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
-bot.sendText(data.message.chat_id,data.message.id,Reply_Status(data.message.sender_id.user_id,"*⌁ : "..tu.." "..ut.." من المجموعه*").yu,"md",true)  
+bot.sendText(data.message.chat_id,data.message.id,Reply_Status(data.message.sender.user_id,"*⌁ : "..tu.." "..ut.." من المجموعه*").yu,"md",true)  
 end
 end
 if data.message and data.message.content then
@@ -23537,41 +23537,41 @@ end
 end
 Run(data.message,data)
 if data.message.content.text then
-if data.message.content.text and not redis:sismember(bot_id..'Spam:Group'..data.message.sender_id.user_id,data.message.content.text.text) then
-redis:del(bot_id..'Spam:Group'..data.message.sender_id.user_id) 
+if data.message.content.text and not redis:sismember(bot_id..'Spam:Group'..data.message.sender.user_id,data.message.content.text.text) then
+redis:del(bot_id..'Spam:Group'..data.message.sender.user_id) 
 end
 end
 if data.message.content.luatele == "messageChatJoinByLink" then
 if redis:get(bot_id..":"..data.message.chat_id..":settings:JoinByLink")== "del" then
-redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender_id.user_id) 
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'banned',0)
+redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender.user_id) 
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'banned',0)
 elseif redis:get(bot_id..":"..data.message.chat_id..":settings:JoinByLink")== "ked" then
-redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender_id.user_id) 
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'banned',0)
+redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender.user_id) 
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'banned',0)
 elseif redis:get(bot_id..":"..data.message.chat_id..":settings:JoinByLink") == "ktm" then
-redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender_id.user_id) 
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'banned',0)
+redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender.user_id) 
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'banned',0)
 elseif redis:get(bot_id..":"..data.message.chat_id..":settings:JoinByLink")== "kick" then
-redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender_id.user_id) 
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'banned',0)
+redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender.user_id) 
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'banned',0)
 end
 end
 if data.message.content.luatele == "messageChatDeleteMember" or data.message.content.luatele == "messageChatAddMembers" or data.message.content.luatele == "messagePinMessage" or data.message.content.luatele == "messageChatChangeTitle" or data.message.content.luatele == "messageChatJoinByLink" then
 if redis:get(bot_id..":"..data.message.chat_id..":settings:Tagservr")== "del" then
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 elseif redis:get(bot_id..":"..data.message.chat_id..":settings:Tagservr")== "ked" then
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 elseif redis:get(bot_id..":"..data.message.chat_id..":settings:Tagservr") == "ktm" then
-redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender_id.user_id) 
+redis:sadd(bot_id..":"..data.message.chat_id..":settings:mute",data.message.sender.user_id) 
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
 elseif redis:get(bot_id..":"..data.message.chat_id..":settings:Tagservr")== "kick" then
 bot.deleteMessages(data.message.chat_id,{[1]= data.message.id})
-bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'banned',0)
 end
 end 
 end
@@ -23581,24 +23581,24 @@ if data.message.content.luatele == "messageChatJoinByLink" and redis:get(bot_id.
     type = 'inline',
     data = {
     {
-    {text = '𖦹 انا لست بوت 𖦹', data = data.message.sender_id.user_id..'/UnKed'},
+    {text = '𖦹 انا لست بوت 𖦹', data = data.message.sender.user_id..'/UnKed'},
     },
     }
     } 
-    bot.setChatMemberStatus(data.message.chat_id,data.message.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+    bot.setChatMemberStatus(data.message.chat_id,data.message.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
     return bot.sendText(data.message.chat_id, data.message.id, '⌁ : عليك اختيار انا لست بوت لتخطي نظام التحقق', 'md',false, false, false, false, reply_markup)
     end
     
 if data.message.content.luatele == "messageChatJoinByLink" then
 if not redis:get(bot_id..":"..data.message.chat_id..":settings:Welcome") then
-local UserInfo = bot.getUser(data.message.sender_id.user_id)
+local UserInfo = bot.getUser(data.message.sender.user_id)
 local tex = redis:get(bot_id..":"..data.message.chat_id..":Welcome")
 if UserInfo.username and UserInfo.username ~= "" then
 User = "[@"..UserInfo.username.."]"
 Usertag = '['..UserInfo.first_name..'](t.me/'..UserInfo.username..')'
 else
 User = "لا يوجد"
-Usertag = '['..UserInfo.first_name..'](tg://user?id='..data.message.sender_id.user_id..')'
+Usertag = '['..UserInfo.first_name..'](tg://user?id='..data.message.sender.user_id..')'
 end
 if tex then 
 tex = tex:gsub('name',UserInfo.first_name) 
@@ -23628,23 +23628,23 @@ end
 end
 elseif data and data.luatele and data.luatele == "updateMessageEdited" then
 local msg = bot.getMessage(data.chat_id, data.message_id)
-if tonumber(msg.sender_id.user_id) ~= tonumber(bot_id) then  
-if redis:sismember(bot_id..":bot:silent", msg.sender_id.user_id) then    
+if tonumber(msg.sender.user_id) ~= tonumber(bot_id) then  
+if redis:sismember(bot_id..":bot:silent", msg.sender.user_id) then    
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end  
-if redis:sismember(bot_id..":"..msg.chat_id..":silent", msg.sender_id.user_id) then    
+if redis:sismember(bot_id..":"..msg.chat_id..":silent", msg.sender.user_id) then    
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})  
 end
-if redis:sismember(bot_id..":"..msg.chat_id..":Ban", msg.sender_id.user_id) then    
+if redis:sismember(bot_id..":"..msg.chat_id..":Ban", msg.sender.user_id) then    
 if GetInfoBot(msg).BanUser then
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif GetInfoBot(msg).BanUser == false then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end
 end  
-if redis:sismember(bot_id..":"..msg.chat_id..":restrict", msg.sender_id.user_id) then    
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+if redis:sismember(bot_id..":"..msg.chat_id..":restrict", msg.sender.user_id) then    
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 end  
 if not Administrator(msg) then
 if msg.content.text then
@@ -23666,7 +23666,7 @@ ut = "ممنوعه"
 end
 if hash then    
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender_id.user_id,"*⌁ : "..tu.." "..ut.." من المجموعه .*").yu,"md",true)  
+bot.sendText(msg.chat_id,msg.id,Reply_Status(msg.sender.user_id,"*⌁ : "..tu.." "..ut.." من المجموعه .*").yu,"md",true)  
 end  
 end
 if text and text:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or 
@@ -23688,11 +23688,11 @@ text and text:match(".[Oo][Rr][Gg]") then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end
 Run(msg,data)
-redis:incr(bot_id..":"..msg.chat_id..":"..msg.sender_id.user_id..":Editmessage") 
+redis:incr(bot_id..":"..msg.chat_id..":"..msg.sender.user_id..":Editmessage") 
 ----------------------------------------------------------------------------------------------------
 if not BasicConstructor(msg) then
 if msg.content.luatele == "messageContact" or msg.content.luatele == "messageVideoNote" or msg.content.luatele == "messageDocument" or msg.content.luatele == "messageAudio" or msg.content.luatele == "messageVideo" or msg.content.luatele == "messageVoiceNote" or msg.content.luatele == "messageAnimation" or msg.content.luatele == "messagePhoto" then
-if nfRankrestriction(msg,msg.chat_id,restrictionGet_Rank(msg.sender_id.user_id,msg.chat_id),"Edited") then
+if nfRankrestriction(msg,msg.chat_id,restrictionGet_Rank(msg.sender.user_id,msg.chat_id),"Edited") then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 end
 if redis:get(bot_id..":"..msg.chat_id..":settings:Edited") then
@@ -23700,17 +23700,17 @@ if redis:get(bot_id..":"..msg.chat_id..":settings:Edited") == "del" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Edited") == "ked" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'restricted',{1,0,0,0,0,0,0,0,0})
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Edited") == "ktm" then
-redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender_id.user_id) 
+redis:sadd(bot_id..":"..msg.chat_id..":settings:mute",msg.sender.user_id) 
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
 elseif redis:get(bot_id..":"..msg.chat_id..":settings:Edited") == "kick" then
 bot.deleteMessages(msg.chat_id,{[1]= msg.id})
-bot.setChatMemberStatus(msg.chat_id,msg.sender_id.user_id,'banned',0)
+bot.setChatMemberStatus(msg.chat_id,msg.sender.user_id,'banned',0)
 end
-ued = bot.getUser(msg.sender_id.user_id)
-ues = " المستخدم : ["..ued.first_name.."](tg://user?id="..msg.sender_id.user_id..") "
+ued = bot.getUser(msg.sender.user_id)
+ues = " المستخدم : ["..ued.first_name.."](tg://user?id="..msg.sender.user_id..") "
 infome = bot.getSupergroupMembers(msg.chat_id, "Administrators", "*", 0, 200)
 lsme = infome.members
 t = "*⌁ : قام ( *"..ues.."* ) بتعديل رسالته \n  ٴ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉ ┉\n*"
